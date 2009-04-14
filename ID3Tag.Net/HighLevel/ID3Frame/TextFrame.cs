@@ -4,12 +4,28 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
+    /// <summary>
+    /// The text information frames are the most important frames, containing information like artist, 
+    /// album and more. There may only be one text information frame of its kind in an tag. 
+    /// If the textstring is followed by a termination ($00 (00)) all the following information 
+    /// should be ignored and not be displayed. All text frame identifiers begin with "T". 
+    /// Only text frame identifiers begin with "T", with the exception of the "TXXX" frame. 
+    /// </summary>
     public class TextFrame : Frame
     {
+        /// <summary>
+        /// Creates a new TextFrame.
+        /// </summary>
         public TextFrame()
         {
         }
 
+        /// <summary>
+        /// Creates a new TextFrame.
+        /// </summary>
+        /// <param name="id">the frame id.</param>
+        /// <param name="content">the content.</param>
+        /// <param name="type">the text encoding.</param>
         public TextFrame(string id, string content, TextEncodingType type)
         {
             Descriptor.ID = id;
@@ -17,7 +33,13 @@ namespace ID3Tag.HighLevel.ID3Frame
             TextEncoding = type;
         }
 
+        /// <summary>
+        /// The text encoding.
+        /// </summary>
         public TextEncodingType TextEncoding { get; set; }
+        /// <summary>
+        /// The content.
+        /// </summary>
         public string Content { get; set; }
 
         public override FrameType Type
@@ -65,6 +87,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             }
         }
 
+        /// <summary>
+        /// Overwrites ToString.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var sb = new StringBuilder("TextFrame : ");

@@ -4,13 +4,28 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
-
+    /// <summary>
+    /// This frame is intended for one-string text information concerning the 
+    /// audiofile in a similar way to the other "T"-frames. The frame body consists 
+    /// of a description of the string, represented as a terminated string, 
+    /// followed by the actual string. There may be more than one "TXXX" frame in each tag, 
+    /// but only one with the same description.
+    /// </summary>
     public class UserDefinedTextFrame : Frame
     {
+        /// <summary>
+        /// Creates a new UserDefindedTextFrame.
+        /// </summary>
         public UserDefinedTextFrame()
         {
         }
 
+        /// <summary>
+        /// Creates a new UserDefindedTextFrame.
+        /// </summary>
+        /// <param name="description">the description.</param>
+        /// <param name="value">the value.</param>
+        /// <param name="type">the text encoding.</param>
         public UserDefinedTextFrame(string description, string value, TextEncodingType type)
         {
             Descriptor.ID = "TXXX";
@@ -19,8 +34,17 @@ namespace ID3Tag.HighLevel.ID3Frame
             TextEncoding = type;
         }
 
+        /// <summary>
+        /// The text encoding.
+        /// </summary>
         public TextEncodingType TextEncoding { get; set; }
+        /// <summary>
+        /// The description.
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// The value.
+        /// </summary>
         public string Value { get; set; }
 
         public override FrameType Type

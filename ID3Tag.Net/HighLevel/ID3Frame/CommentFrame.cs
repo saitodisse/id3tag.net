@@ -4,12 +4,29 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
+    /// <summary>
+    /// This frame is indended for any kind of full text information that does not fit in any other frame. 
+    /// It consists of a frame header followed by encoding, language and content descriptors and is 
+    /// ended with the actual comment as a text string. Newline characters are allowed in the 
+    /// comment text string. There may be more than one comment frame in each tag, but 
+    /// only one with the same language and content descriptor.
+    /// </summary>
     public class CommentFrame : Frame
     {
+        /// <summary>
+        /// Creates a new instance of CommentFrame.
+        /// </summary>
         public CommentFrame()
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of CommentFrame.
+        /// </summary>
+        /// <param name="descriptor">the descriptor.</param>
+        /// <param name="language">the language.</param>
+        /// <param name="text">the text.</param>
+        /// <param name="type">the text encoding.</param>
         public CommentFrame(string language, string descriptor, string text, TextEncodingType type)
         {
             Descriptor.ID = "COMM";
@@ -19,9 +36,21 @@ namespace ID3Tag.HighLevel.ID3Frame
             TextEncoding = type;
         }
 
+        /// <summary>
+        /// The text encoding.
+        /// </summary>
         public TextEncodingType TextEncoding { get; set; }
+        /// <summary>
+        /// The language.
+        /// </summary>
         public string Language { get; set; }
+        /// <summary>
+        /// The content descriptor.
+        /// </summary>
         public string ContentDescriptor { get; set; }
+        /// <summary>
+        /// The text.
+        /// </summary>
         public string Text { get; set; }
 
         public override FrameType Type
@@ -81,6 +110,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             Text = text;
         }
 
+        /// <summary>
+        /// Overwrites ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var builder = new StringBuilder("Comment : ");

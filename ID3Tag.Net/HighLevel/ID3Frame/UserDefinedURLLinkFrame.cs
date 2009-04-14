@@ -5,6 +5,12 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
+    /// <summary>
+    /// This frame is intended for URL links concerning the audiofile in a similar way to the 
+    /// other "W"-frames. The frame body consists of a description of the string, represented 
+    /// as a terminated string, followed by the actual URL. The URL is always encoded with ISO-8859-1. 
+    /// There may be more than one "WXXX" frame in each tag, but only one with the same description.
+    /// </summary>
     public class UserDefinedURLLinkFrame : Frame
     {
         public UserDefinedURLLinkFrame()
