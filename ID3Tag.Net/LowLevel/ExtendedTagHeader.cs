@@ -2,14 +2,26 @@
 
 namespace ID3Tag.LowLevel
 {
+    /// <summary>
+    /// Represents the extended tag header of the ID3 tag.
+    /// </summary>
     public class ExtendedTagHeader
     {
         private ExtendedTagHeader()
         {
         }
 
+        /// <summary>
+        /// True if CRC data is present.
+        /// </summary>
         public bool CRCDataPresent { get; private set; }
+        /// <summary>
+        /// The padding size.
+        /// </summary>
         public int PaddingSize { get; private set; }
+        /// <summary>
+        /// The CRC bytes.
+        /// </summary>
         public byte[] CRC { get; private set; }
 
         #region Create Extended Header

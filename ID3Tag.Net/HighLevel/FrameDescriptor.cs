@@ -2,8 +2,14 @@
 
 namespace ID3Tag.HighLevel
 {
+    /// <summary>
+    /// Represents the ID3 Frame header.
+    /// </summary>
     public class FrameDescriptor
     {
+        /// <summary>
+        /// Creates a new instance of FrameDescriptor
+        /// </summary>
         public FrameDescriptor()
         {
             ID = "????";
@@ -15,14 +21,39 @@ namespace ID3Tag.HighLevel
             GroupingIdentify = false;
         }
 
+        /// <summary>
+        /// The frame ID.
+        /// </summary>
         public string ID { get; set; }
+        /// <summary>
+        /// The TagAlterPreservation flag.
+        /// </summary>
         public bool TagAlterPreservation { get; set; }
+        /// <summary>
+        /// The FileAlterPreservation flag.
+        /// </summary>
         public bool FileAlterPreservation { get; set; }
+        /// <summary>
+        /// The ReadOnly flag.
+        /// </summary>
         public bool ReadOnly { get; set; }
+        /// <summary>
+        /// The Compression flag.
+        /// </summary>
         public bool Compression { get; set; }
+        /// <summary>
+        /// The Encryption flag.
+        /// </summary>
         public bool Encryption { get; set; }
+        /// <summary>
+        /// The GroupingIdentify flag.
+        /// </summary>
         public bool GroupingIdentify { get; set; }
 
+        /// <summary>
+        /// Gets the flag coding of the frame.
+        /// </summary>
+        /// <returns>the byte array with the coding.</returns>
         public byte[] GetFlagBytes()
         {
             /*
@@ -74,6 +105,10 @@ namespace ID3Tag.HighLevel
             return flagBytes;
         }
 
+        /// <summary>
+        /// Overwrites ToString.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return String.Format("FrameDescriptor : ID = {0}", ID);
