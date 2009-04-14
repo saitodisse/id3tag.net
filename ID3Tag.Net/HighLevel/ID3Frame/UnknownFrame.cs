@@ -3,13 +3,22 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
+    /// <summary>
+    /// Represents a frame that cannot be identified by the reader.
+    /// </summary>
     public class UnknownFrame : Frame
     {
+        /// <summary>
+        /// Creates a new Unknown frame.
+        /// </summary>
         public UnknownFrame()
         {
             Content = new byte[0];
         }
 
+        /// <summary>
+        /// The payload.
+        /// </summary>
         public byte[] Content { get; set; }
 
         public override FrameType Type
@@ -31,6 +40,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             Content = rawFrame.Payload;
         }
 
+        /// <summary>
+        /// Overwrite ToString.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var sb = new StringBuilder("UnknownFrame : ");

@@ -2,6 +2,10 @@
 
 namespace ID3Tag.HighLevel
 {
+    /// <summary>
+    /// This class implements the IFrame interface and provides infrastructure code for the
+    /// concrete Frame implementations.
+    /// </summary>
     public abstract class Frame : IFrame
     {
         internal Frame()

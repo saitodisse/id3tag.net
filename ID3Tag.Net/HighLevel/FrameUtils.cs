@@ -2,8 +2,16 @@
 
 namespace ID3Tag.HighLevel
 {
+    /// <summary>
+    /// Provides some static helper methods.
+    /// </summary>
     public static class FrameUtils
     {
+        /// <summary>
+        /// Convert a abstract frame to an UnknownFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static UnknownFrame Convert(IFrame frame)
         {
             if (frame.Type != FrameType.Unknown)
@@ -20,6 +28,11 @@ namespace ID3Tag.HighLevel
             return unknownFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an TextFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static TextFrame ConvertToText(IFrame frame)
         {
             if (frame.Type != FrameType.Text)
@@ -36,6 +49,11 @@ namespace ID3Tag.HighLevel
             return textFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an UserDefinedTextFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static UserDefinedTextFrame ConvertToUserDefinedText(IFrame frame)
         {
             if (frame.Type != FrameType.UserDefinedText)
@@ -52,6 +70,11 @@ namespace ID3Tag.HighLevel
             return textFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an PrivateFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static PrivateFrame ConvertToPrivateFrame(IFrame frame)
         {
             if (frame.Type != FrameType.Private)
@@ -68,6 +91,11 @@ namespace ID3Tag.HighLevel
             return privateFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an MusicCdIdentifierFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static MusicCdIdentifierFrame ConvertToMusicCDIdentifierFrame(IFrame frame)
         {
             if (frame.Type != FrameType.MusicCDIdentifier)
@@ -84,6 +112,11 @@ namespace ID3Tag.HighLevel
             return musicFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an CommentFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static CommentFrame ConvertToCommentFrame(IFrame frame)
         {
             if (frame.Type != FrameType.Comment)
@@ -100,6 +133,11 @@ namespace ID3Tag.HighLevel
             return commentFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an UrlLinkFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static UrlLinkFrame ConvertToURLLinkFrame(IFrame frame)
         {
             if (frame.Type != FrameType.URLLink)
@@ -116,6 +154,11 @@ namespace ID3Tag.HighLevel
             return urlLinkFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an UserDefinedURLLinkFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static UserDefinedURLLinkFrame ConvertToUserDefinedURLLinkFrame(IFrame frame)
         {
             if (frame.Type != FrameType.UserDefindedURLLink)
@@ -132,6 +175,11 @@ namespace ID3Tag.HighLevel
             return urlLinkFrame;
         }
 
+        /// <summary>
+        /// Convert a abstract frame to an AudioEncryptionFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrecte type.</returns>
         public static AudioEncryptionFrame ConvertToAudioEncryptionFrame(IFrame frame)
         {
             if (frame.Type != FrameType.AudoEncryption)

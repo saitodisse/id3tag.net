@@ -4,6 +4,7 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
+
     public class UserDefinedTextFrame : Frame
     {
         public UserDefinedTextFrame()
