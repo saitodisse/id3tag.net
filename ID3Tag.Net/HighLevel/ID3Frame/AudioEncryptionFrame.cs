@@ -21,16 +21,38 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// </summary>
     public class AudioEncryptionFrame : Frame
     {
+        /// <summary>
+        /// The owner.
+        /// </summary>
         public string Owner { get; set; }
+        /// <summary>
+        /// The preview start value.
+        /// </summary>
         public ushort PreviewStart { get; set; }
+        /// <summary>
+        /// The preview length value.
+        /// </summary>
         public ushort PreviewLength { get; set; }
+        /// <summary>
+        /// The encryption data.
+        /// </summary>
         public byte[] Encryption { get; set; }
 
+        /// <summary>
+        /// Creates a new instance of AudioEncryptionFrame.
+        /// </summary>
         public AudioEncryptionFrame()
             : this("Unknown",0,0,new byte[0])
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of AudioEncryptionFrame.
+        /// </summary>
+        /// <param name="owner">the owner.</param>
+        /// <param name="previewStart">the preview start.</param>
+        /// <param name="previewLength">the preview length.</param>
+        /// <param name="encryption">the encryption bytes</param>
         public AudioEncryptionFrame(string owner, ushort previewStart, ushort previewLength, byte[] encryption)
         {
             Descriptor.ID = "AENC";
@@ -48,6 +70,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             Encryption info         <binary data>
          */
 
+        /// <summary>
+        /// Convert the values to a raw frame.
+        /// </summary>
+        /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
@@ -73,6 +99,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
+        /// <summary>
+        /// Import the raw frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);
@@ -115,11 +145,18 @@ namespace ID3Tag.HighLevel.ID3Frame
             Array.Copy(payloadBytes,encryptionPos,Encryption,0,Encryption.Length);
         }
 
+        /// <summary>
+        /// The frame type.
+        /// </summary>
         public override FrameType Type
         {
             get { return FrameType.AudoEncryption; }
         }
 
+        /// <summary>
+        /// Overwrite ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var stringBuilder = new StringBuilder();

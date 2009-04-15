@@ -37,11 +37,18 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// </summary>
         public byte[] TOC { get; set; }
 
+        /// <summary>
+        /// The Frame type.
+        /// </summary>
         public override FrameType Type
         {
             get { return FrameType.MusicCDIdentifier; }
         }
 
+        /// <summary>
+        /// Convert the frame.
+        /// </summary>
+        /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
@@ -49,6 +56,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return frame;
         }
 
+        /// <summary>
+        /// Import the raw frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);

@@ -13,10 +13,19 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// </summary>
     public class UserDefinedURLLinkFrame : Frame
     {
+        /// <summary>
+        /// Creates a new UserDefinedURLLinkFrame
+        /// </summary>
         public UserDefinedURLLinkFrame()
         {
         }
 
+        /// <summary>
+        /// Creates a new UserDefinedURLLinkFrame
+        /// </summary>
+        /// <param name="description">the Description</param>
+        /// <param name="url">The URL</param>
+        /// <param name="type">The text encoding type.</param>
         public UserDefinedURLLinkFrame(string description, string url, TextEncodingType type)
         {
             Descriptor.ID = "WXXX";
@@ -25,15 +34,31 @@ namespace ID3Tag.HighLevel.ID3Frame
             TextEncoding = type;
         }
 
+        /// <summary>
+        /// The text encoding
+        /// </summary>
         public TextEncodingType TextEncoding { get; set; }
+        /// <summary>
+        /// The description
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// The URL.
+        /// </summary>
         public string URL { get; set; }
 
+        /// <summary>
+        /// The frame type.
+        /// </summary>
         public override FrameType Type
         {
             get { return FrameType.UserDefindedURLLink; }
         }
 
+        /// <summary>
+        /// Convert the values to a raw frame.
+        /// </summary>
+        /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
@@ -52,6 +77,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
+        /// <summary>
+        /// Import the raw frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);
@@ -139,6 +168,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return isNull;
         }
 
+        /// <summary>
+        /// Overwrite ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var builder = new StringBuilder("UserDefindedURLLinkFrame : ");

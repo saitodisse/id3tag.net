@@ -15,16 +15,34 @@ namespace ID3Tag.HighLevel
 
         #region IFrame Members
 
+        /// <summary>
+        /// Convert the values from the high level frame to a raw frame.
+        /// </summary>
+        /// <returns>the raw frame.</returns>
         public abstract RawFrame Convert();
 
+        /// <summary>
+        /// Import the raw content to a high level frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
         public abstract void Import(RawFrame rawFrame);
 
+        /// <summary>
+        /// The frame type.
+        /// </summary>
         public abstract FrameType Type { get; }
 
+        /// <summary>
+        /// The description of the frame.
+        /// </summary>
         public FrameDescriptor Descriptor { get; internal set; }
 
         #endregion
 
+        /// <summary>
+        /// Import the header flags from a raw frame.
+        /// </summary>
+        /// <param name="rawFrame"></param>
         protected void ImportRawFrameHeader(RawFrame rawFrame)
         {
             Descriptor.ID = rawFrame.ID;

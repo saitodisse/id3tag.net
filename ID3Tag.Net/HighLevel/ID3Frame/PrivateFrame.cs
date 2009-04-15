@@ -16,12 +16,20 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// </summary>
     public class PrivateFrame : Frame
     {
+        /// <summary>
+        /// Creates a new instance of PrivateFrame.
+        /// </summary>
         public PrivateFrame()
         {
             Owner = String.Empty;
             Data = new byte[0];
         }
 
+        /// <summary>
+        /// Creates a new instance of PrivateFrame.
+        /// </summary>
+        /// <param name="owner">the owner.</param>
+        /// <param name="data">the data.</param>
         public PrivateFrame(string owner, byte[] data)
         {
             Descriptor.ID = "PRIV";
@@ -29,14 +37,27 @@ namespace ID3Tag.HighLevel.ID3Frame
             Data = data;
         }
 
+        /// <summary>
+        /// The owner.
+        /// </summary>
         public string Owner { get; set; }
+        /// <summary>
+        /// The data.
+        /// </summary>
         public byte[] Data { get; set; }
 
+        /// <summary>
+        /// The frame type.
+        /// </summary>
         public override FrameType Type
         {
             get { return FrameType.Private; }
         }
 
+        /// <summary>
+        /// Convert the values to a raw frame.
+        /// </summary>
+        /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
@@ -50,6 +71,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
+        /// <summary>
+        /// Import the raw frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);
@@ -72,6 +97,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             Data = items[1];
         }
 
+        /// <summary>
+        /// Overwrite ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var sb = new StringBuilder("PrivateFrame : ");

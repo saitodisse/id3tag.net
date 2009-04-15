@@ -35,11 +35,18 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// </summary>
         public string URL { get; set; }
 
+        /// <summary>
+        /// The frame Type.
+        /// </summary>
         public override FrameType Type
         {
             get { return FrameType.URLLink; }
         }
 
+        /// <summary>
+        /// Convert the URLLinkFrame.
+        /// </summary>
+        /// <returns>the RawFrame.</returns>
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
@@ -49,6 +56,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
+        /// <summary>
+        /// Import the raw frame data.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);
