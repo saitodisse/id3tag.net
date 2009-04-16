@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ID3Tag;
 using ID3Tag.Factory;
 using ID3Tag.HighLevel;
-using ID3Tag.LowLevel;
-
 using Microsoft.Win32;
 
 namespace ID3TagUtility
@@ -44,7 +32,7 @@ namespace ID3TagUtility
                 //
                 var tagContainer = ReadTag(dialog.FileName);
                 var tagDescriptor = tagContainer.Tag;
-                
+
                 // OK. Update the UI.
                 UpdateView(filename, tagDescriptor);
                 ShowTagFrames(tagContainer);
@@ -61,7 +49,7 @@ namespace ID3TagUtility
             var stringBuilder = new StringBuilder();
             foreach (var b in data)
             {
-                stringBuilder.AppendFormat("{0:X2} ",b);
+                stringBuilder.AppendFormat("{0:X2} ", b);
             }
 
             return stringBuilder.ToString();
@@ -96,7 +84,6 @@ namespace ID3TagUtility
                 {
                     labelCRCBytes.Content = String.Empty;
                 }
-
             }
             else
             {
@@ -114,6 +101,7 @@ namespace ID3TagUtility
             //
             //  Iterate over the frame collection and show the ToString representation.
             //
+            listView1Tags.Items.Clear();
             foreach (var frame in tagContainer)
             {
                 listView1Tags.Items.Add(frame.ToString());
