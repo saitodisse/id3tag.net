@@ -39,19 +39,21 @@ namespace ID3TagUtility
             {
                 var filename = dialog.FileName;
 
+                //
+                //  Read the tag here!
+                //
                 var tagContainer = ReadTag(dialog.FileName);
                 var tagDescriptor = tagContainer.Tag;
                 
+                // OK. Update the UI.
                 UpdateView(filename, tagDescriptor);
                 ShowTagFrames(tagContainer);
             }
         }
 
-
-
         private void OnClose(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
 
         private static string ConvertToString(byte[] data)
@@ -67,6 +69,9 @@ namespace ID3TagUtility
 
         private void UpdateView(string filename, TagDescriptor tagDescriptor)
         {
+            //
+            //  Decode the header of the tag.
+            //
             labelFilename.Content = filename;
             labelTagVersion.Content = String.Format("ID3v2.{0}.{1}", tagDescriptor.MajorVersion, tagDescriptor.Revision);
 
@@ -106,6 +111,9 @@ namespace ID3TagUtility
 
         private void ShowTagFrames(TagContainer tagContainer)
         {
+            //
+            //  Iterate over the frame collection and show the ToString representation.
+            //
             foreach (var frame in tagContainer)
             {
                 listView1Tags.Items.Add(frame.ToString());
@@ -115,13 +123,23 @@ namespace ID3TagUtility
         private static TagContainer ReadTag(string filename)
         {
             var file = new FileInfo(filename);
+
+            //
+            //  Create the controller from the factory.
+            //
             var ioController = Id3TagFactory.CreateIoController();
             var tagController = Id3TagFactory.CreateTagController();
 
             TagContainer tag = null;
             try
             {
+                //
+                // Read the raw tag ...
+                //
                 var tagInfo = ioController.Read(file);
+                //
+                //  ... and decode the frames.
+                //
                 tag = tagController.Decode(tagInfo);
             }
             catch (ID3IOException ioException)
