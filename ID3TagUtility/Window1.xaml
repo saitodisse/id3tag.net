@@ -1,8 +1,39 @@
 ﻿<Window x:Class="ID3TagUtility.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Window1" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+    Title="ID3Tag Utility" Height="487" Width="725">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top"  Name="menuFile" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Import File" Click="OnImportFile" />
+                <Separator/>
+                <MenuItem Header="Close" Click="OnClose" />
+            </MenuItem>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top"  Name="toolBar1" VerticalAlignment="Top" Height="30" >
+            <Button Name="buttonImportFile" Click="OnImportFile" >
+                Import File
+            </Button>
+        </ToolBar>
+        <StatusBar  DockPanel.Dock="Bottom"  Height="30" Name="statusBar" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="currentState">Ready</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <ListView Name="listView1Tags" Margin="6,206.04,6,6" />
+            <Label HorizontalAlignment="Left" Margin="6,173,0,168" Name="label1" Width="62">Frames :</Label>
+            <Label Height="25" HorizontalAlignment="Left" Margin="6,39,0,0" Name="label2" VerticalAlignment="Top" Width="109">ID3Tag Version :</Label>
+            <Label Height="27" HorizontalAlignment="Left" Margin="121,37,0,0" Name="labelTagVersion" VerticalAlignment="Top" Width="125" BorderBrush="Black" BorderThickness="0">ID3v2.?.?</Label>
+            <Label Height="24" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label3" VerticalAlignment="Top" Width="65">Filename :</Label>
+            <Label Height="27" Margin="121,6,6,0" Name="labelFilename" VerticalAlignment="Top">No file</Label>
+            <CheckBox Height="21" HorizontalAlignment="Left" Margin="6,78,0,0" Name="checkBoxExperimentalIndicator" VerticalAlignment="Top" Width="180">Experimental Indicator</CheckBox>
+            <CheckBox Height="23" HorizontalAlignment="Left" Margin="6,96,0,0" Name="checkExtendedHeader" VerticalAlignment="Top" Width="183">Extended Header supported</CheckBox>
+            <CheckBox Height="17" HorizontalAlignment="Left" Margin="6,115,0,0" Name="checkBoxUnsync" VerticalAlignment="Top" Width="180">Unsynchronisation</CheckBox>
+            <Label Height="26" HorizontalAlignment="Left" Margin="234,78,0,0" Name="labelCRCBytesDescriptor" VerticalAlignment="Top" Width="98" IsEnabled="True">CRC Bytes :</Label>
+            <Label Height="24" Margin="0,78,15,0" Name="labelCRCBytes" VerticalAlignment="Top" HorizontalAlignment="Right" Width="373"></Label>
+            <Label Height="31" HorizontalAlignment="Left" Margin="234,110,0,0" Name="labelPaddingDescriptor" VerticalAlignment="Top" Width="66">Padding :</Label>
+            <Label Height="28" Margin="315,108,15,0" Name="labelPaddingSize" VerticalAlignment="Top"></Label>
+        </Grid>
+    </DockPanel>
 </Window>
