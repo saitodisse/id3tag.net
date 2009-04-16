@@ -6,6 +6,7 @@
         <Menu DockPanel.Dock="Top"  Name="menuFile" VerticalAlignment="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Import File" Click="OnImportFile" />
+                <MenuItem Header="Write Tag to File" Click="OnWrite" />
                 <Separator/>
                 <MenuItem Header="Close" Click="OnClose" />
             </MenuItem>
@@ -13,6 +14,9 @@
         <ToolBar DockPanel.Dock="Top"  Name="toolBar1" VerticalAlignment="Top" Height="30" >
             <Button Name="buttonImportFile" Click="OnImportFile" >
                 Import File
+            </Button>
+            <Button Click="OnWrite">
+                Write Tag
             </Button>
         </ToolBar>
         <StatusBar  DockPanel.Dock="Bottom"  Height="30" Name="statusBar" VerticalAlignment="Bottom">
