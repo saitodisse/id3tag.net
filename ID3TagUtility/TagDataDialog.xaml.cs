@@ -30,9 +30,16 @@ namespace ID3TagUtility
                        {
                            EncodingType = TextEncodingType.ISO_8859_1,
                            Album = "My Album",
+                           Artist = "My Artist",
                            Title = "My Title",
                            Year = "2009",
-                           Comment = ""
+                           Comment = "",
+                           Unsynchronisation = false,
+                           ExperimentalIndicator = false,
+                           ExtendedHeader = false,
+                           CrCPresent = false,
+                           Crc = new byte[0],
+                           PaddingSize = 0
                        };
         }
 
@@ -60,11 +67,25 @@ namespace ID3TagUtility
             // The other codings are only valid for 2.4 !
 
             Data.Album = textBoxAlbum.Text;
+            Data.Artist = textBoxArtist.Text;
             Data.Title = textBoxTitle.Text;
             Data.Year = textBoxYear.Text;
             Data.Comment = textBoxComments.Text;
             Data.SourceFile = textBoxSourceFile.Text;
             Data.TargetFile = textBoxTargetFile.Text;
+
+            Data.ExperimentalIndicator = Convert.ToBoolean(checkBoxExperimentalIndicator.IsChecked);
+            Data.Unsynchronisation = Convert.ToBoolean(checkBoxUnsync.IsChecked);
+            Data.ExtendedHeader = Convert.ToBoolean(checkBoxExtendedHeader.IsChecked);
+
+            if (Data.ExtendedHeader)
+            {
+                Data.CrCPresent = Convert.ToBoolean(checkBoxCRCPresent.IsChecked);
+                Data.PaddingSize = Convert.ToInt32(textBoxPadding.Text);
+                
+                var crcBytes = GetCrc();
+                Data.Crc = crcBytes;
+            }
 
             Close();
         }
@@ -72,9 +93,11 @@ namespace ID3TagUtility
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             textBoxAlbum.Text = Data.Album;
+            textBoxArtist.Text = Data.Artist;
             textBoxTitle.Text = Data.Title;
             textBoxYear.Text = Data.Year;
             textBoxComments.Text = Data.Comment;
+            textBoxPadding.Text = Data.PaddingSize.ToString();
         }
 
         private void buttonSourceFileSelect_Click(object sender, RoutedEventArgs e)
@@ -99,6 +122,11 @@ namespace ID3TagUtility
                 var filename = dialog.FileName;
                 textBoxTargetFile.Text = filename;
             }
+        }
+
+        private byte[] GetCrc()
+        {
+            return new byte[] {0x20, 0x21, 0x22, 0x23};
         }
     }
 }
