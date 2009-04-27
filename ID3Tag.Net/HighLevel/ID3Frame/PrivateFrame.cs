@@ -41,6 +41,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// The owner.
         /// </summary>
         public string Owner { get; set; }
+
         /// <summary>
         /// The data.
         /// </summary>

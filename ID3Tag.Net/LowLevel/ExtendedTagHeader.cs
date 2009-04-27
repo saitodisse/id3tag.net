@@ -15,10 +15,12 @@ namespace ID3Tag.LowLevel
         /// True if CRC data is present.
         /// </summary>
         public bool CRCDataPresent { get; private set; }
+
         /// <summary>
         /// The padding size.
         /// </summary>
         public int PaddingSize { get; private set; }
+
         /// <summary>
         /// The CRC bytes.
         /// </summary>

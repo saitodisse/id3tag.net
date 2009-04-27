@@ -40,14 +40,17 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// The text encoding.
         /// </summary>
         public TextEncodingType TextEncoding { get; set; }
+
         /// <summary>
         /// The language.
         /// </summary>
         public string Language { get; set; }
+
         /// <summary>
         /// The content descriptor.
         /// </summary>
         public string ContentDescriptor { get; set; }
+
         /// <summary>
         /// The text.
         /// </summary>

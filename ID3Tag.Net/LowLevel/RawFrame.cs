@@ -19,30 +19,37 @@ namespace ID3Tag.LowLevel
         /// The payload of the frame.
         /// </summary>
         public byte[] Payload { get; private set; }
+
         /// <summary>
         /// The frame ID.
         /// </summary>
         public string ID { get; private set; }
+
         /// <summary>
         /// The TagAlterPreservation flag.
         /// </summary>
         public bool TagAlterPreservation { get; private set; }
+
         /// <summary>
         /// The FileAlterPreservation flag.
         /// </summary>
         public bool FileAlterPreservation { get; private set; }
+
         /// <summary>
         /// The ReadOnly flag.
         /// </summary>
         public bool ReadOnly { get; private set; }
+
         /// <summary>
         /// The Compression flag.
         /// </summary>
         public bool Compression { get; private set; }
+
         /// <summary>
         /// The Encryption flag.
         /// </summary>
         public bool Encryption { get; private set; }
+
         /// <summary>
         /// The GroupingIdentify flag.
         /// </summary>

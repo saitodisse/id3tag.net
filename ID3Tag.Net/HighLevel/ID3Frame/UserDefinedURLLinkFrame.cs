@@ -38,10 +38,12 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// The text encoding
         /// </summary>
         public TextEncodingType TextEncoding { get; set; }
+
         /// <summary>
         /// The description
         /// </summary>
         public string Description { get; set; }
+
         /// <summary>
         /// The URL.
         /// </summary>

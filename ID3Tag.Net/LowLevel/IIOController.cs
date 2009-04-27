@@ -14,12 +14,14 @@ namespace ID3Tag.LowLevel
         /// <param name="file">the file.</param>
         /// <returns>a low level tag.</returns>
         Id3TagInfo Read(FileInfo file);
+
         /// <summary>
         /// Read the tag from an input stream.
         /// </summary>
         /// <param name="inputStream">the input stream.</param>
         /// <returns>a low level tag.</returns>
         Id3TagInfo Read(Stream inputStream);
+
         /// <summary>
         /// Writes a high level tag container to a output stream.
         /// </summary>

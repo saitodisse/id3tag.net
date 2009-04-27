@@ -22,27 +22,10 @@ namespace ID3Tag.HighLevel.ID3Frame
     public class AudioEncryptionFrame : Frame
     {
         /// <summary>
-        /// The owner.
-        /// </summary>
-        public string Owner { get; set; }
-        /// <summary>
-        /// The preview start value.
-        /// </summary>
-        public ushort PreviewStart { get; set; }
-        /// <summary>
-        /// The preview length value.
-        /// </summary>
-        public ushort PreviewLength { get; set; }
-        /// <summary>
-        /// The encryption data.
-        /// </summary>
-        public byte[] Encryption { get; set; }
-
-        /// <summary>
         /// Creates a new instance of AudioEncryptionFrame.
         /// </summary>
         public AudioEncryptionFrame()
-            : this("Unknown",0,0,new byte[0])
+            : this("Unknown", 0, 0, new byte[0])
         {
         }
 
@@ -60,6 +43,34 @@ namespace ID3Tag.HighLevel.ID3Frame
             PreviewStart = previewStart;
             PreviewLength = previewLength;
             Encryption = encryption;
+        }
+
+        /// <summary>
+        /// The owner.
+        /// </summary>
+        public string Owner { get; set; }
+
+        /// <summary>
+        /// The preview start value.
+        /// </summary>
+        public ushort PreviewStart { get; set; }
+
+        /// <summary>
+        /// The preview length value.
+        /// </summary>
+        public ushort PreviewLength { get; set; }
+
+        /// <summary>
+        /// The encryption data.
+        /// </summary>
+        public byte[] Encryption { get; set; }
+
+        /// <summary>
+        /// The frame type.
+        /// </summary>
+        public override FrameType Type
+        {
+            get { return FrameType.AudoEncryption; }
         }
 
         /*
@@ -80,7 +91,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var ownerBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, Owner);
             var startBytes = BitConverter.GetBytes(PreviewStart);
             var lengthBytes = BitConverter.GetBytes(PreviewLength);
-            
+
             Array.Reverse(startBytes);
             Array.Reverse(lengthBytes);
 
@@ -93,7 +104,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             var dataBytes = data.ToArray();
             var payload = new byte[dataBytes.Length];
-            Array.Copy(dataBytes,0,payload,0,dataBytes.Length);
+            Array.Copy(dataBytes, 0, payload, 0, dataBytes.Length);
 
             var rawFrame = RawFrame.CreateFrame("AENC", flagBytes, payload);
             return rawFrame;
@@ -111,7 +122,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             // Read the text bytes.
             var textBytes = new List<byte>();
             var curPos = 0;
-            for (curPos = 0; curPos < payloadBytes.Length; curPos++ )
+            for (curPos = 0; curPos < payloadBytes.Length; curPos++)
             {
                 var curByte = payloadBytes[curPos];
                 if (curByte == 0)
@@ -131,8 +142,8 @@ namespace ID3Tag.HighLevel.ID3Frame
             var startBytes = new byte[2];
             var lengthBytes = new byte[2];
 
-            Array.Copy(payloadBytes,curPos,startBytes,0,2);
-            Array.Copy(payloadBytes,curPos+2,lengthBytes,0,2);
+            Array.Copy(payloadBytes, curPos, startBytes, 0, 2);
+            Array.Copy(payloadBytes, curPos + 2, lengthBytes, 0, 2);
             Array.Reverse(startBytes);
             Array.Reverse(lengthBytes);
 
@@ -142,15 +153,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var encryptionPos = curPos + 4;
             var encryptionSize = payloadBytes.Length - encryptionPos;
             Encryption = new byte[encryptionSize];
-            Array.Copy(payloadBytes,encryptionPos,Encryption,0,Encryption.Length);
-        }
-
-        /// <summary>
-        /// The frame type.
-        /// </summary>
-        public override FrameType Type
-        {
-            get { return FrameType.AudoEncryption; }
+            Array.Copy(payloadBytes, encryptionPos, Encryption, 0, Encryption.Length);
         }
 
         /// <summary>
@@ -164,7 +167,8 @@ namespace ID3Tag.HighLevel.ID3Frame
             var infoString = Utils.BytesToString(Encryption);
 
             stringBuilder.Append("AudioEncryptionFrame : ");
-            stringBuilder.AppendFormat("Owner = {0} Preview Start = {1} Preview Length = {2} EncryptionInfo = {3}", Owner, PreviewStart, PreviewLength, infoString);
+            stringBuilder.AppendFormat("Owner = {0} Preview Start = {1} Preview Length = {2} EncryptionInfo = {3}",
+                                       Owner, PreviewStart, PreviewLength, infoString);
 
             return stringBuilder.ToString();
         }

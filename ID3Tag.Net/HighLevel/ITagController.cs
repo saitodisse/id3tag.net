@@ -13,6 +13,7 @@ namespace ID3Tag.HighLevel
         /// <param name="info">the low level tag.</param>
         /// <returns>the high level tag representation.</returns>
         TagContainer Decode(Id3TagInfo info);
+
         /// <summary>
         /// Encodes a high level tag to a low level.
         /// </summary>

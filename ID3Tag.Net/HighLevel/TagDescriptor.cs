@@ -21,30 +21,37 @@ namespace ID3Tag.HighLevel
         /// The major version.
         /// </summary>
         public int MajorVersion { get; private set; }
+
         /// <summary>
         /// The  revision.
         /// </summary>
         public int Revision { get; private set; }
+
         /// <summary>
         /// The unsynchronisation flag.
         /// </summary>
         public bool Unsynchronisation { get; private set; }
+
         /// <summary>
         /// The extended header flag.
         /// </summary>
         public bool ExtendedHeader { get; private set; }
+
         /// <summary>
         /// The experimental indicator flag.
         /// </summary>
         public bool ExperimentalIndicator { get; private set; }
+
         /// <summary>
         /// The padding size.
         /// </summary>
         public int PaddingSize { get; private set; }
+
         /// <summary>
         /// The CRC data present flag.
         /// </summary>
         public bool CrcDataPresent { get; private set; }
+
         /// <summary>
         /// The CRC data.
         /// </summary>

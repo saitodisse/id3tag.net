@@ -14,6 +14,7 @@ namespace ID3Tag.Converter
         /// <param name="inputStream">the input stream (i.e. the file.)</param>
         /// <returns>a tag container.</returns>
         TagContainer Convert(Stream inputStream);
+
         /// <summary>
         /// Converts ID3v1 tags to ID3v2.
         /// </summary>

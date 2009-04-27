@@ -25,26 +25,32 @@ namespace ID3Tag.HighLevel
         /// The frame ID.
         /// </summary>
         public string ID { get; set; }
+
         /// <summary>
         /// The TagAlterPreservation flag.
         /// </summary>
         public bool TagAlterPreservation { get; set; }
+
         /// <summary>
         /// The FileAlterPreservation flag.
         /// </summary>
         public bool FileAlterPreservation { get; set; }
+
         /// <summary>
         /// The ReadOnly flag.
         /// </summary>
         public bool ReadOnly { get; set; }
+
         /// <summary>
         /// The Compression flag.
         /// </summary>
         public bool Compression { get; set; }
+
         /// <summary>
         /// The Encryption flag.
         /// </summary>
         public bool Encryption { get; set; }
+
         /// <summary>
         /// The GroupingIdentify flag.
         /// </summary>
