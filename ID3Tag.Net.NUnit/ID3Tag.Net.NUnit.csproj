@@ -53,6 +53,7 @@
     <Compile Include="Highlevel\AudioEncryptionFrameTest.cs" />
     <Compile Include="Highlevel\CommentFrameTest.cs" />
     <Compile Include="Highlevel\MusicCDIdentifierTest.cs" />
+    <Compile Include="Highlevel\PictureFrameTest.cs" />
     <Compile Include="Highlevel\PrivateFrameText.cs" />
     <Compile Include="Highlevel\TagDecoderTest.cs" />
     <Compile Include="Highlevel\TagEncoderTest.cs" />

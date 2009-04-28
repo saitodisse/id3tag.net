@@ -40,6 +40,14 @@
         /// <summary>
         /// AudioEncryption Frame.
         /// </summary>
-        AudoEncryption
+        AudoEncryption,
+        /// <summary>
+        /// Picture Frame
+        /// </summary>
+        Picture,
+        /// <summary>
+        /// Commercial Frame
+        /// </summary>
+        Commercial
     }
 }

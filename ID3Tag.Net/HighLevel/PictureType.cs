@@ -1,39 +1,95 @@
 ﻿namespace ID3Tag.HighLevel
 {
-    //public enum PictureType
-    //{
-    //    Other = 0,
-    //    FileIcon_32x32,
-    //    FileIcon_Other,
-    //    Cover_Front,
-    //    Cover_Back,
-    //    LeafletPage,
-    //    Media,
+    /// <summary>
+    /// Defines the Picture type.
+    /// </summary>
+    public enum PictureType
+    {
+        /// <summary>
+        /// Other.
+        /// </summary>
+        Other = 0,
+        /// <summary>
+        /// File Icon 32x32
+        /// </summary>
+        FileIcon32X32 = 0x01,
+        /// <summary>
+        /// File Icon Other
+        /// </summary>
+        FileIconOther = 0x02,
+        /// <summary>
+        /// Cover front
+        /// </summary>
+        CoverFront = 0x03,
+        /// <summary>
+        /// Cover back
+        /// </summary>
+        CoverBack = 0x04,
+        /// <summary>
+        /// Leaflet Page
+        /// </summary>
+        LeafletPage = 0x05,
+        /// <summary>
+        /// Media
+        /// </summary>
+        Media = 0x06,
+        /// <summary>
+        /// Lead Artist
+        /// </summary>
+        LeadArtist = 0x07,
+        /// <summary>
+        /// Artist
+        /// </summary>
+        Artist = 0x08,
+        /// <summary>
+        /// Conductor
+        /// </summary>
+        Conductor = 0x09,
+        /// <summary>
+        /// Band
+        /// </summary>
+        Band = 0x0A,
+        /// <summary>
+        /// Composer
+        /// </summary>
+        Composer = 0x0B,
+        /// <summary>
+        /// Text Writer
+        /// </summary>
+        TextWriter = 0x0C,
+        /// <summary>
+        /// Recording Location
+        /// </summary>
+        RecordingLocation = 0x0D,
+        /// <summary>
+        /// During Recording
+        /// </summary>
+        DuringRecording = 0x0E,
+        /// <summary>
+        /// During Performance
+        /// </summary>
+        DuringPerformance = 0x0F,
+        /// <summary>
+        /// Movie Screen Capture
+        /// </summary>
+        MovieScreenCapture = 0x10,
+        /// <summary>
+        /// A bright coloured fish
+        /// </summary>
+        ABrightColouredFish = 0x11,
+        /// <summary>
+        /// Illustration
+        /// </summary>
+        Illustration = 0x12,
+        /// <summary>
+        /// Band logotype
+        /// </summary>
+        BandLogotype = 0x13,
+        /// <summary>
+        /// Publisher logotype
+        /// </summary>
+        PublisherLogotype = 0x14
 
-    //}
+    }
 
-    /*
-     * $00     Other 
-$01     32x32 pixels 'file icon' (PNG only)
-$02     Other file icon
-$03     Cover (front)
-$04     Cover (back)
-$05     Leaflet page
-$06     Media (e.g. lable side of CD)
-$07     Lead artist/lead performer/soloist
-$08     Artist/performer
-$09     Conductor
-$0A     Band/Orchestra
-$0B     Composer
-$0C     Lyricist/text writer
-$0D     Recording Location
-$0E     During recording
-$0F     During performance
-$10     Movie/video screen capture
-$11     A bright coloured fish
-$12     Illustration
-$13     Band/artist logotype
-$14     Publisher/Studio logotype
-
-     */
 }

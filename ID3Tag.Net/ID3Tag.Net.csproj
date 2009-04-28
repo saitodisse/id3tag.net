@@ -60,6 +60,7 @@
     <Compile Include="HighLevel\ID3Frame\AudioEncryptionFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\CommentFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\MusicCdIdentifierFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\PictureFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PrivateFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\URLLinkFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\UserDefinedURLLinkFrame.cs" />
