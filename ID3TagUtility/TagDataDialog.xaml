@@ -29,7 +29,7 @@
         <Label Height="29" HorizontalAlignment="Left" Margin="17,12,0,0" Name="label8" VerticalAlignment="Top" Width="171">Frames :</Label>
         <Label Height="30" HorizontalAlignment="Right" Margin="0,12,200,0" Name="label9" VerticalAlignment="Top" Width="126">Tag Header :</Label>
         <CheckBox Height="19" HorizontalAlignment="Right" Margin="0,65,62,0" Name="checkBoxExperimentalIndicator" VerticalAlignment="Top" Width="253">Experimental Indicator</CheckBox>
-        <CheckBox Height="15" HorizontalAlignment="Right" Margin="0,90,118,0" Name="checkBoxUnsync" VerticalAlignment="Top" Width="197">Unsynchronisation</CheckBox>
+        <CheckBox Height="15" HorizontalAlignment="Right" Margin="0,90,118,0" Name="checkBoxUnsync" VerticalAlignment="Top" Width="197" IsEnabled="False">Unsynchronisation</CheckBox>
         <CheckBox Height="17" HorizontalAlignment="Right" Margin="0,111,95,0" Name="checkBoxExtendedHeader" VerticalAlignment="Top" Width="220">Extended Header Support</CheckBox>
         <CheckBox Height="18" HorizontalAlignment="Right" Margin="0,143,127,0" Name="checkBoxCRCPresent" VerticalAlignment="Top" Width="167" IsEnabled="False">CRC Present</CheckBox>
         <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,235,0" Name="textBoxCRC0" VerticalAlignment="Top" Width="40" IsEnabled="False" />
