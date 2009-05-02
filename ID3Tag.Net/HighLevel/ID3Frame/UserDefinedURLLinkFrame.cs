@@ -125,7 +125,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             //
             for (var i = 0; i < dataBytes.Length; i += increment)
             {
-                var isTerminatedSymbol = DetermineTerminateSymbol(dataBytes, i, increment);
+                var isTerminatedSymbol = Converter.DetermineTerminateSymbol(dataBytes, i, increment);
                 if (isTerminatedSymbol)
                 {
                     urlPos = i + increment;
@@ -150,24 +150,6 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             var urlChars = Converter.Extract(TextEncodingType.ISO_8859_1, urlBytes.ToArray(), false);
             URL = new string(urlChars);
-        }
-
-        private static bool DetermineTerminateSymbol(byte[] data, int pos, int increment)
-        {
-            var isNull = true;
-            for (var i = 0; i < increment; i++)
-            {
-                if (data[pos + i] == 0x00)
-                {
-                    isNull &= true;
-                }
-                else
-                {
-                    isNull &= false;
-                }
-            }
-
-            return isNull;
         }
 
         /// <summary>

@@ -195,5 +195,26 @@ namespace ID3Tag.HighLevel
 
             return audioEncryptionFrame;
         }
+
+        /// <summary>
+        /// Convert a abstract frame to a PictureFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrete type.</returns>
+        public static PictureFrame ConvertToPictureFrame(IFrame frame)
+        {
+            if (frame.Type != FrameType.Picture)
+            {
+                throw new ID3TagException("Frame Type does not mathch");
+            }
+
+            var pictureFrame = frame as PictureFrame;
+            if (pictureFrame == null)
+            {
+                throw new ID3TagException("Could not cast To PictureFrame!");
+            }
+
+            return pictureFrame;
+        }
     }
 }

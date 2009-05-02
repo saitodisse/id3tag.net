@@ -11,6 +11,12 @@ namespace ID3Tag.HighLevel
             return PerformExtract(type, content, false);
         }
 
+        public static char[] Extract(TextEncodingType type, List<byte> content)
+        {
+            var contentBytes = content.ToArray();
+            return PerformExtract(type, contentBytes, false);
+        }
+
         public static char[] Extract(TextEncodingType type, byte[] content, bool abortAfterTermination)
         {
             return PerformExtract(type, content, abortAfterTermination);
@@ -99,6 +105,24 @@ namespace ID3Tag.HighLevel
 
             description = descBuilder.ToString();
             value = valueBuilder.ToString();
+        }
+
+        public static bool DetermineTerminateSymbol(byte[] data, int pos, int increment)
+        {
+            var isNull = true;
+            for (var i = 0; i < increment; i++)
+            {
+                if (data[pos + i] == 0x00)
+                {
+                    isNull &= true;
+                }
+                else
+                {
+                    isNull &= false;
+                }
+            }
+
+            return isNull;
         }
 
         internal static byte[] GetContentBytes(TextEncodingType encodingType, string content)

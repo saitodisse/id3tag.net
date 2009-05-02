@@ -120,6 +120,9 @@ namespace ID3Tag.HighLevel
                     case "COMM":
                         frame = new CommentFrame();
                         break;
+                    case "APIC":
+                        frame = new PictureFrame();
+                        break;
                     default:
                         frame = new UnknownFrame();
                         break;
