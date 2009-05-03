@@ -44,10 +44,6 @@
         /// <summary>
         /// Picture Frame
         /// </summary>
-        Picture,
-        /// <summary>
-        /// Commercial Frame
-        /// </summary>
-        Commercial
+        Picture
     }
 }

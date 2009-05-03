@@ -31,7 +31,7 @@ namespace ID3Tag.HighLevel
                 //
                 //  Analyse the frame ID
                 //
-                var frame = AnalyseFrameID(rawFrame);
+                var frame = AnalyseFrameId(rawFrame);
                 if (frame != null)
                 {
                     frame.Import(rawFrame);
@@ -72,7 +72,9 @@ namespace ID3Tag.HighLevel
 
         #endregion
 
-        private static IFrame AnalyseFrameID(RawFrame rawFrame)
+        #region Private Helper
+
+        private static IFrame AnalyseFrameId(RawFrame rawFrame)
         {
             IFrame frame;
             if (rawFrame.ID[0] == 'T' || rawFrame.ID[0] == 'W')
@@ -130,5 +132,7 @@ namespace ID3Tag.HighLevel
             }
             return frame;
         }
+
+        #endregion
     }
 }

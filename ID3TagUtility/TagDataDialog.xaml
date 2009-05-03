@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ID3TagUtility.TagDataDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Write new Tag..." Height="478" Width="766">
+    Title="Write new Tag..." Height="451" Width="796">
     <Grid Loaded="Grid_Loaded">
         <ComboBox Height="22" Margin="134,62,0,0" Name="comboBoxEncoding" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Left" Width="232">
             <ComboBoxItem>ISO88859-1</ComboBoxItem>
@@ -24,8 +24,8 @@
         <TextBox Height="24" Margin="134,0,62,70" Name="textBoxTargetFile" VerticalAlignment="Bottom" />
         <Button Height="26.98" HorizontalAlignment="Right" Margin="0,0,13,104" Name="buttonSourceFileSelect" VerticalAlignment="Bottom" Width="43" Click="buttonSourceFileSelect_Click">...</Button>
         <Button Height="27" HorizontalAlignment="Right" Margin="0,0,13,71" Name="buttonTargetFileSelect" VerticalAlignment="Bottom" Width="43" Click="buttonTargetFileSelect_Click">...</Button>
-        <Label HorizontalAlignment="Left" Margin="17,0,0,192" Name="label6" Width="82" Height="27" VerticalAlignment="Bottom">Artist :</Label>
-        <TextBox Margin="134,0,0,187" Name="textBoxArtist" HorizontalAlignment="Left" Width="232" Height="28" VerticalAlignment="Bottom" />
+        <Label HorizontalAlignment="Left" Margin="17,226,0,0" Name="label6" Width="82" Height="27" VerticalAlignment="Top">Artist :</Label>
+        <TextBox Margin="134,225,0,0" Name="textBoxArtist" HorizontalAlignment="Left" Width="232" Height="28" VerticalAlignment="Top" />
         <Label Height="29" HorizontalAlignment="Left" Margin="17,12,0,0" Name="label8" VerticalAlignment="Top" Width="171">Frames :</Label>
         <Label Height="30" HorizontalAlignment="Right" Margin="0,12,200,0" Name="label9" VerticalAlignment="Top" Width="126">Tag Header :</Label>
         <CheckBox Height="19" HorizontalAlignment="Right" Margin="0,65,62,0" Name="checkBoxExperimentalIndicator" VerticalAlignment="Top" Width="253">Experimental Indicator</CheckBox>
@@ -36,7 +36,7 @@
         <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,189,0" Name="textBoxCRC1" VerticalAlignment="Top" Width="40" IsEnabled="False" />
         <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,143,0" Name="textBoxCRC2" VerticalAlignment="Top" Width="40" IsEnabled="False" />
         <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,97,0" Name="textBoxCRC3" VerticalAlignment="Top" Width="40" IsEnabled="False" />
-        <Label HorizontalAlignment="Right" Margin="0,212,198,202" Name="label10" Width="96">Padding Size :</Label>
-        <TextBox HorizontalAlignment="Right" Margin="0,212,155,205" Name="textBoxPadding" Width="52" />
+        <Label HorizontalAlignment="Right" Margin="0,212,198,0" Name="label10" Width="96" Height="26" VerticalAlignment="Top">Padding Size :</Label>
+        <TextBox HorizontalAlignment="Right" Margin="0,212,155,0" Name="textBoxPadding" Width="52" Height="26" VerticalAlignment="Top" />
     </Grid>
 </Window>

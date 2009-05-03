@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using ID3Tag;
 using ID3Tag.Factory;
 using ID3Tag.HighLevel;
@@ -38,9 +39,18 @@ namespace ID3TagUtility
                 var tagContainer = m_Controller.ReadTag(dialog.FileName);
                 var tagDescriptor = tagContainer.Tag;
 
-                // OK. Update the UI.
+                //
+                //  OK. Update the UI.
+                //
                 UpdateView(filename, tagDescriptor);
                 ShowTagFrames(tagContainer);
+
+                var frame = tagContainer.SearchFrame("APIC");
+                if (frame != null)
+                {
+                    var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
+                    ShowPicture(pictureFrame);
+                }
             }
         }
 
@@ -60,6 +70,31 @@ namespace ID3TagUtility
             return stringBuilder.ToString();
         }
 
+        private void ShowPicture(PictureFrame pictureFrame)
+        {
+            labelMimeType.Content = pictureFrame.MimeType;
+            labelTextEncoding.Content = pictureFrame.TextEncoding;
+            labelDescription.Content = pictureFrame.Description;
+            labelPictureType.Content = pictureFrame.PictureCoding;
+
+            var bytes = pictureFrame.PictureData;
+            try
+            {
+                Stream pictureStream = new MemoryStream(bytes);
+
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = pictureStream;
+                bitmap.EndInit();
+
+                imagePicture.Source = bitmap;
+            }
+            catch (Exception ex)
+            {
+                throw new ID3TagException("Cannot read the picture frame : " + ex.Message);
+            }
+        }
+
         private void UpdateView(string filename, TagDescriptor tagDescriptor)
         {
             //
@@ -71,7 +106,6 @@ namespace ID3TagUtility
             checkBoxExperimentalIndicator.IsChecked = tagDescriptor.ExperimentalIndicator;
             checkExtendedHeader.IsChecked = tagDescriptor.ExtendedHeader;
             checkBoxUnsync.IsChecked = tagDescriptor.Unsynchronisation;
-
             if (tagDescriptor.ExtendedHeader)
             {
                 labelPaddingDescriptor.IsEnabled = true;

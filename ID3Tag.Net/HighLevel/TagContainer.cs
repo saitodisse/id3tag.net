@@ -42,6 +42,24 @@ namespace ID3Tag.HighLevel
             }
         }
 
+        /// <summary>
+        /// Search for a specific frame.
+        /// </summary>
+        /// <param name="id">the ID of the frame.</param>
+        /// <returns>the frame instance if available otherwise null.</returns>
+        public IFrame SearchFrame(string id)
+        {
+            foreach (var frame in m_Frames)
+            {
+                if (id.Equals(frame.Descriptor.ID))
+                {
+                    return frame;
+                }
+            }
+
+            return null;
+        }
+
         #region ICollection<IFrame> Members
 
         /// <summary>
