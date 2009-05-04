@@ -4,7 +4,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using ID3Tag;
-using ID3Tag.Factory;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using Microsoft.Win32;
@@ -37,19 +36,22 @@ namespace ID3TagUtility
                 //  Read the tag here!
                 //
                 var tagContainer = m_Controller.ReadTag(dialog.FileName);
-                var tagDescriptor = tagContainer.Tag;
-
-                //
-                //  OK. Update the UI.
-                //
-                UpdateView(filename, tagDescriptor);
-                ShowTagFrames(tagContainer);
-
-                var frame = tagContainer.SearchFrame("APIC");
-                if (frame != null)
+                if (tagContainer != null)
                 {
-                    var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
-                    ShowPicture(pictureFrame);
+                    var tagDescriptor = tagContainer.Tag;
+
+                    //
+                    //  OK. Update the UI.
+                    //
+                    UpdateView(filename, tagDescriptor);
+                    ShowTagFrames(tagContainer);
+
+                    var frame = tagContainer.SearchFrame("APIC");
+                    if (frame != null)
+                    {
+                        var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
+                        ShowPicture(pictureFrame);
+                    }
                 }
             }
         }
@@ -166,9 +168,6 @@ namespace ID3TagUtility
 
                 m_Controller.WriteTag(tagController, data.SourceFile, data.TargetFile);
             }
-
         }
-
-
     }
 }

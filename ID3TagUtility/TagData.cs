@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ID3Tag.HighLevel;
+﻿using ID3Tag.HighLevel;
 
 namespace ID3TagUtility
 {
@@ -26,13 +22,13 @@ namespace ID3TagUtility
         public string SourceFile { get; set; }
         public string TargetFile { get; set; }
 
+        public bool PictureFrameEnabled { get; set; }
+        public string PictureFile { get; set; }
+
         // Some advertisement ;-)
         public string Encoder
         {
-            get
-            {
-                return "ID3TagLib.Net";
-            }
+            get { return "ID3TagLib.Net"; }
         }
     }
 }

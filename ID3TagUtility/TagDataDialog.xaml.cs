@@ -1,15 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using ID3Tag.HighLevel;
 using Microsoft.Win32;
 
@@ -20,8 +10,6 @@ namespace ID3TagUtility
     /// </summary>
     public partial class TagDataDialog : Window
     {
-        public TagData Data { get; private set; }
-
         public TagDataDialog()
         {
             InitializeComponent();
@@ -42,6 +30,8 @@ namespace ID3TagUtility
                            PaddingSize = 0
                        };
         }
+
+        public TagData Data { get; private set; }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -73,7 +63,9 @@ namespace ID3TagUtility
             Data.Comment = textBoxComments.Text;
             Data.SourceFile = textBoxSourceFile.Text;
             Data.TargetFile = textBoxTargetFile.Text;
+            Data.PictureFile = textBoxPicture.Text;
 
+            Data.PictureFrameEnabled = Convert.ToBoolean(checkBoxAddPicture.IsChecked);
             Data.ExperimentalIndicator = Convert.ToBoolean(checkBoxExperimentalIndicator.IsChecked);
             Data.Unsynchronisation = Convert.ToBoolean(checkBoxUnsync.IsChecked);
             Data.ExtendedHeader = Convert.ToBoolean(checkBoxExtendedHeader.IsChecked);
@@ -82,7 +74,7 @@ namespace ID3TagUtility
             {
                 Data.CrCPresent = Convert.ToBoolean(checkBoxCRCPresent.IsChecked);
                 Data.PaddingSize = Convert.ToInt32(textBoxPadding.Text);
-                
+
                 var crcBytes = GetCrc();
                 Data.Crc = crcBytes;
             }
@@ -127,6 +119,18 @@ namespace ID3TagUtility
         private byte[] GetCrc()
         {
             return new byte[] {0x20, 0x21, 0x22, 0x23};
+        }
+
+        private void buttonPicture_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            var result = dialog.ShowDialog(this);
+
+            if (result == true)
+            {
+                var filename = dialog.FileName;
+                textBoxPicture.Text = filename;
+            }
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using ID3Tag;
 using ID3Tag.Factory;
@@ -13,11 +10,6 @@ namespace ID3TagUtility
 {
     public class Id3TagController
     {
-        public Id3TagController()
-        {
-            
-        }
-
         /// <summary>
         /// Reads a tag from a file.
         /// </summary>
@@ -72,7 +64,7 @@ namespace ID3TagUtility
         /// <param name="sourceFile">the source file.</param>
         /// <param name="targetFile">the target file.</param>
         /// <remarks>the old tags will be removed.</remarks>
-        public void WriteTag(TagContainer tagController,string sourceFile, string targetFile)
+        public void WriteTag(TagContainer tagController, string sourceFile, string targetFile)
         {
             FileStream inputStream = null;
             FileStream outputStream = null;
@@ -142,7 +134,40 @@ namespace ID3TagUtility
             tagController.Add(textComment);
             tagController.Add(comment);
             tagController.Add(encoder);
+
+            if (data.PictureFrameEnabled)
+            {
+                if (File.Exists(data.PictureFile))
+                {
+                    WritePictureFrame(data, tagController);
+                }
+                else
+                {
+                    MessageBox.Show("Picture file not found.");
+                }
+            }
+
             return tagController;
+        }
+
+        private static void WritePictureFrame(TagData data, TagContainer container)
+        {
+            using (var stream = File.Open(data.PictureFile, FileMode.Open))
+            {
+                //
+                //  Read the picture.
+                //
+                var byteCount = Convert.ToInt32(stream.Length);
+                var pictureData = new byte[byteCount];
+                stream.Read(pictureData, 0, byteCount);
+
+                //
+                //  Add the picture frame.
+                //  
+                var pictureFrame = new PictureFrame(TextEncodingType.ISO_8859_1, "image/jpg", "Other", PictureType.Other,
+                                                    pictureData);
+                container.Add(pictureFrame);
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ID3TagUtility.TagDataDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Write new Tag..." Height="451" Width="796">
+    Title="Write new Tag..." Height="553" Width="773">
     <Grid Loaded="Grid_Loaded">
         <ComboBox Height="22" Margin="134,62,0,0" Name="comboBoxEncoding" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Left" Width="232">
             <ComboBoxItem>ISO88859-1</ComboBoxItem>
@@ -38,5 +38,9 @@
         <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,97,0" Name="textBoxCRC3" VerticalAlignment="Top" Width="40" IsEnabled="False" />
         <Label HorizontalAlignment="Right" Margin="0,212,198,0" Name="label10" Width="96" Height="26" VerticalAlignment="Top">Padding Size :</Label>
         <TextBox HorizontalAlignment="Right" Margin="0,212,155,0" Name="textBoxPadding" Width="52" Height="26" VerticalAlignment="Top" />
+        <Label Height="25" HorizontalAlignment="Left" Margin="17,0,0,146" Name="labelPictureDescr" VerticalAlignment="Bottom" Width="86">Picture ( jpg ):</Label>
+        <TextBox Height="27" Margin="134,0,62,146" Name="textBoxPicture" VerticalAlignment="Bottom" />
+        <Button Height="28.02" HorizontalAlignment="Right" Margin="0,0,13,146" Name="buttonPicture" VerticalAlignment="Bottom" Width="43" Click="buttonPicture_Click">...</Button>
+        <CheckBox Height="23" HorizontalAlignment="Left" Margin="134,0,0,179" Name="checkBoxAddPicture" VerticalAlignment="Bottom" Width="137">Add Picture Frame</CheckBox>
     </Grid>
 </Window>
