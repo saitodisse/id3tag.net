@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.Converter
+﻿namespace ID3Tag.HighLevel
 {
     internal class Id3V1Tag
     {

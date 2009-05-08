@@ -1,7 +1,6 @@
 ﻿using System.IO;
-using ID3Tag.HighLevel;
 
-namespace ID3Tag.Converter
+namespace ID3Tag.HighLevel
 {
     /// <summary>
     /// Converts the ID3v1 tags to ID3v2 tags.

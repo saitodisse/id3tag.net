@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 
-namespace ID3Tag.Converter
+namespace ID3Tag.HighLevel
 {
     internal class Id3V1Converter : IId3V1Converter
     {
