@@ -50,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileState.cs" />
-    <Compile Include="HighLevel\ID3V1Converter.cs" />
+    <Compile Include="HighLevel\ID3V1Controller.cs" />
     <Compile Include="HighLevel\ID3V1Tag.cs" />
-    <Compile Include="HighLevel\IID3V1Converter.cs" />
+    <Compile Include="HighLevel\IID3V1Controller.cs" />
     <Compile Include="HighLevel\Converter.cs" />
     <Compile Include="HighLevel\Frame.cs" />
     <Compile Include="HighLevel\FrameDescriptor.cs" />

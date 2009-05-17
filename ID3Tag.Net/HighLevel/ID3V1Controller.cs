@@ -6,16 +6,16 @@ using ID3Tag.HighLevel.ID3Frame;
 
 namespace ID3Tag.HighLevel
 {
-    internal class Id3V1Converter : IId3V1Converter
+    internal class Id3V1Controller : IId3V1Controller
     {
         private readonly Dictionary<int, string> m_GenreDict;
 
-        internal Id3V1Converter()
+        internal Id3V1Controller()
         {
             m_GenreDict = GetDictionary();
         }
 
-        #region IId3V1Converter Members
+        #region IId3V1Controller Members
 
         public Id3V1Tag Read(Stream inputStream)
         {

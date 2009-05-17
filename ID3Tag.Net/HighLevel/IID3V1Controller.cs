@@ -5,7 +5,7 @@ namespace ID3Tag.HighLevel
     /// <summary>
     /// Converts the ID3v1 tags to ID3v2 tags.
     /// </summary>
-    public interface IId3V1Converter
+    public interface IId3V1Controller
     {
         /// <summary>
         /// Converts ID3v1 tags to ID3v2.
