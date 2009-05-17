@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ID3Tag
 {
@@ -10,20 +7,21 @@ namespace ID3Tag
     /// </summary>
     public class FileState
     {
-        /// <summary>
-        /// True if a ID3V1 tag is found otherwise false.
-        /// </summary>
-        public bool Id3V1TagFound { get; internal set; }
-        /// <summary>
-        /// True if a ID3V2 tag is found otherwise false.
-        /// </summary>
-        public bool Id3V2TagFound { get; internal set; }
-
         internal FileState(bool id3V1TagFound, bool id3V2TagFound)
         {
             Id3V1TagFound = id3V1TagFound;
             Id3V2TagFound = id3V2TagFound;
         }
+
+        /// <summary>
+        /// True if a ID3V1 tag is found otherwise false.
+        /// </summary>
+        public bool Id3V1TagFound { get; internal set; }
+
+        /// <summary>
+        /// True if a ID3V2 tag is found otherwise false.
+        /// </summary>
+        public bool Id3V2TagFound { get; internal set; }
 
         /// <summary>
         /// Overwrites the ToString()

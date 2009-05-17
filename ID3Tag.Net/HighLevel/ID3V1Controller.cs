@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ID3Tag.HighLevel.ID3Frame;
 
 namespace ID3Tag.HighLevel
 {
@@ -194,7 +193,7 @@ namespace ID3Tag.HighLevel
             {
                 if (byteValue != 0)
                 {
-                    var vharValue = System.Convert.ToChar(byteValue);
+                    var vharValue = Convert.ToChar(byteValue);
                     sb.Append(vharValue);
                 }
             }

@@ -616,6 +616,5 @@ namespace ID3Tag.LowLevel
         }
 
         #endregion
-
     }
 }

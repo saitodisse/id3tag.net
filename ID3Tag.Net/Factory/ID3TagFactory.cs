@@ -30,7 +30,7 @@ namespace ID3Tag.Factory
         /// Creates a new ID3v1 converter.
         /// </summary>
         /// <returns>a new converter.</returns>
-        public static IId3V1Controller CreateId3V1Converter()
+        public static IId3V1Controller CreateId3V1Controller()
         {
             return new Id3V1Controller();
         }

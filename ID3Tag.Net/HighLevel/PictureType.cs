@@ -89,7 +89,5 @@
         /// Publisher logotype
         /// </summary>
         PublisherLogotype = 0x14
-
     }
-
 }

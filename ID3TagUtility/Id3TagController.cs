@@ -186,7 +186,7 @@ namespace ID3TagUtility
             try
             {
                 var file = new FileInfo(filename);
-                var id3Converter = Id3TagFactory.CreateId3V1Converter();
+                var id3Converter = Id3TagFactory.CreateId3V1Controller();
                 
                 container = id3Converter.Read(file);
             }

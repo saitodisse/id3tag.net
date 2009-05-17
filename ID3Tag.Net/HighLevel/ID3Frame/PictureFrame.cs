@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
 using System.Text;
 using ID3Tag.LowLevel;
 
@@ -21,11 +19,11 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// </summary>
     public class PictureFrame : Frame
     {
-
         /// <summary>
         /// Creates a new instance of PictureFrame.
         /// </summary>
-        public PictureFrame() : this(TextEncodingType.ISO_8859_1,String.Empty,String.Empty,PictureType.Other,new byte[0])
+        public PictureFrame()
+            : this(TextEncodingType.ISO_8859_1, String.Empty, String.Empty, PictureType.Other, new byte[0])
         {
         }
 
@@ -37,7 +35,8 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <param name="description">the description</param>
         /// <param name="picture">the picture type</param>
         /// <param name="data">the picture bytes</param>
-        public PictureFrame(TextEncodingType encoding, string mimeType, string description, PictureType picture, byte[] data)
+        public PictureFrame(TextEncodingType encoding, string mimeType, string description, PictureType picture,
+                            byte[] data)
         {
             TextEncoding = encoding;
             MimeType = mimeType;
@@ -71,6 +70,11 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// </summary>
         public byte[] PictureData { get; set; }
 
+        public override FrameType Type
+        {
+            get { return FrameType.Picture; }
+        }
+
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
@@ -88,7 +92,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             bytes.AddRange(descriptionBytes);
 
             var length = Converter.GetTerminationCharLength(TextEncoding);
-            for (var i = 0; i < length; i++ )
+            for (var i = 0; i < length; i++)
             {
                 bytes.Add(0x00);
             }
@@ -122,7 +126,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             //  Get the TextEncoding.
             //
             var encodingByte = payload[0];
-            TextEncoding = (TextEncodingType)encodingByte;
+            TextEncoding = (TextEncodingType) encodingByte;
 
             //
             //  Get the Mime.
@@ -152,7 +156,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             //
             //  Get the description
             //
-            curPos+=2;
+            curPos += 2;
             var descriptionBytes = new List<byte>();
             var increment = Converter.GetTerminationCharLength(TextEncoding);
             for (; curPos < payload.Length; curPos += increment)
@@ -178,13 +182,8 @@ namespace ID3Tag.HighLevel.ID3Frame
             var pictureDataLength = payload.Length - curPos;
             var pictureDataBytes = new byte[pictureDataLength];
 
-            Array.Copy(payload,curPos,pictureDataBytes,0,pictureDataLength);
+            Array.Copy(payload, curPos, pictureDataBytes, 0, pictureDataLength);
             PictureData = pictureDataBytes;
-        }
-
-        public override FrameType Type
-        {
-            get { return FrameType.Picture; }
         }
 
         /// <summary>
