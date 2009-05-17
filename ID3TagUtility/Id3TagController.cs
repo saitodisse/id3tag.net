@@ -105,6 +105,35 @@ namespace ID3TagUtility
             }
         }
 
+        public FileState ReadTagStatus(string filename)
+        {
+            //
+            //  Create the controller from the factory.
+            //
+
+            var file = new FileInfo(filename);
+            var ioController = Id3TagFactory.CreateIoController();
+            FileState state = null;
+            try
+            {
+                state= ioController.DetermineTagStatus(file);
+            }
+            catch (ID3IOException ioException)
+            {
+                MessageBox.Show("IO Exception caught : " + ioException.Message);
+            }
+            catch (ID3TagException tagException)
+            {
+                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unknown exception caught : " + ex.Message);
+            }
+
+            return state;
+        }
+
         public TagContainer BuildTag(TagData data)
         {
             var tagController = new TagContainer();
@@ -148,6 +177,33 @@ namespace ID3TagUtility
             }
 
             return tagController;
+        }
+
+        public Id3V1Tag ReadId3V1Tag(string filename)
+        {
+            Id3V1Tag container = null;
+
+            try
+            {
+                var file = new FileInfo(filename);
+                var id3Converter = Id3TagFactory.CreateId3V1Converter();
+                
+                container = id3Converter.Read(file);
+            }
+            catch (ID3IOException ioException)
+            {
+                MessageBox.Show("IO Exception caught : " + ioException.Message);
+            }
+            catch (ID3TagException tagException)
+            {
+                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unknown exception caught : " + ex.Message);
+            }
+
+            return container;
         }
 
         private static void WritePictureFrame(TagData data, TagContainer container)

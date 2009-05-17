@@ -31,27 +31,50 @@ namespace ID3TagUtility
             if (ok == true)
             {
                 var filename = dialog.FileName;
+                var state = m_Controller.ReadTagStatus(filename);
 
-                //
-                //  Read the tag here!
-                //
-                var tagContainer = m_Controller.ReadTag(dialog.FileName);
-                if (tagContainer != null)
+                checkBoxID3V1.IsChecked= state.Id3V1TagFound;
+                checkBoxID3V2.IsChecked = state.Id3V2TagFound;
+
+                if (state.Id3V2TagFound)
                 {
-                    var tagDescriptor = tagContainer.Tag;
-
                     //
-                    //  OK. Update the UI.
+                    //  Read the tag here!
                     //
-                    UpdateView(filename, tagDescriptor);
-                    ShowTagFrames(tagContainer);
-
-                    var frame = tagContainer.SearchFrame("APIC");
-                    if (frame != null)
+                    var tagContainer = m_Controller.ReadTag(dialog.FileName);
+                    if (tagContainer != null)
                     {
-                        var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
-                        ShowPicture(pictureFrame);
+                        var tagDescriptor = tagContainer.Tag;
+
+                        //
+                        //  OK. Update the UI.
+                        //
+                        UpdateID3v2View(filename, tagDescriptor);
+                        ShowTagFrames(tagContainer);
+
+                        var frame = tagContainer.SearchFrame("APIC");
+                        if (frame != null)
+                        {
+                            var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
+                            ShowPicture(pictureFrame);
+                        }
                     }
+                }
+
+                if (state.Id3V1TagFound)
+                {
+                    //
+                    //  Read the ID3V1 Tag.
+                    //
+                    var tag = m_Controller.ReadId3V1Tag(dialog.FileName);
+
+                    labelTitle.Content = tag.Title;
+                    labelArtist.Content = tag.Artist;
+                    labelAlbum.Content = tag.Album;
+                    labelYear.Content = tag.Year;
+                    labelComment.Content = tag.Comment;
+                    labelGenre.Content = tag.Genre;
+                    labelTrackNr.Content = tag.TrackNr;
                 }
             }
         }
@@ -97,7 +120,7 @@ namespace ID3TagUtility
             }
         }
 
-        private void UpdateView(string filename, TagDescriptor tagDescriptor)
+        private void UpdateID3v2View(string filename, TagDescriptor tagDescriptor)
         {
             //
             //  Decode the header of the tag.

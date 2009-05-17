@@ -17,7 +17,7 @@ namespace ID3Tag.HighLevel
 
         #region IId3V1Converter Members
 
-        public TagContainer Convert(Stream inputStream)
+        public Id3V1Tag Read(Stream inputStream)
         {
             if (!inputStream.CanSeek)
             {
@@ -38,46 +38,49 @@ namespace ID3Tag.HighLevel
             }
 
             var v1Tag = ExtractTag(tagBytes);
-            var tagContainer = new TagContainer();
+            return v1Tag;
 
-            var titleFrame = CreateTextFrame(v1Tag.Title, "TIT2");
-            var artistFrame = CreateTextFrame(v1Tag.Artist, "TPE2");
-            var albumFrame = CreateTextFrame(v1Tag.Album, "TALB");
-            var yearFrame = CreateTextFrame(v1Tag.Year, "TYER");
-            var genreFrame = CreateTextFrame(v1Tag.Genre, "TCON");
+            // ----- OLD ----------------
+            //var tagContainer = new TagContainer();
 
-            tagContainer.Add(titleFrame);
-            tagContainer.Add(artistFrame);
-            tagContainer.Add(albumFrame);
-            tagContainer.Add(yearFrame);
-            tagContainer.Add(genreFrame);
+            //var titleFrame = CreateTextFrame(v1Tag.Title, "TIT2");
+            //var artistFrame = CreateTextFrame(v1Tag.Artist, "TPE2");
+            //var albumFrame = CreateTextFrame(v1Tag.Album, "TALB");
+            //var yearFrame = CreateTextFrame(v1Tag.Year, "TYER");
+            //var genreFrame = CreateTextFrame(v1Tag.Genre, "TCON");
 
-            if (v1Tag.Comment.Length > 0)
-            {
-                var descrValue = "Comment";
-                var commentValue = v1Tag.Comment;
-                var commentFrame = new UserDefinedTextFrame
-                                       {
-                                           TextEncoding = TextEncodingType.ISO_8859_1,
-                                           Description = descrValue,
-                                           Value = commentValue,
-                                           Descriptor = {ID = "TXXX"}
-                                       };
-                tagContainer.Add(commentFrame);
-            }
+            //tagContainer.Add(titleFrame);
+            //tagContainer.Add(artistFrame);
+            //tagContainer.Add(albumFrame);
+            //tagContainer.Add(yearFrame);
+            //tagContainer.Add(genreFrame);
 
-            // Add the track if the tag supports version 1.1
-            var id3v1_1compliant = v1Tag.IsID3V1_1Compliant;
-            if (id3v1_1compliant)
-            {
-                var trackNr = CreateTextFrame(v1Tag.TrackNr, "TRCK");
-                tagContainer.Add(trackNr);
-            }
+            //if (v1Tag.Comment.Length > 0)
+            //{
+            //    var descrValue = "Comment";
+            //    var commentValue = v1Tag.Comment;
+            //    var commentFrame = new UserDefinedTextFrame
+            //                           {
+            //                               TextEncoding = TextEncodingType.ISO_8859_1,
+            //                               Description = descrValue,
+            //                               Value = commentValue,
+            //                               Descriptor = {ID = "TXXX"}
+            //                           };
+            //    tagContainer.Add(commentFrame);
+            //}
 
-            return tagContainer;
+            //// Add the track if the tag supports version 1.1
+            //var id3v1_1compliant = v1Tag.IsID3V1_1Compliant;
+            //if (id3v1_1compliant)
+            //{
+            //    var trackNr = CreateTextFrame(v1Tag.TrackNr, "TRCK");
+            //    tagContainer.Add(trackNr);
+            //}
+
+            //return tagContainer;
         }
 
-        public TagContainer Convert(FileInfo file)
+        public Id3V1Tag Read(FileInfo file)
         {
             var fileExists = file.Exists;
             if (!fileExists)
@@ -86,11 +89,11 @@ namespace ID3Tag.HighLevel
             }
 
             FileStream fs = null;
-            TagContainer info;
+            Id3V1Tag info;
             try
             {
                 fs = File.Open(file.FullName, FileMode.Open);
-                info = Convert(fs);
+                info = Read(fs);
             }
             catch (ID3TagException)
             {
@@ -115,17 +118,17 @@ namespace ID3Tag.HighLevel
 
         #region Private helper
 
-        private static TextFrame CreateTextFrame(string content, string frameID)
-        {
-            var frame = new TextFrame
-                            {
-                                TextEncoding = TextEncodingType.ISO_8859_1,
-                                Content = content,
-                                Descriptor = {ID = frameID}
-                            };
+        //private static TextFrame CreateTextFrame(string content, string frameID)
+        //{
+        //    var frame = new TextFrame
+        //                    {
+        //                        TextEncoding = TextEncodingType.ISO_8859_1,
+        //                        Content = content,
+        //                        Descriptor = {ID = frameID}
+        //                    };
 
-            return frame;
-        }
+        //    return frame;
+        //}
 
         private Id3V1Tag ExtractTag(byte[] tagBytes)
         {

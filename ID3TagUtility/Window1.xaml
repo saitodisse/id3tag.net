@@ -28,7 +28,7 @@
             <Label Height="25" HorizontalAlignment="Left" Margin="6,39,0,0" Name="label2" VerticalAlignment="Top" Width="109">ID3Tag Version :</Label>
             <Label Height="27" HorizontalAlignment="Left" Margin="121,37,0,0" Name="labelTagVersion" VerticalAlignment="Top" Width="125" BorderBrush="Black" BorderThickness="0">ID3v2.?.?</Label>
             <Label Height="24" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label3" VerticalAlignment="Top" Width="65">Filename :</Label>
-            <Label Height="27" Margin="121,6,6,0" Name="labelFilename" VerticalAlignment="Top">No file</Label>
+            <Label Height="27" Margin="121,6,235,0" Name="labelFilename" VerticalAlignment="Top">No file</Label>
             <CheckBox Height="21" HorizontalAlignment="Left" Margin="6,78,0,0" Name="checkBoxExperimentalIndicator" VerticalAlignment="Top" Width="180">Experimental Indicator</CheckBox>
             <CheckBox Height="23" HorizontalAlignment="Left" Margin="6,96,0,0" Name="checkExtendedHeader" VerticalAlignment="Top" Width="183">Extended Header supported</CheckBox>
             <CheckBox Height="17" HorizontalAlignment="Left" Margin="6,115,0,0" Name="checkBoxUnsync" VerticalAlignment="Top" Width="180">Unsynchronisation</CheckBox>
@@ -37,10 +37,10 @@
             <Label Height="31" HorizontalAlignment="Left" Margin="234,110,0,0" Name="labelPaddingDescriptor" VerticalAlignment="Top" Width="66">Padding :</Label>
             <Label Height="28" Margin="315,108,15,0" Name="labelPaddingSize" VerticalAlignment="Top"></Label>
             <TabControl Margin="6,159,6,6" Name="tabControl1">
-                <TabItem Header="Frames" Name="tabItemFrames">
+                <TabItem Header="ID3v.2 Frames" Name="tabItemFrames">
                     <ListView Name="listView1Tags"  />
                 </TabItem>
-                <TabItem Header="Picture" Name="tabItemPictures">
+                <TabItem Header="ID3v.2 Picture" Name="tabItemPictures">
                     <Grid>
                         <Label Height="27" HorizontalAlignment="Left" Margin="6,38,0,0" Name="label1" VerticalAlignment="Top" Width="98">Encoding Type :</Label>
                         <Label Height="27" Margin="110,37,0,0" Name="labelTextEncoding" VerticalAlignment="Top" HorizontalAlignment="Left" Width="224" BorderThickness="0">...</Label>
@@ -53,7 +53,27 @@
                         <Image Margin="344,7,6,10" Name="imagePicture" Stretch="Fill" />
                     </Grid>
                 </TabItem>
+                <TabItem Header="ID3v.1" Name="tabId3v1">
+                    <Grid>
+                        <Label Height="25" HorizontalAlignment="Left" Margin="11,15,0,0" Name="label6" VerticalAlignment="Top" Width="103">Title :</Label>
+                        <Label Height="26" HorizontalAlignment="Left" Margin="11,46,0,0" Name="label7" VerticalAlignment="Top" Width="93">Artist :</Label>
+                        <Label Height="27" HorizontalAlignment="Left" Margin="11,78,0,0" Name="label8" VerticalAlignment="Top" Width="82">Album :</Label>
+                        <Label HorizontalAlignment="Left" Margin="11,111,0,124" Name="label9" Width="93">Year :</Label>
+                        <Label HorizontalAlignment="Left" Margin="11,148.08,0,86" Name="label10" Width="82">Comment :</Label>
+                        <Label HorizontalAlignment="Left" Margin="11,186.08,0,49" Name="label11" Width="82">Genre :</Label>
+                        <Label Height="29" HorizontalAlignment="Left" Margin="11,223.08,0,0" Name="label12" VerticalAlignment="Top" Width="93">Track Nr :</Label>
+                        <Label Height="26" Margin="120,14,197,0" Name="labelTitle" VerticalAlignment="Top">...</Label>
+                        <Label Height="25" Margin="120,47,224,0" Name="labelArtist" VerticalAlignment="Top">....</Label>
+                        <Label Height="26" Margin="120,79,83,0" Name="labelAlbum" VerticalAlignment="Top">...</Label>
+                        <Label Margin="120,111,534,0" Name="labelYear" Height="23.08" VerticalAlignment="Top">....</Label>
+                        <Label Margin="122,148.08,136,0" Name="labelComment" Height="24" VerticalAlignment="Top">...</Label>
+                        <Label Margin="120,186.08,197,0" Name="labelGenre" Height="27" VerticalAlignment="Top">...</Label>
+                        <Label Margin="122,219.08,516,0" Name="labelTrackNr" Height="33" VerticalAlignment="Top">...</Label>
+                    </Grid>
+                </TabItem>
             </TabControl>
+            <CheckBox Height="23" HorizontalAlignment="Right" Margin="0,11,73,0" Name="checkBoxID3V1" VerticalAlignment="Top" Width="141">ID3 V1 Tag found</CheckBox>
+            <CheckBox Height="25" HorizontalAlignment="Right" Margin="0,40,73,0" Name="checkBoxID3V2" VerticalAlignment="Top" Width="141">ID3 V2 Tag found</CheckBox>
         </Grid>
     </DockPanel>
 </Window>

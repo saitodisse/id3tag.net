@@ -149,7 +149,89 @@ namespace ID3Tag.LowLevel
             WriteToStream(input, output, tagBytes);
         }
 
+        public FileState DetermineTagStatus(Stream audioStream)
+        {
+            if (audioStream == null)
+            {
+                throw new ArgumentNullException("audioStream");
+            }
+
+            if (!audioStream.CanRead)
+            {
+                throw new ID3IOException("Cannot read data stream.");
+            }
+
+            if (!audioStream.CanSeek)
+            {
+                throw new ID3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+            }
+
+            var id3V1Found = false;
+            var id3V2Found = false;
+            //
+            // Search for ID3v2 tags
+            //
+            using (var reader = new BinaryReader(audioStream))
+            {
+                //
+                // Search for ID3v2 tags
+                //
+                var headerBytes = new byte[3];
+                reader.Read(headerBytes, 0, headerBytes.Length);
+
+                id3V2Found = (headerBytes[0] == 0x49) && (headerBytes[1] == 0x44) && (headerBytes[2] == 0x33);
+
+                //
+                // Search for ID3v1 tags
+                //
+                var tagBytes = new byte[3];
+                audioStream.Seek(-128, SeekOrigin.End);
+                audioStream.Read(tagBytes, 0, tagBytes.Length);
+
+                id3V1Found = (tagBytes[0] == 0x54) && (tagBytes[1] == 0x41) && (tagBytes[2] == 0x47);
+            }
+
+            return new FileState(id3V1Found, id3V2Found);
+        }
+
+        public FileState DetermineTagStatus(FileInfo file)
+        {
+            var fileExists = file.Exists;
+            if (!fileExists)
+            {
+                throw new FileNotFoundException("File " + file.FullName + " not found!.");
+            }
+
+            FileStream fs = null;
+            FileState state;
+            try
+            {
+                fs = File.Open(file.FullName, FileMode.Open);
+                state = DetermineTagStatus(fs);
+            }
+            catch (ID3TagException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ID3TagException("Unknown Exception during reading.", ex);
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                    fs.Dispose();
+                }
+            }
+
+            return state;
+        }
+
         #endregion
+
+        #region Private Helper
 
         private static void WriteToStream(Stream input, Stream output, byte[] tagBytes)
         {
@@ -272,8 +354,6 @@ namespace ID3Tag.LowLevel
             }
             return tagHeader;
         }
-
-        #region Private Helper
 
         private static byte[] BuildTag(byte[] tagHeader, byte[] extendedHeaderBytes, byte[] frameBytes, int padding)
         {
@@ -536,5 +616,6 @@ namespace ID3Tag.LowLevel
         }
 
         #endregion
+
     }
 }

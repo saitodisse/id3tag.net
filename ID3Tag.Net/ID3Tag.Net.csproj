@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileState.cs" />
     <Compile Include="HighLevel\ID3V1Converter.cs" />
     <Compile Include="HighLevel\ID3V1Tag.cs" />
     <Compile Include="HighLevel\IID3V1Converter.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="HighLevel\ID3Frame\UserDefinedTextFrame.cs" />
     <Compile Include="ID3HeaderNotFoundException.cs" />
     <Compile Include="ID3IOException.cs" />
-    <Compile Include="ApplicationLevel\Id3Tag.cs" />
     <Compile Include="InvalidTagFormatException.cs" />
     <Compile Include="LowLevel\ExtendedTagHeader.cs" />
     <Compile Include="Factory\ID3TagFactory.cs" />

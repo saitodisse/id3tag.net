@@ -29,5 +29,19 @@ namespace ID3Tag.LowLevel
         /// <param name="input">the input stream (i.e. audio file)</param>
         /// <param name="output">the output stream (temp. file)</param>
         void Write(TagContainer tagContainer, Stream input, Stream output);
+
+        /// <summary>
+        /// Determine the ID3Tag status.
+        /// </summary>
+        /// <param name="audioStream">the audio stream.</param>
+        /// <returns>the ID3Tag state</returns>
+        FileState DetermineTagStatus(Stream audioStream);
+
+        /// <summary>
+        /// Determine the ID3Tag status.
+        /// </summary>
+        /// <param name="file">the file.</param>
+        /// <returns>the ID3Tag state</returns>
+        FileState DetermineTagStatus(FileInfo file);
     }
 }
