@@ -1,7 +1,7 @@
 ﻿using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel
+namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class UnknownFrameTest

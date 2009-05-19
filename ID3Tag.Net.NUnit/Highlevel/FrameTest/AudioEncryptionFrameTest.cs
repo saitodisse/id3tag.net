@@ -7,7 +7,7 @@ using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel
+namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class AudioEncryptionFrameTest : Test
@@ -58,9 +58,9 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.IsTrue(ComparePayload(bytes, frame.Encryption));
 
             var refBytes = new byte[]
-               {
-                   0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
-               };
+                               {
+                                   0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
+                               };
 
             var rawFrame = frame.Convert();
 
@@ -72,10 +72,10 @@ namespace ID3Tag.Net.NUnit.Highlevel
         public void ImportTest()
         {
             var refBytes = new byte[]
-               {
-                   0x41, 0x45, 0x4E, 0x43, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00,
-                   0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
-               };
+                               {
+                                   0x41, 0x45, 0x4E, 0x43, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00,
+                                   0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
+                               };
 
             var completeTag = GetCompleteTag(refBytes);
             Read(completeTag);

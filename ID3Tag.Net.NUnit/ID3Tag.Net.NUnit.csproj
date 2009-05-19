@@ -49,19 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converter\ConvertTest.cs" />
-    <Compile Include="Highlevel\AudioEncryptionFrameTest.cs" />
-    <Compile Include="Highlevel\CommentFrameTest.cs" />
-    <Compile Include="Highlevel\MusicCDIdentifierTest.cs" />
-    <Compile Include="Highlevel\PictureFrameTest.cs" />
-    <Compile Include="Highlevel\PrivateFrameText.cs" />
+    <Compile Include="Highlevel\FrameTest\AudioEncryptionFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\CommentFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\MusicCDIdentifierTest.cs" />
+    <Compile Include="Highlevel\FrameTest\PictureFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\PrivateFrameText.cs" />
     <Compile Include="Highlevel\TagDecoderTest.cs" />
     <Compile Include="Highlevel\TagEncoderTest.cs" />
-    <Compile Include="Highlevel\TextFrameTest.cs" />
-    <Compile Include="Highlevel\UnknownFrameTest.cs" />
-    <Compile Include="Highlevel\URLLinkFrameTest.cs" />
-    <Compile Include="Highlevel\UserDefinedTextFrameTest.cs" />
-    <Compile Include="Highlevel\UserDefinedUrlLinkFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\TextFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\UnknownFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\URLLinkFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\UserDefinedTextFrameTest.cs" />
+    <Compile Include="Highlevel\FrameTest\UserDefinedUrlLinkFrameTest.cs" />
     <Compile Include="Lowlevel\ExtendedHeaderTest.cs" />
     <Compile Include="Lowlevel\FramesTest.cs" />
     <Compile Include="Lowlevel\HeaderTest.cs" />
