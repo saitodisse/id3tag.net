@@ -38,45 +38,6 @@ namespace ID3Tag.HighLevel
 
             var v1Tag = ExtractTag(tagBytes);
             return v1Tag;
-
-            // ----- OLD ----------------
-            //var tagContainer = new TagContainer();
-
-            //var titleFrame = CreateTextFrame(v1Tag.Title, "TIT2");
-            //var artistFrame = CreateTextFrame(v1Tag.Artist, "TPE2");
-            //var albumFrame = CreateTextFrame(v1Tag.Album, "TALB");
-            //var yearFrame = CreateTextFrame(v1Tag.Year, "TYER");
-            //var genreFrame = CreateTextFrame(v1Tag.Genre, "TCON");
-
-            //tagContainer.Add(titleFrame);
-            //tagContainer.Add(artistFrame);
-            //tagContainer.Add(albumFrame);
-            //tagContainer.Add(yearFrame);
-            //tagContainer.Add(genreFrame);
-
-            //if (v1Tag.Comment.Length > 0)
-            //{
-            //    var descrValue = "Comment";
-            //    var commentValue = v1Tag.Comment;
-            //    var commentFrame = new UserDefinedTextFrame
-            //                           {
-            //                               TextEncoding = TextEncodingType.ISO_8859_1,
-            //                               Description = descrValue,
-            //                               Value = commentValue,
-            //                               Descriptor = {ID = "TXXX"}
-            //                           };
-            //    tagContainer.Add(commentFrame);
-            //}
-
-            //// Add the track if the tag supports version 1.1
-            //var id3v1_1compliant = v1Tag.IsID3V1_1Compliant;
-            //if (id3v1_1compliant)
-            //{
-            //    var trackNr = CreateTextFrame(v1Tag.TrackNr, "TRCK");
-            //    tagContainer.Add(trackNr);
-            //}
-
-            //return tagContainer;
         }
 
         public Id3V1Tag Read(FileInfo file)
@@ -117,18 +78,6 @@ namespace ID3Tag.HighLevel
 
         #region Private helper
 
-        //private static TextFrame CreateTextFrame(string content, string frameID)
-        //{
-        //    var frame = new TextFrame
-        //                    {
-        //                        TextEncoding = TextEncodingType.ISO_8859_1,
-        //                        Content = content,
-        //                        Descriptor = {ID = frameID}
-        //                    };
-
-        //    return frame;
-        //}
-
         private Id3V1Tag ExtractTag(byte[] tagBytes)
         {
             // Read the tag
@@ -150,7 +99,6 @@ namespace ID3Tag.HighLevel
             var artits = GetString(artistBytes);
             var album = GetString(albumBytes);
             var year = GetString(yearBytes);
-            var comment = GetString(commentBytes);
             string genre;
 
             if (m_GenreDict.ContainsKey(genreByte))
@@ -165,9 +113,20 @@ namespace ID3Tag.HighLevel
 
             var id3v1_1Support = ((commentBytes[28] == 0) && (commentBytes[29] != 0));
             var trackNr = String.Empty;
+            var comment = String.Empty;
+
             if (id3v1_1Support)
             {
-                trackNr = commentBytes[29].ToString();
+                trackNr = Convert.ToChar(commentBytes[29]).ToString();
+
+                var newComments = new byte[28];
+                Array.Copy(commentBytes,0,newComments,0,newComments.Length);
+
+                comment = GetString(newComments);
+            }
+            else
+            {
+                comment = GetString(commentBytes);
             }
 
             var id3v1 = new Id3V1Tag
