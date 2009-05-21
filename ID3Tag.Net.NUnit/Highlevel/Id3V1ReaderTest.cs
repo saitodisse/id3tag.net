@@ -11,6 +11,25 @@ namespace ID3Tag.Net.NUnit.Highlevel
     [TestFixture]
     public class Id3V1ReaderTest
     {
+        [Test]
+        [ExpectedException(typeof(ID3IOException))]
+        public void IgnoreTooShortStream()
+        {
+            // The ID3Tag contains of 128 Bytes. This is not
+            // a valid tag. ( 127 bytes)
+
+            var audioStream = new List<byte>();
+            audioStream.AddRange(new byte[] { 0x54, 0x41, 0x47 });
+            audioStream.AddRange(CreateField(124,0x35));
+
+            var bytes = audioStream.ToArray();
+
+            using (var stream = new MemoryStream(bytes))
+            {
+                var id3Controller = Id3TagFactory.CreateId3V1Controller();
+                var tag = id3Controller.Read(stream);
+            }
+        }
 
         [Test]
         [ExpectedException(typeof(ID3HeaderNotFoundException))]

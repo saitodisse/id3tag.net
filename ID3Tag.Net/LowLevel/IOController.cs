@@ -166,6 +166,11 @@ namespace ID3Tag.LowLevel
                 throw new ID3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
             }
 
+            if (audioStream.Length < 128)
+            {
+                throw new ID3IOException("Cannot read ID3v1 tag because the stream is too short");
+            }
+
             var id3V1Found = false;
             var id3V2Found = false;
             //

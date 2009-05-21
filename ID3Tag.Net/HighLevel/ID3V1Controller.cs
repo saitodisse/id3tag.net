@@ -23,6 +23,11 @@ namespace ID3Tag.HighLevel
                 throw new ID3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
             }
 
+            if (inputStream.Length < 128)
+            {
+                throw new ID3IOException("Cannot read ID3v1 tag because the stream is too short");
+            }
+
             //
             //  Read the last 128 Bytes from the stream (ID3v1 Position)
             //
