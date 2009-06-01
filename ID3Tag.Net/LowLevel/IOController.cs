@@ -256,25 +256,8 @@ namespace ID3Tag.LowLevel
                     // No Tag available. Write the already read bytes.
                     output.Write(bytes, 0, bytes.Length);
                 }
-
-                var buffer = new byte[64000];
-                while (input.Position < input.Length)
-                {
-                    var diff = input.Length - input.Position;
-                    if (diff < buffer.Length)
-                    {
-                        // Read the rest.
-                        var count = Convert.ToInt32(diff);
-                        input.Read(buffer, 0, count);
-                        output.Write(buffer, 0, count);
-                    }
-                    else
-                    {
-                        // Read the next 64K Byte buffer.
-                        input.Read(buffer, 0, buffer.Length);
-                        output.Write(buffer, 0, buffer.Length);
-                    }
-                }
+                var length = input.Length;
+                Utils.WriteAudioStream(output, input, length);
             }
             catch (Exception ex)
             {

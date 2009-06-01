@@ -54,7 +54,7 @@
     <Compile Include="Highlevel\FrameTest\MusicCDIdentifierTest.cs" />
     <Compile Include="Highlevel\FrameTest\PictureFrameTest.cs" />
     <Compile Include="Highlevel\FrameTest\PrivateFrameText.cs" />
-    <Compile Include="Highlevel\Id3V1ReaderTest.cs" />
+    <Compile Include="Highlevel\Id3V1Test.cs" />
     <Compile Include="Highlevel\TagDecoderTest.cs" />
     <Compile Include="Highlevel\TagEncoderTest.cs" />
     <Compile Include="Highlevel\FrameTest\TextFrameTest.cs" />

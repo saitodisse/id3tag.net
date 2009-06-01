@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 
 namespace ID3Tag
@@ -132,6 +133,28 @@ namespace ID3Tag
             }
 
             return sb.ToString();
+        }
+
+        internal static void WriteAudioStream(Stream output, Stream input, long length)
+        {
+            var buffer = new byte[64000];
+            while (input.Position < length)
+            {
+                var diff = length - input.Position;
+                if (diff < buffer.Length)
+                {
+                    // Read the rest.
+                    var count = Convert.ToInt32(diff);
+                    input.Read(buffer, 0, count);
+                    output.Write(buffer, 0, count);
+                }
+                else
+                {
+                    // Read the next 64K Byte buffer.
+                    input.Read(buffer, 0, buffer.Length);
+                    output.Write(buffer, 0, buffer.Length);
+                }
+            }
         }
     }
 }

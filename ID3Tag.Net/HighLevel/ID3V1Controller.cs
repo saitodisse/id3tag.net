@@ -79,9 +79,161 @@ namespace ID3Tag.HighLevel
             return info;
         }
 
+        public void Write(Id3V1Tag tag, Stream input, Stream output)
+        {
+            //
+            //  Validate the parameter.
+            //
+            if (tag == null)
+            {
+                throw new ArgumentNullException("tag");
+            }
+
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            if (output == null)
+            {
+                throw new ArgumentNullException("output");
+            }
+
+            if (!input.CanSeek)
+            {
+                throw new ID3TagException("Cannot write ID3V1 tag because the source does not support seek.");
+            }
+
+            if (!output.CanWrite)
+            {
+                throw new ID3TagException("Cannot write ID3V1 tag because the output does not support writing.");
+            }
+
+            try
+            {
+                //
+                //  Read the last 128 Bytes from the stream (ID3v1 Position)
+                //
+                var audioBytesCount = GetAudioBytesCount(input);
+
+                //
+                //  Write the audio data and tag
+                //
+                input.Seek(0, SeekOrigin.Begin);
+                Utils.WriteAudioStream(output, input, audioBytesCount);
+
+                var tagBytes = ConvertToByte(tag);
+                output.Write(tagBytes, 0, tagBytes.Length - 1);
+            }
+            catch (Exception ex)
+            {
+                throw new ID3IOException("Cannot write ID3v1 tag", ex);
+            }
+
+        }
+
         #endregion
 
         #region Private helper
+
+        private static long GetAudioBytesCount(Stream input)
+        {
+            var tagBytes = new byte[128];
+            long audioBytesCount;
+
+            if (input.Length > 127)
+            {
+                input.Seek(-128, SeekOrigin.End);
+                input.Read(tagBytes, 0, 128);
+
+                var id3TagFound = CheckID(tagBytes);
+                if (id3TagFound)
+                {
+                    // Ignore the ID3Tag from the source
+                    audioBytesCount = input.Length - 128;
+                }
+                else
+                {
+                    audioBytesCount = input.Length;
+                }
+            }
+            else
+            {
+                audioBytesCount = input.Length;
+            }
+
+            return audioBytesCount;
+        }
+
+        private byte[] ConvertToByte(Id3V1Tag tag)
+        {
+            var tagBytes = new byte[128];
+            // Write the tag ID ( TAG)
+            tagBytes[0] = 0x54;
+            tagBytes[1] = 0x41;
+            tagBytes[2] = 0x47;
+
+            // Write the fields...
+            var titleBytes = GetField(tag.Title,30);
+            var artistBytes = GetField(tag.Artist, 30);
+            var albumBytes = GetField(tag.Album, 30);
+            var year = GetField(tag.Year, 4);
+
+            Array.Copy(titleBytes, 0, tagBytes, 3, 30);
+            Array.Copy(artistBytes,0,tagBytes,34,30);
+            Array.Copy(albumBytes,0,tagBytes,64,30);
+            Array.Copy(year,0,tagBytes,94,4);
+            
+            byte[] commentBytes;
+            if (tag.IsID3V1_1Compliant)
+            {
+                commentBytes = GetField(tag.Comment, 28);
+                var trackNr = tag.TrackNr;
+
+                commentBytes[29] = 0x00;
+                commentBytes[30] = Convert.ToByte(trackNr);
+            }
+            else
+            {
+                commentBytes = GetField(tag.Comment, 30);
+                Array.Copy(commentBytes,0,tagBytes,98,30);
+            }
+
+            // Add genre
+
+            //TODO: Der Genre wird als String abgespeichert.. Das ist doof, weil ich den als Byte konvertieren muss.
+            throw new ID3TagException("Das Genre wird noch nicht geschrieben!");
+
+            return tagBytes;
+        }
+
+        private byte[] GetField(string value, int size)
+        {
+            var valueBytes = Encoding.ASCII.GetBytes(value);
+            var fieldBytes = new byte[size];
+
+            if (valueBytes.Length == size)
+            {
+                fieldBytes = valueBytes;
+            }
+            else
+            {
+                // OK. Fit to size
+                if (valueBytes.Length > size)
+                {
+                    Array.Copy(valueBytes, fieldBytes, size);
+                }
+                else
+                {
+                    var fieldCount = fieldBytes.Length;
+                    Array.Copy(valueBytes,fieldBytes,fieldCount);
+
+                    // Hier auffüllen...
+                }
+            }
+
+            return fieldBytes;
+        }
 
         private Id3V1Tag ExtractTag(byte[] tagBytes)
         {
@@ -122,7 +274,8 @@ namespace ID3Tag.HighLevel
 
             if (id3v1_1Support)
             {
-                trackNr = Convert.ToChar(commentBytes[29]).ToString();
+                var trackNrValue = commentBytes[29];
+                trackNr = Convert.ToString(trackNrValue);
 
                 var newComments = new byte[28];
                 Array.Copy(commentBytes,0,newComments,0,newComments.Length);
@@ -262,5 +415,6 @@ namespace ID3Tag.HighLevel
         }
 
         #endregion
+
     }
 }

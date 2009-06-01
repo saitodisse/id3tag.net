@@ -4,13 +4,25 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ID3Tag.Factory;
+using ID3Tag.HighLevel;
 using NUnit.Framework;
 
 namespace ID3Tag.Net.NUnit.Highlevel
 {
     [TestFixture]
-    public class Id3V1ReaderTest
+    public class Id3V1Test
     {
+        /*
+         *  Testen: Schreiben von 
+         *  
+         *  - Audio Daten < 128
+         *  - Audio Daten > 128
+         *  - Tag normal
+         *  - Tag felder zu lang
+         *  - ID3v1.1
+         *  - ID3v1
+         */
+
         [Test]
         [ExpectedException(typeof(ID3IOException))]
         public void IgnoreTooShortStream()
@@ -126,7 +138,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             audioStream.AddRange(CreateField(4, 0x34)); // Year
             audioStream.AddRange(CreateField(28, 0x35)); // Comment
             audioStream.Add(0x00);
-            audioStream.Add(0x36);  // Track
+            audioStream.Add(0x06);  // Track
             audioStream.Add(0x05); // Genre
             var bytes = audioStream.ToArray();
 
@@ -181,7 +193,29 @@ namespace ID3Tag.Net.NUnit.Highlevel
             }
         }
 
-        private void Compare(string value, char refChar, int count)
+        //[Test]
+        //public void FirstWriteTest()
+        //{
+        //    var audioData = new byte[] { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20 };
+        //    var output = new byte[64000];
+
+        //    var id3Tag = new Id3V1Tag
+        //                     {
+        //                         Title = "1",
+        //                         Artist = "2",
+        //                         Album = "3",
+        //                         Year = "4",
+        //                         Comment = "5",
+        //                         IsID3V1_1Compliant = false
+        //                     };
+
+        //    WriteToStream(audioData, output, id3Tag);
+        //}
+
+
+        #region Helper...
+
+        private static void Compare(string value, char refChar, int count)
         {
             var refValue = new StringBuilder();
             for (int i=0; i<count; i++)
@@ -192,7 +226,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.AreEqual(value,refValue.ToString(),"Compare operation failed : " + value);
         }
 
-        private byte[] CreateField(int count, byte value)
+        private static byte[] CreateField(int count, byte value)
         {
             var bytes = new byte[count];
             for (var i=0; i < count; i++)
@@ -202,5 +236,37 @@ namespace ID3Tag.Net.NUnit.Highlevel
 
             return bytes;
         }
+
+        //private static void WriteToStream(byte[] audioData, byte[] output, Id3V1Tag id3Tag)
+        //{
+        //    MemoryStream inputSteam = null;
+        //    MemoryStream outputStream = null;
+        //    try
+        //    {
+        //        inputSteam = new MemoryStream(audioData, false);
+        //        outputStream = new MemoryStream(output, true);
+
+        //        var id3Controller = Id3TagFactory.CreateId3V1Controller();
+        //        id3Controller.Write(id3Tag, inputSteam, outputStream);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        if (inputSteam != null)
+        //        {
+        //            inputSteam.Dispose();
+        //        }
+
+        //        if (outputStream != null)
+        //        {
+        //            inputSteam.Dispose();
+        //        }
+        //    }
+        //}
+
+        #endregion
     }
 }
