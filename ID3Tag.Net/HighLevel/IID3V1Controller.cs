@@ -27,6 +27,6 @@ namespace ID3Tag.HighLevel
         /// <param name="tag">the tag.</param>
         /// <param name="input">the audio input stream.</param>
         /// <param name="output">the target stream.</param>
-        //void Write(Id3V1Tag tag, Stream input, Stream output);
+        void Write(Id3V1Tag tag, Stream input, Stream output);
     }
 }

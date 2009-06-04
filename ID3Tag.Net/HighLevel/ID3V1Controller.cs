@@ -7,13 +7,6 @@ namespace ID3Tag.HighLevel
 {
     internal class Id3V1Controller : IId3V1Controller
     {
-        private readonly Dictionary<int, string> m_GenreDict;
-
-        internal Id3V1Controller()
-        {
-            m_GenreDict = GetDictionary();
-        }
-
         #region IId3V1Controller Members
 
         public Id3V1Tag Read(Stream inputStream)
@@ -123,7 +116,7 @@ namespace ID3Tag.HighLevel
                 Utils.WriteAudioStream(output, input, audioBytesCount);
 
                 var tagBytes = ConvertToByte(tag);
-                output.Write(tagBytes, 0, tagBytes.Length - 1);
+                output.Write(tagBytes, 0, tagBytes.Length);
             }
             catch (Exception ex)
             {
@@ -180,29 +173,28 @@ namespace ID3Tag.HighLevel
             var year = GetField(tag.Year, 4);
 
             Array.Copy(titleBytes, 0, tagBytes, 3, 30);
-            Array.Copy(artistBytes,0,tagBytes,34,30);
-            Array.Copy(albumBytes,0,tagBytes,64,30);
-            Array.Copy(year,0,tagBytes,94,4);
+            Array.Copy(artistBytes,0,tagBytes,33,30);
+            Array.Copy(albumBytes,0,tagBytes,63,30);
+            Array.Copy(year,0,tagBytes,93,4);
             
             byte[] commentBytes;
             if (tag.IsID3V1_1Compliant)
             {
                 commentBytes = GetField(tag.Comment, 28);
-                var trackNr = tag.TrackNr;
+                Array.Copy(commentBytes,0,tagBytes,97,28);
 
-                commentBytes[29] = 0x00;
-                commentBytes[30] = Convert.ToByte(trackNr);
+                var trackNr = tag.TrackNr;
+                tagBytes[125] = 0x00;
+                tagBytes[126] = Convert.ToByte(trackNr);
             }
             else
             {
                 commentBytes = GetField(tag.Comment, 30);
-                Array.Copy(commentBytes,0,tagBytes,98,30);
+                Array.Copy(commentBytes,0,tagBytes,97,30);
             }
 
             // Add genre
-
-            //TODO: Der Genre wird als String abgespeichert.. Das ist doof, weil ich den als Byte konvertieren muss.
-            throw new ID3TagException("Das Genre wird noch nicht geschrieben!");
+            tagBytes[127] = Convert.ToByte(tag.GenreIdentifier);
 
             return tagBytes;
         }
@@ -226,9 +218,14 @@ namespace ID3Tag.HighLevel
                 else
                 {
                     var fieldCount = fieldBytes.Length;
-                    Array.Copy(valueBytes,fieldBytes,fieldCount);
+                    Array.Copy(valueBytes,fieldBytes,valueBytes.Length);
 
-                    // Hier auffüllen...
+                    for (var i=valueBytes.Length; i < fieldCount; i++)
+                    {
+                        // Add Space code
+                        fieldBytes[i] = 0x20;
+                    }
+
                 }
             }
 
@@ -256,17 +253,6 @@ namespace ID3Tag.HighLevel
             var artits = GetString(artistBytes);
             var album = GetString(albumBytes);
             var year = GetString(yearBytes);
-            string genre;
-
-            if (m_GenreDict.ContainsKey(genreByte))
-            {
-                genre = m_GenreDict[genreByte];
-            }
-            else
-            {
-                // Keine Ahnung.. nimm einfach den ersten...
-                genre = m_GenreDict[0];
-            }
 
             var id3v1_1Support = ((commentBytes[28] == 0) && (commentBytes[29] != 0));
             var trackNr = String.Empty;
@@ -294,7 +280,7 @@ namespace ID3Tag.HighLevel
                                 Album = album,
                                 Year = year,
                                 Comment = comment,
-                                Genre = String.Format("({0}){1}", genreByte, genre),
+                                GenreIdentifier = genreByte,
                                 IsID3V1_1Compliant = id3v1_1Support,
                                 TrackNr = trackNr
                             };
@@ -315,103 +301,14 @@ namespace ID3Tag.HighLevel
                 }
             }
 
-            return sb.ToString();
+            var stringValue = sb.ToString();
+            return stringValue.Trim();
         }
 
         private static bool CheckID(byte[] tag)
         {
             // TAG
             return (tag[0] == 0x54) && (tag[1] == 0x41) && (tag[2] == 0x47);
-        }
-
-        private static Dictionary<int, string> GetDictionary()
-        {
-            var genres = new Dictionary<int, string>
-                             {
-                                 {0, "Blues"},
-                                 {1, "Classic Rock"},
-                                 {2, "Country"},
-                                 {3, "Dance"},
-                                 {4, "Disco"},
-                                 {5, "Funk"},
-                                 {6, "Grunge"},
-                                 {7, "Hip-Hop"},
-                                 {8, "Jazz"},
-                                 {9, "Metal"},
-                                 {10, "New Age"},
-                                 {11, "Oldies"},
-                                 {12, "Other"},
-                                 {13, "Pop"},
-                                 {14, "R&B"},
-                                 {15, "RAP"},
-                                 {16, "Reggae"},
-                                 {17, "Rock"},
-                                 {18, "Techo"},
-                                 {19, "Industrial"},
-                                 {20, "Alternative"},
-                                 {21, "Ska"},
-                                 {22, "Death Metal"},
-                                 {23, "Pranks"},
-                                 {24, "Soundtrack"},
-                                 {25, "Euro-Techno"},
-                                 {26, "Ambient"},
-                                 {27, "Trip-Hop"},
-                                 {28, "Vocal"},
-                                 {29, "Jazz&Funk"},
-                                 {30, "Fusion"},
-                                 {31, "Trance"},
-                                 {32, "Classical"},
-                                 {33, "Instrumental"},
-                                 {34, "Acid"},
-                                 {35, "House"},
-                                 {36, "Game"},
-                                 {37, "Sound Clip"},
-                                 {38, "Gospel"},
-                                 {39, "Noise"},
-                                 {40, "Alternative Rock"},
-                                 {41, "Bass"},
-                                 {42, "Soul"},
-                                 {43, "Punk"},
-                                 {44, "Space"},
-                                 {45, "Meditative"},
-                                 {46, "Instrumental Pop"},
-                                 {47, "Instrumental Rock"},
-                                 {48, "Ethnic"},
-                                 {49, "Gothic"},
-                                 {50, "Darkwave"},
-                                 {51, "Techo-Industrial"},
-                                 {52, "Electronic"},
-                                 {53, "Pop-Folk"},
-                                 {54, "Eurodance"},
-                                 {55, "Dream"},
-                                 {56, "Southern Rock"},
-                                 {57, "Comedy"},
-                                 {58, "Cult"},
-                                 {59, "Gangsta"},
-                                 {60, "Top 40"},
-                                 {61, "Christian Rap"},
-                                 {62, "Pop/Funk"},
-                                 {63, "Jungle"},
-                                 {64, "Native US"},
-                                 {65, "Cabaret"},
-                                 {66, "New Wave"},
-                                 {67, "Psychodelic"},
-                                 {68, "Rave"},
-                                 {69, "Showtunes"},
-                                 {70, "Trailer"},
-                                 {71, "Lo-Fi"},
-                                 {72, "Tribal"},
-                                 {73, "Acid Punk"},
-                                 {74, "Acid Jazz"},
-                                 {75, "Polka"},
-                                 {76, "Retro"},
-                                 {77, "Musical"},
-                                 {78, "Rock & Roll"},
-                                 {79, "Hard Rock"},
-                                 {80, "Folk"}
-                             };
-
-            return genres;
         }
 
         #endregion
