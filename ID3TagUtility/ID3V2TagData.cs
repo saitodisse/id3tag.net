@@ -2,7 +2,7 @@
 
 namespace ID3TagUtility
 {
-    public class TagData
+    public class ID3V2TagData
     {
         public TextEncodingType EncodingType { get; set; }
         public string Album { get; set; }

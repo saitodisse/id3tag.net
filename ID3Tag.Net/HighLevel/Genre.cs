@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace ID3Tag.HighLevel
     /// <summary>
     /// Contains a dictionary of Genre IDs.
     /// </summary>
-    internal class Genre
+    public class Genre
     {
         private static Genre m_Instance;
 
@@ -65,6 +66,18 @@ namespace ID3Tag.HighLevel
         {
             var found = m_GenreDict.ContainsKey(genreId);
             return found;
+        }
+
+        /// <summary>
+        /// Gets the genres. The index of the list represents the id.
+        /// </summary>
+        /// <returns>A new readonly collection</returns>
+        public ReadOnlyCollection<string> GetGenres()
+        {
+            var values = m_GenreDict.Values;
+            var list = new List<string>(values);
+
+            return new ReadOnlyCollection<string>(list);
         }
 
         private static Dictionary<int, string> GetDictionary()

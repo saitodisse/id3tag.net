@@ -14,7 +14,7 @@ namespace ID3TagUtility
         {
             InitializeComponent();
 
-            Data = new TagData
+            Data = new ID3V2TagData
                        {
                            EncodingType = TextEncodingType.ISO_8859_1,
                            Album = "My Album",
@@ -31,7 +31,7 @@ namespace ID3TagUtility
                        };
         }
 
-        public TagData Data { get; private set; }
+        public ID3V2TagData Data { get; private set; }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {

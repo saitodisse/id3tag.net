@@ -134,7 +134,7 @@ namespace ID3TagUtility
             return state;
         }
 
-        public TagContainer BuildTag(TagData data)
+        public TagContainer BuildTag(ID3V2TagData data)
         {
             var tagController = new TagContainer();
 
@@ -206,7 +206,49 @@ namespace ID3TagUtility
             return container;
         }
 
-        private static void WritePictureFrame(TagData data, TagContainer container)
+        public void WriteId3V1Tag (Id3V1Tag tag, string sourceFile, string targetFile)
+        {
+            FileStream inputStream = null;
+            FileStream outputStream = null;
+            try
+            {
+                var id3V1Controller = Id3TagFactory.CreateId3V1Controller();
+
+                // Write the tag.
+                inputStream = File.Open(sourceFile, FileMode.Open);
+                outputStream = File.OpenWrite(targetFile);
+
+                id3V1Controller.Write(tag, inputStream, outputStream);
+            }
+            catch (ID3IOException ioException)
+            {
+                MessageBox.Show("IO Exception caught : " + ioException.Message);
+            }
+            catch (ID3TagException tagException)
+            {
+                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unknown exception caught : " + ex.Message);
+            }
+            finally
+            {
+                if (inputStream != null)
+                {
+                    inputStream.Close();
+                    inputStream.Dispose();
+                }
+
+                if (outputStream != null)
+                {
+                    outputStream.Close();
+                    outputStream.Dispose();
+                }
+            }
+        }
+
+        private static void WritePictureFrame(ID3V2TagData data, TagContainer container)
         {
             using (var stream = File.Open(data.PictureFile, FileMode.Open))
             {

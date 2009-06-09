@@ -192,5 +192,26 @@ namespace ID3TagUtility
                 m_Controller.WriteTag(tagController, data.SourceFile, data.TargetFile);
             }
         }
+
+        private void OnWriteID3V1(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ID3V1Dialog();
+            var result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                var data = dialog.TagData;
+                var sourceFile = dialog.SourceFile;
+                var targetFile = dialog.TargetFile;
+
+                if (String.IsNullOrEmpty(sourceFile) || String.IsNullOrEmpty(targetFile))
+                {
+                    MessageBox.Show("Please validate your Source and Target file.");
+                    return;
+                }
+
+                m_Controller.WriteId3V1Tag(data,sourceFile,targetFile);
+            }
+        }
     }
 }
