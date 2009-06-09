@@ -44,6 +44,10 @@
         /// <summary>
         /// Picture Frame
         /// </summary>
-        Picture
+        Picture,
+        /// <summary>
+        /// Popularimeter Frame
+        /// </summary>        
+        Popularimeter
     }
 }
