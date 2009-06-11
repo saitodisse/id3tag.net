@@ -5,11 +5,24 @@ using ID3Tag.LowLevel;
 namespace ID3Tag.HighLevel.ID3Frame
 {
     /// <summary>
-    /// Represents a Popularitmeter frame
+    /// The purpose of this frame is to specify how good an audio file is. 
+    /// Many interesting applications could be found to this frame such as a playlist that features 
+    /// better audiofiles more often than others or it could be used to profile a person's taste and 
+    /// find other 'good' files by comparing people's profiles. The frame is very simple. 
+    /// It contains the email address to the user, one rating byte and a four byte play counter, intended to 
+    /// be increased with one for every time the file is played. The email is a terminated string. 
+    /// The rating is 1-255 where 1 is worst and 255 is best. 0 is unknown. 
+    /// If no personal counter is wanted it may be omitted. When the counter reaches all one's, one byte 
+    /// is inserted in front of the counter thus making the counter eight bits 
+    /// bigger in the same away as the play counter ("PCNT"). 
+    /// There may be more than one "POPM" frame in each tag, but only one with the same email address.
     /// </summary>
     public class PopularimeterFrame : Frame
     {
-        public PopularimeterFrame()
+        /// <summary>
+        /// Creates a new PopularityMeterFrame.
+        /// </summary>
+        public PopularimeterFrame() : this(String.Empty,0,0)
         {
         }
 
@@ -21,6 +34,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <param name="counter">The playcounter</param>
         public PopularimeterFrame(string mail, byte rating, int counter)
         {
+            Descriptor.ID = "POPM";
             eMail = mail;
             Rating = rating;
             PlayCounter = counter;
@@ -67,15 +81,19 @@ namespace ID3Tag.HighLevel.ID3Frame
             sb.Append('\0');
             var mailbytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, sb.ToString());
             var playcounterbytes = BitConverter.GetBytes(PlayCounter);
+            Array.Reverse(playcounterbytes);
+
             var counterlength = 4;
-            while (playcounterbytes[counterlength - 4] == 0)
-            {
-                counterlength--;
-            }
+            //while (playcounterbytes[counterlength - 4] == 0)
+            //{
+            //    counterlength--;
+            //}
+
             var payload = new byte[mailbytes.Length + 1 + counterlength];
             Array.Copy(mailbytes, payload, mailbytes.Length);
             payload[mailbytes.Length] = Rating;
             Array.Copy(playcounterbytes, counterlength - 4, payload, mailbytes.Length + 1, counterlength);
+
             var frame = RawFrame.CreateFrame(Descriptor.ID, flagBytes, payload);
             return frame;
         }
@@ -111,6 +129,7 @@ namespace ID3Tag.HighLevel.ID3Frame
                         var readlength = (bytesleft < 4) ? bytesleft : 4;
                         var counterbytes = new byte[4] {0, 0, 0, 0};
                         Array.Copy(payload, pointer, counterbytes, 0, readlength);
+                        Array.Reverse(counterbytes);
                         PlayCounter = BitConverter.ToInt32(counterbytes, 0);
                     }
                 }

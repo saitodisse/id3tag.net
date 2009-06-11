@@ -216,5 +216,47 @@ namespace ID3Tag.HighLevel
 
             return pictureFrame;
         }
+
+        /// <summary>
+        /// Convert a abstract frame to a PlayCounterFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrete type.</returns>
+        public static PlayCounterFrame ConvertToPlayCounterFrame(IFrame frame)
+        {
+            if (frame.Type != FrameType.PlayCounter)
+            {
+                throw new ID3TagException("Frame Type does not mathch");
+            }
+
+            var playCounterFrame = frame as PlayCounterFrame;
+            if (playCounterFrame == null)
+            {
+                throw new ID3TagException("Could not cast To PlayCounterFrame!");
+            }
+
+            return playCounterFrame;
+        }
+
+        /// <summary>
+        /// Convert a abstract frame to a PopularimeterFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrete type.</returns>
+        public static PopularimeterFrame ConvertToPopularimeterFrame(IFrame frame)
+        {
+            if (frame.Type != FrameType.Popularimeter)
+            {
+                throw new ID3TagException("Frame Type does not mathch");
+            }
+
+            var popm = frame as PopularimeterFrame;
+            if (popm == null)
+            {
+                throw new ID3TagException("Could not cast To PopularimeterFrame!");
+            }
+
+            return popm;
+        }
     }
 }

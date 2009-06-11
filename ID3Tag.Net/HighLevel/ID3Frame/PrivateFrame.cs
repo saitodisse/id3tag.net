@@ -19,10 +19,8 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <summary>
         /// Creates a new instance of PrivateFrame.
         /// </summary>
-        public PrivateFrame()
+        public PrivateFrame() : this(String.Empty,new byte[0])
         {
-            Owner = String.Empty;
-            Data = new byte[0];
         }
 
         /// <summary>

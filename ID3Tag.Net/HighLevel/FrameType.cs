@@ -48,6 +48,10 @@
         /// <summary>
         /// Popularimeter Frame
         /// </summary>        
-        Popularimeter
+        Popularimeter,
+        /// <summary>
+        /// Play Counter Frame
+        /// </summary>
+        PlayCounter
     }
 }

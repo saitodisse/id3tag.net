@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="FileState.cs" />
     <Compile Include="HighLevel\Genre.cs" />
+    <Compile Include="HighLevel\ID3Frame\PlayCounterFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PopularimeterFrame.cs" />
     <Compile Include="HighLevel\ID3V1Controller.cs" />
     <Compile Include="HighLevel\ID3V1Tag.cs" />

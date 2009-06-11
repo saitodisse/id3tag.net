@@ -125,6 +125,9 @@ namespace ID3Tag.HighLevel
                     case "APIC":
                         frame = new PictureFrame();
                         break;
+                    case "PCNT":
+                        frame = new PlayCounterFrame();
+                        break;
                     case "POPM":
                         frame = new PopularimeterFrame();
                         break;
