@@ -16,6 +16,9 @@
             <Button Name="buttonImportFile" Click="OnImportFile" >
                 Import File
             </Button>
+            <Button Click="OnWriteID3V1">
+                Write ID3V1 tag
+            </Button>
             <Button Click="OnWrite">
                 Write ID3V2 tag
             </Button>
