@@ -113,7 +113,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         }
 
         [Test]
-        [ExpectedException(typeof (InvalidTagFormatException))]
+        [ExpectedException(typeof(ID3HeaderNotFoundException))]
         public void InvalidHeaderTest4()
         {
             var headerBytes = new byte[] {0x54, 0x41, 0x47, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08};

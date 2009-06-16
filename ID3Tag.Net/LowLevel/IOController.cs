@@ -57,44 +57,147 @@ namespace ID3Tag.LowLevel
                 throw new ID3IOException("Cannot read data stream.");
             }
 
-            // Analyse the content
+            //
+            //  Read the bytes from the I/O stream.
+            //
             var tagInfo = new Id3TagInfo();
+            byte[] rawTagContent;
+
             using (var reader = new BinaryReader(inputStream))
             {
                 var headerBytes = new byte[10];
                 reader.Read(headerBytes, 0, 10);
 
-                // OK. Start with reading the header
-                long curPos = 0;
-                var tagLength = AnalyseHeader(headerBytes, tagInfo);
+                var rawTagLength = AnalyseHeader(headerBytes, tagInfo);
+                rawTagContent = new byte[rawTagLength];
 
+                reader.Read(rawTagContent, 0, rawTagLength);
+            }
+
+            /* 
+             *  - Extended Header
+             *  - CRC
+             *  - Frames
+             *  - Padding Bytes
+             */
+
+            //
+            //  Check for Unsynchronisation Bytes
+            //
+            byte[] tagContent;
+            if (tagInfo.UnsynchronisationFlag)
+            {
+                // Scan for unsynchronisation bytes!
+                tagContent = RemoveUnsyncBytes(rawTagContent);
+            }
+            else
+            {
+                tagContent = rawTagContent;
+            }
+
+            Stream tagStream = new MemoryStream(tagContent);
+            var length = tagContent.Length;
+            using (var reader = new BinaryReader(tagStream))
+            {
+                //
+                //  Check for Extended Header
+                //
                 if (tagInfo.ExtendedHeaderAvailable)
                 {
-                    // Read the extended header
-                    var extendedHeaderByteCount = AnalyseExtendedHeader(reader, tagInfo);
-                    curPos += extendedHeaderByteCount;
+                    AnalyseExtendedHeader(reader, tagInfo);
                 }
 
                 //
-                //  Read all bytes until EOF.
+                //  Read all frames
                 //
-                while (curPos + 10 < tagLength)
+                var pos = reader.BaseStream.Position;
+                while ((pos + 10) < length)
                 {
-                    bool abort;
-                    var frameByteCount = AnalyseFrames(reader, tagInfo, out abort);
-                    curPos += frameByteCount;
-
-                    if (abort)
+                    var continueReading = AnalyseFrame(reader,tagInfo);
+                    if (!continueReading)
                     {
-                        //
-                        //  Analyse Frames detects a header with a "null byte" ID. 
-                        //
                         break;
                     }
+
+                    pos = reader.BaseStream.Position;
                 }
             }
 
             return tagInfo;
+        }
+
+        private static byte[] RemoveUnsyncBytes(byte[] tagContent)
+        {
+            /*
+             *  wenn FF 00 gefunden wird, dann die 00 entfernen
+             *  wenn FF am Ende gefunden wird, dann nix machen
+             */
+
+            var filteredBytes = new List<byte>();
+            for (var i=0; i+1<tagContent.Length; i+=2)
+            {
+                //
+                // Search for Unsync Bytes.
+                //
+                if (tagContent[i] == 0xFF && tagContent[i+1] == 0x00)
+                {
+                    filteredBytes.Add(tagContent[i]);
+                }
+                else
+                {
+                    filteredBytes.Add(tagContent[i]);
+                    filteredBytes.Add(tagContent[i + 1]);
+                }
+            }
+
+            return filteredBytes.ToArray();
+        }
+
+        private static void AnalyseExtendedHeader(BinaryReader reader, Id3TagInfo tagInfo)
+        {
+            // Read the extended header size
+            var extendedHeaderSize = new byte[4];
+            reader.Read(extendedHeaderSize, 0, 4);
+
+            var size = Utils.CalculateExtendedHeaderSize(extendedHeaderSize);
+            var content = new byte[size];
+            reader.Read(content, 0, size);
+
+            var extendedHeader = ExtendedTagHeader.Create(content);
+            tagInfo.ExtendHeader = extendedHeader;
+        }
+
+        private static bool AnalyseFrame(BinaryReader reader, Id3TagInfo tagInfo)
+        {
+            var frameHeader = new byte[10];
+            reader.Read(frameHeader, 0, 10);
+
+            var frameIDBytes = new byte[4];
+            var sizeBytes = new byte[4];
+            var flagsBytes = new byte[2];
+
+            Array.Copy(frameHeader, 0, frameIDBytes, 0, 4);
+            Array.Copy(frameHeader, 4, sizeBytes, 0, 4);
+            Array.Copy(frameHeader, 8, flagsBytes, 0, 2);
+
+            if (frameIDBytes[0] == 0 && 
+                frameIDBytes[1] == 0 &&
+                frameIDBytes[2] == 0 &&
+                frameIDBytes[3] == 0)
+            {
+                // No valid frame. Padding bytes?
+                return false;
+            }
+
+            var frameID = Utils.GetFrameID(frameIDBytes);
+            var size = Utils.CalculateFrameHeaderSize(sizeBytes);
+            var payloadBytes = new byte[size];
+            reader.Read(payloadBytes, 0, (int)size);
+
+            var frame = RawFrame.CreateFrame(frameID, flagsBytes, payloadBytes);
+            tagInfo.Frames.Add(frame);
+
+            return true;
         }
 
         public void Write(TagContainer tagContainer, Stream input, Stream output)
@@ -483,124 +586,41 @@ namespace ID3Tag.LowLevel
             return listBytes.ToArray();
         }
 
-        private static long AnalyseExtendedHeader(BinaryReader reader, Id3TagInfo tagInfo)
-        {
-            int size;
 
-            try
-            {
-                // Read the extended header size
-                var extendedHeaderSize = new byte[4];
-                reader.Read(extendedHeaderSize, 0, 4);
 
-                size = Convert.ToInt32(Utils.CalculateExtendedHeaderSize(extendedHeaderSize));
-                var content = new byte[size];
-                reader.Read(content, 0, size);
-
-                var extendedHeader = ExtendedTagHeader.Create(content);
-                tagInfo.ExtendHeader = extendedHeader;
-            }
-            catch (Exception ex)
-            {
-                throw new ID3TagException("Could not analyse Extended Header", ex);
-            }
-
-            return 4 + size;
-        }
-
-        private static long AnalyseFrames(BinaryReader reader, Id3TagInfo tagInfo, out bool nullBytesDetected)
-        {
-            long size = 0;
-            var abortAnalysing = false;
-
-            try
-            {
-                var frameHeader = new byte[10];
-                reader.Read(frameHeader, 0, 10);
-
-                var frameIDBytes = new byte[4];
-                var sizeBytes = new byte[4];
-                var flagsBytes = new byte[2];
-
-                Array.Copy(frameHeader, 0, frameIDBytes, 0, 4);
-                Array.Copy(frameHeader, 4, sizeBytes, 0, 4);
-                Array.Copy(frameHeader, 8, flagsBytes, 0, 2);
-
-                var frameID = Utils.GetFrameID(frameIDBytes);
-
-                if (frameIDBytes[0] == 0x00 && frameIDBytes[1] == 0x00 && frameIDBytes[2] == 0x00)
-                {
-                    // Invalid frame. Discard it.
-                    abortAnalysing = true;
-                }
-                else
-                {
-                    size = Utils.CalculateFrameHeaderSize(sizeBytes);
-                    var payloadBytes = new byte[size];
-                    reader.Read(payloadBytes, 0, (int) size);
-
-                    var frame = RawFrame.CreateFrame(frameID, flagsBytes, payloadBytes);
-                    tagInfo.Frames.Add(frame);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ID3TagException("Could not analyse frame", ex);
-            }
-
-            nullBytesDetected = abortAnalysing;
-            return 10 + size;
-        }
-
-        private static long AnalyseHeader(byte[] headerBytes, Id3TagInfo tagInfo)
+        private static int AnalyseHeader(byte[] headerBytes, Id3TagInfo tagInfo)
         {
             // Check ID3 pattern
             var id3PatternFound = (headerBytes[0] == 0x49) && (headerBytes[1] == 0x44) && (headerBytes[2] == 0x33);
 
-            if (id3PatternFound)
+            if (!id3PatternFound)
             {
-                long size;
-
-                try
-                {
-                    var majorVersion = Convert.ToInt32(headerBytes[3]);
-                    var revision = Convert.ToInt32(headerBytes[4]);
-                    var flagByte = headerBytes[5];
-                    var sizeBytes = new byte[4];
-
-                    // Analyse the header...
-                    tagInfo.MajorVersion = majorVersion;
-                    tagInfo.Revision = revision;
-
-                    var unsynchronisationFlag = (flagByte & 0x80) == 0x80;
-                    var extendedHeaderFlag = (flagByte & 0x40) == 0x40;
-                    var experimentalFlag = (flagByte & 0x20) == 0x20;
-
-                    tagInfo.UnsynchronisationFlag = unsynchronisationFlag;
-                    tagInfo.ExtendedHeaderAvailable = extendedHeaderFlag;
-                    tagInfo.Experimental = experimentalFlag;
-
-                    Array.Copy(headerBytes, 6, sizeBytes, 0, 4);
-                    size = Utils.CalculateTagHeaderSize(sizeBytes);
-                }
-                catch (Exception ex)
-                {
-                    throw new ID3TagException("Could not analyse header", ex);
-                }
-
-                return size;
-            }
-            else
-            {
-                // Check for ID3v1
-                var tagPatternFound = (headerBytes[0] == 0x54) && (headerBytes[1] == 0x41) && (headerBytes[2] == 0x47);
-                if (tagPatternFound)
-                {
-                    throw new InvalidTagFormatException("ID3v1 tag is not supported");
-                }
-
                 throw new ID3HeaderNotFoundException();
+
             }
+
+            var majorVersion = Convert.ToInt32(headerBytes[3]);
+            var revision = Convert.ToInt32(headerBytes[4]);
+            var flagByte = headerBytes[5];
+            var sizeBytes = new byte[4];
+
+            // Analyse the header...
+            tagInfo.MajorVersion = majorVersion;
+            tagInfo.Revision = revision;
+
+            var unsynchronisationFlag = (flagByte & 0x80) == 0x80;
+            var extendedHeaderFlag = (flagByte & 0x40) == 0x40;
+            var experimentalFlag = (flagByte & 0x20) == 0x20;
+
+            tagInfo.UnsynchronisationFlag = unsynchronisationFlag;
+            tagInfo.ExtendedHeaderAvailable = extendedHeaderFlag;
+            tagInfo.Experimental = experimentalFlag;
+
+            Array.Copy(headerBytes, 6, sizeBytes, 0, 4);
+            var size = Utils.CalculateTagHeaderSize(sizeBytes);
+
+            return size;
+
         }
 
         #endregion

@@ -22,7 +22,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
         {
             var headerBytes = new byte[]
                                   {
-                                      0x49, 0x44, 0x33, 0x03, 0x00, 0xE0, 0x00, 0x00, 0x02, 0x01,
+                                      0x49, 0x44, 0x33, 0x03, 0x00, 0x60, 0x00, 0x00, 0x02, 0x01,
                                       0x00, 0x00, 0x00, 0x0A, 0x80, 0x00, 0x00, 0x00, 0x00, 0x0A,
                                       0x20, 0x21, 0x22, 0x23
                                   };
@@ -32,7 +32,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.AreEqual(m_TagInfo.MajorVersion, 3);
             Assert.AreEqual(m_TagInfo.Revision, 0);
             Assert.IsTrue(m_TagInfo.Experimental);
-            Assert.IsTrue(m_TagInfo.UnsynchronisationFlag);
+            Assert.IsFalse(m_TagInfo.UnsynchronisationFlag);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
             var extendedHeader = m_TagInfo.ExtendHeader;
@@ -48,7 +48,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
             Assert.AreEqual(tagContainer.Tag.Revision, 0);
             Assert.IsTrue(tagContainer.Tag.ExperimentalIndicator);
-            Assert.IsTrue(tagContainer.Tag.Unsynchronisation);
+            Assert.IsFalse(tagContainer.Tag.Unsynchronisation);
 
             Assert.IsTrue(tagContainer.Tag.ExtendedHeader);
             Assert.AreEqual(tagContainer.Tag.PaddingSize, 10);
@@ -61,7 +61,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
         {
             var headerBytes = new byte[]
                                   {
-                                      0x49, 0x44, 0x33, 0x03, 0x00, 0xA0, 0x00, 0x00, 0x02, 0x01,
+                                      0x49, 0x44, 0x33, 0x03, 0x00, 0x20, 0x00, 0x00, 0x02, 0x01,
                                       0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A
                                   };
             Read(headerBytes);
@@ -69,7 +69,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.AreEqual(m_TagInfo.MajorVersion, 3);
             Assert.AreEqual(m_TagInfo.Revision, 0);
             Assert.IsTrue(m_TagInfo.Experimental);
-            Assert.IsTrue(m_TagInfo.UnsynchronisationFlag);
+            Assert.IsFalse(m_TagInfo.UnsynchronisationFlag);
             Assert.IsFalse(m_TagInfo.ExtendedHeaderAvailable);
 
             var extendedHeader = m_TagInfo.ExtendHeader;
@@ -81,7 +81,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
             Assert.AreEqual(tagContainer.Tag.Revision, 0);
             Assert.IsTrue(tagContainer.Tag.ExperimentalIndicator);
-            Assert.IsTrue(tagContainer.Tag.Unsynchronisation);
+            Assert.IsFalse(tagContainer.Tag.Unsynchronisation);
             Assert.IsFalse(tagContainer.Tag.ExtendedHeader);
 
             Assert.AreEqual(tagContainer.Tag.PaddingSize, 0);
