@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using ID3Tag.HighLevel;
 
@@ -133,16 +134,34 @@ namespace ID3Tag.LowLevel
              *  wenn FF am Ende gefunden wird, dann nix machen
              */
 
+            var counter = 0;
             var filteredBytes = new List<byte>();
             byte previousByte = 0x00;
             foreach (var curByte in tagContent)
             {
+                //
+                //  FF E0 darf nicht vorkommen!
+                //
+
                 if (previousByte != 0xFF)
                 {
                     filteredBytes.Add(curByte);
                 }
+                else
+                {
+                    if (curByte != 0x00)
+                    {
+                        filteredBytes.Add(curByte);
+                    }
+                    //else
+                    //{
+                    //    // For debug purposes!
+                    //    Debug.WriteLine(String.Format("Unsync Byte found! Counter = {0}", counter));
+                    //}
+                }
 
                 previousByte = curByte;
+                counter++;
             }
 
             return filteredBytes.ToArray();
