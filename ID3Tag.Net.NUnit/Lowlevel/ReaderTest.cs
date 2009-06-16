@@ -97,5 +97,38 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(frame2.ReadOnly);
             Assert.IsTrue(frame2.TagAlterPreservation);
         }
+
+        [Test]
+        public void UnsynchronisationTest1()
+        {
+            // ID,ID,ID,ID,S,S,S,S,F,F,
+            // D,....,D
+
+            var frames = new byte[]
+                             {
+                                 0x49, 0x44, 0x33, 0x03, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00,
+                                 0x50, 0x43, 0x4E, 0x54, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00,
+                                 0x12, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF
+                             };
+
+            var size = CalculateSize(frames.Length - 10);
+            Array.Copy(size, 0, frames, 6, 4);
+
+            Read(frames);
+
+            Assert.AreEqual(m_TagInfo.Frames.Count,1);
+            Assert.AreEqual(m_TagInfo.Frames[0].ID,"PCNT");
+
+            var payload = m_TagInfo.Frames[0].Payload;
+            Assert.AreEqual(payload.Length,5);
+            Assert.AreEqual(payload[0],0x12);
+            Assert.AreEqual(payload[1],0xFF);
+            Assert.AreEqual(payload[2],0xFF);
+            Assert.AreEqual(payload[3],0xFF);
+            Assert.AreEqual(payload[4],0xFF);
+
+
+
+        }
     }
 }

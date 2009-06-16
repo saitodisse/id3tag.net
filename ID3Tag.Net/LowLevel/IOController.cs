@@ -134,20 +134,15 @@ namespace ID3Tag.LowLevel
              */
 
             var filteredBytes = new List<byte>();
-            for (var i=0; i+1<tagContent.Length; i+=2)
+            byte previousByte = 0x00;
+            foreach (var curByte in tagContent)
             {
-                //
-                // Search for Unsync Bytes.
-                //
-                if (tagContent[i] == 0xFF && tagContent[i+1] == 0x00)
+                if (previousByte != 0xFF)
                 {
-                    filteredBytes.Add(tagContent[i]);
+                    filteredBytes.Add(curByte);
                 }
-                else
-                {
-                    filteredBytes.Add(tagContent[i]);
-                    filteredBytes.Add(tagContent[i + 1]);
-                }
+
+                previousByte = curByte;
             }
 
             return filteredBytes.ToArray();
