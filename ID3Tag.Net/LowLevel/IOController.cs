@@ -167,6 +167,58 @@ namespace ID3Tag.LowLevel
             return filteredBytes.ToArray();
         }
 
+        private static byte[] AddUnsyncBytes(byte[] rawTagBytes)
+        {
+            /*
+             *      What to do ?
+             * 
+             *      1. FF >Ex -> FF 00 >Ex
+             *      2. FF 00 -> FF 00 00
+             *      3. xx xx ... FF -> No changes!
+             */
+
+            var syncedTagBytes = new List<byte>();
+            byte previousByte = 0x00;
+            foreach (var curByte in rawTagBytes)
+            {
+                if (previousByte != 0xFF)
+                {
+                    syncedTagBytes.Add(curByte);
+                }
+                else
+                {
+                    //
+                    //  previous byte was 0xFF
+                    //
+                    if ((curByte == 0x00) || (curByte > 0xE0))
+                    {
+                        //TODO ... better implementation here???
+
+                        if (curByte == 0x00)
+                        {
+                            syncedTagBytes.Add(0x00);
+                            syncedTagBytes.Add(0x00);
+                        }
+                        else
+                        {
+                            syncedTagBytes.Add(0x00);
+                            syncedTagBytes.Add(curByte);
+                        }
+
+                    }
+                    else
+                    {
+                        syncedTagBytes.Add(curByte);
+                    }
+
+                }
+
+                previousByte = curByte;
+            }
+
+            return syncedTagBytes.ToArray();
+        }
+
         private static void AnalyseExtendedHeader(BinaryReader reader, Id3TagInfo tagInfo)
         {
             // Read the extended header size
@@ -235,9 +287,23 @@ namespace ID3Tag.LowLevel
             var frameBytes = GetFrameBytes(tagContainer);
 
             //
+            //  OK. Build the complete tag
+            //
+            byte[] tagBytes = null;
+            var rawTagBytes = BuildTag(tagHeader, extendedHeaderBytes, frameBytes, tagContainer.Tag.PaddingSize);
+            if (tagContainer.Tag.Unsynchronisation)
+            {
+                tagBytes = AddUnsyncBytes(rawTagBytes);
+            }
+            else
+            {
+                tagBytes = rawTagBytes;
+            }
+
+            //
             //  encode the length
             //
-            var length = frameBytes.LongLength;
+            var length = tagBytes.LongLength;
             if (tagContainer.Tag.ExtendedHeader)
             {
                 // Header + Size Coding.
@@ -248,7 +314,7 @@ namespace ID3Tag.LowLevel
             var lengthBytes = new byte[4];
 
             EncodeLength(bits, lengthBytes);
-            Array.Copy(lengthBytes, 0, tagHeader, 6, 4);
+            Array.Copy(lengthBytes, 0, tagBytes, 6, 4);
 
             //
             //  Build the tag bytes and start writing.
@@ -262,9 +328,10 @@ namespace ID3Tag.LowLevel
                 throw new ID3IOException("Cannot write to output stream");
             }
 
-            var tagBytes = BuildTag(tagHeader, extendedHeaderBytes, frameBytes, tagContainer.Tag.PaddingSize);
             WriteToStream(input, output, tagBytes);
         }
+
+ 
 
         public FileState DetermineTagStatus(Stream audioStream)
         {

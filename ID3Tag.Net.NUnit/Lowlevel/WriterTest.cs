@@ -155,5 +155,95 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             //
             CompareContainer(tagContainer1, tagContainer2);
         }
+
+        [Test]
+        public void SynchronizedTest1()
+        {
+            var tagContainer1 = new TagContainer();
+            tagContainer1.Tag.SetVersion(3,0);
+            tagContainer1.Tag.SetHeaderFlags(true,false,false);
+
+            const long counter = 0xFF00FF12;
+            var playCounter = new PlayCounterFrame(counter);
+            tagContainer1.Add(playCounter);
+
+            var tagContainer2 = WriteAndRead(tagContainer1);
+            CompareContainer(tagContainer1,tagContainer2);
+
+            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            Assert.AreEqual(playCounter2.Counter,counter);
+        }
+
+        [Test]
+        public void SynchronizedTest2()
+        {
+            var tagContainer1 = new TagContainer();
+            tagContainer1.Tag.SetVersion(3, 0);
+            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+
+            const long counter = 0xFFFFFF12;
+            var playCounter = new PlayCounterFrame(counter);
+            tagContainer1.Add(playCounter);
+
+            var tagContainer2 = WriteAndRead(tagContainer1);
+            CompareContainer(tagContainer1, tagContainer2);
+
+            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            Assert.AreEqual(playCounter2.Counter, counter);
+        }
+
+        [Test]
+        public void SynchronizedTest3()
+        {
+            var tagContainer1 = new TagContainer();
+            tagContainer1.Tag.SetVersion(3, 0);
+            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+
+            const long counter = 0xFFE0;
+            var playCounter = new PlayCounterFrame(counter);
+            tagContainer1.Add(playCounter);
+
+            var tagContainer2 = WriteAndRead(tagContainer1);
+            CompareContainer(tagContainer1, tagContainer2);
+
+            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            Assert.AreEqual(playCounter2.Counter, counter);
+        }
+
+        [Test]
+        public void SynchronizedTest4()
+        {
+            var tagContainer1 = new TagContainer();
+            tagContainer1.Tag.SetVersion(3, 0);
+            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+
+            const long counter = 0xFFE1;
+            var playCounter = new PlayCounterFrame(counter);
+            tagContainer1.Add(playCounter);
+
+            var tagContainer2 = WriteAndRead(tagContainer1);
+            CompareContainer(tagContainer1, tagContainer2);
+
+            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            Assert.AreEqual(playCounter2.Counter, counter);
+        }
+
+        [Test]
+        public void SynchronizedTest5()
+        {
+            var tagContainer1 = new TagContainer();
+            tagContainer1.Tag.SetVersion(3, 0);
+            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+
+            const long counter = 0x12FF;
+            var playCounter = new PlayCounterFrame(counter);
+            tagContainer1.Add(playCounter);
+
+            var tagContainer2 = WriteAndRead(tagContainer1);
+            CompareContainer(tagContainer1, tagContainer2);
+
+            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            Assert.AreEqual(playCounter2.Counter, counter);
+        }
     }
 }
