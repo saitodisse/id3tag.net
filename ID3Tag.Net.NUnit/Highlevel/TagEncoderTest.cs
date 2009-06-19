@@ -27,7 +27,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var tagContainer = new TagContainer();
             tagContainer.Tag.SetHeaderFlags(true, true, true);
             tagContainer.Tag.SetVersion(3, 0);
-            tagContainer.Tag.SetExtendedHeader(10, true, crc);
+            tagContainer.Tag.SetExtendedHeader(10, true);
+            tagContainer.Tag.SetCrc32(crc);
 
             var titleFrame = new TextFrame();
             titleFrame.TextEncoding = TextEncodingType.UTF16;

@@ -96,6 +96,17 @@ namespace ID3Tag.LowLevel
                 tagContent = rawTagContent;
             }
 
+            // TODO: Wie den CRC prüfen? 
+            ////
+            ////  Check for CRC bytes
+            ////
+            //if (tagInfo.ExtendHeader.CRCDataPresent)
+            //{
+            //    var crc32 = new Crc32(Crc32.DefaultPolynom);
+
+                
+            //}
+
             Stream tagStream = new MemoryStream(tagContent);
             var length = tagContent.Length;
             using (var reader = new BinaryReader(tagStream))
@@ -192,8 +203,6 @@ namespace ID3Tag.LowLevel
                     //
                     if ((curByte == 0x00) || (curByte > 0xE0))
                     {
-                        //TODO ... better implementation here???
-
                         if (curByte == 0x00)
                         {
                             syncedTagBytes.Add(0x00);
@@ -283,13 +292,24 @@ namespace ID3Tag.LowLevel
 
             byte[] extendedHeaderBytes;
             var tagHeader = GetTagHeader(tagContainer);
-            var extendedHeaderLength = GetExtendedHeaderLength(tagContainer, out extendedHeaderBytes);
             var frameBytes = GetFrameBytes(tagContainer);
+
+            //
+            //  Calculate the CRC32 value of the frameBytes ( before unsync!)
+            //
+            if (tagContainer.Tag.CrcDataPresent)
+            {
+                var crc32 = new Crc32(Crc32.DefaultPolynom);
+                var crcValue = crc32.Calculate(frameBytes);
+
+                tagContainer.Tag.SetCrc32(crcValue);
+            }
 
             //
             //  OK. Build the complete tag
             //
-            byte[] tagBytes = null;
+            byte[] tagBytes;
+            var extendedHeaderLength = GetExtendedHeaderLength(tagContainer, out extendedHeaderBytes);
             var rawTagBytes = BuildTag(tagHeader, extendedHeaderBytes, frameBytes, tagContainer.Tag.PaddingSize);
             if (tagContainer.Tag.Unsynchronisation)
             {

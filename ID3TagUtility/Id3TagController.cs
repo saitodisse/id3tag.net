@@ -144,7 +144,8 @@ namespace ID3TagUtility
 
             if (data.ExtendedHeader)
             {
-                tagController.Tag.SetExtendedHeader(data.PaddingSize, data.CrCPresent, data.Crc);
+                tagController.Tag.SetExtendedHeader(data.PaddingSize, data.CrCPresent);
+                tagController.Tag.SetCrc32(data.Crc);
             }
 
             // OK. Build the frames.

@@ -73,12 +73,19 @@ namespace ID3Tag.HighLevel
         /// </summary>
         /// <param name="paddingSize">the padding size.</param>
         /// <param name="crcDataPresent">the CRC data present flag</param>
-        /// <param name="crcData">the CRC data.</param>
-        public void SetExtendedHeader(int paddingSize, bool crcDataPresent, byte[] crcData)
+        public void SetExtendedHeader(int paddingSize, bool crcDataPresent)
         {
             PaddingSize = paddingSize;
             CrcDataPresent = crcDataPresent;
-            Crc = crcData;
+        }
+
+        /// <summary>
+        /// Sets the calculated CRC32 values.
+        /// </summary>
+        /// <param name="crc">the crc Values in bytes (MSB!)</param>
+        public void SetCrc32(byte[] crc)
+        {
+            Crc = crc;
         }
 
         /// <summary>

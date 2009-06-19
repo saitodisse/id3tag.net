@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crc32Test.cs" />
     <Compile Include="Highlevel\FrameTest\AudioEncryptionFrameTest.cs" />
     <Compile Include="Highlevel\FrameTest\CommentFrameTest.cs" />
     <Compile Include="Highlevel\FrameTest\MusicCDIdentifierTest.cs" />

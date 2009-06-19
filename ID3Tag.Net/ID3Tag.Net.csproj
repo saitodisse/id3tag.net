@@ -85,6 +85,7 @@
     <Compile Include="Factory\ID3TagFactory.cs" />
     <Compile Include="LowLevel\IIOController.cs" />
     <Compile Include="LowLevel\IOController.cs" />
+    <Compile Include="Utils\Crc32.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="LowLevel\RawFrame.cs" />
     <Compile Include="ID3TagException.cs" />

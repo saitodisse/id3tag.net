@@ -104,7 +104,8 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var tagContainer1 = new TagContainer();
             tagContainer1.Tag.SetVersion(3, 0);
             tagContainer1.Tag.SetHeaderFlags(true, true, true);
-            tagContainer1.Tag.SetExtendedHeader(10, true, new byte[] {0x10, 0x20, 0x30, 0x40});
+            tagContainer1.Tag.SetExtendedHeader(10, true);
+            tagContainer1.Tag.SetCrc32(new byte[] {0x10, 0x20, 0x30, 0x40});
 
             var titleFrame = new TextFrame
                                  {

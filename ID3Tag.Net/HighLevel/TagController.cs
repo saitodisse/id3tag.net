@@ -22,8 +22,11 @@ namespace ID3Tag.HighLevel
             if (info.ExtendedHeaderAvailable)
             {
                 var extendedHeader = info.ExtendHeader;
-                descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CRCDataPresent,
-                                             extendedHeader.CRC);
+                descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CRCDataPresent);
+                if (extendedHeader.CRCDataPresent)
+                {
+                    descriptor.SetCrc32(extendedHeader.CRC);
+                }
             }
 
             foreach (var rawFrame in info.Frames)
