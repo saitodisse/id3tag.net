@@ -31,13 +31,9 @@
         <CheckBox Height="19" HorizontalAlignment="Right" Margin="0,65,62,0" Name="checkBoxExperimentalIndicator" VerticalAlignment="Top" Width="253">Experimental Indicator</CheckBox>
         <CheckBox Height="15" HorizontalAlignment="Right" Margin="0,90,118,0" Name="checkBoxUnsync" VerticalAlignment="Top" Width="197" IsEnabled="True">Unsynchronisation</CheckBox>
         <CheckBox Height="17" HorizontalAlignment="Right" Margin="0,111,95,0" Name="checkBoxExtendedHeader" VerticalAlignment="Top" Width="220">Extended Header Support</CheckBox>
-        <CheckBox Height="18" HorizontalAlignment="Right" Margin="0,143,127,0" Name="checkBoxCRCPresent" VerticalAlignment="Top" Width="167" IsEnabled="False">CRC Present</CheckBox>
-        <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,235,0" Name="textBoxCRC0" VerticalAlignment="Top" Width="40" IsEnabled="False" />
-        <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,189,0" Name="textBoxCRC1" VerticalAlignment="Top" Width="40" IsEnabled="False" />
-        <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,143,0" Name="textBoxCRC2" VerticalAlignment="Top" Width="40" IsEnabled="False" />
-        <TextBox Height="31" HorizontalAlignment="Right" Margin="0,175,97,0" Name="textBoxCRC3" VerticalAlignment="Top" Width="40" IsEnabled="False" />
-        <Label HorizontalAlignment="Right" Margin="0,212,198,0" Name="label10" Width="96" Height="26" VerticalAlignment="Top">Padding Size :</Label>
-        <TextBox HorizontalAlignment="Right" Margin="0,212,155,0" Name="textBoxPadding" Width="52" Height="26" VerticalAlignment="Top" />
+        <CheckBox Height="18" HorizontalAlignment="Right" Margin="0,143,127,0" Name="checkBoxCRCPresent" VerticalAlignment="Top" Width="167" IsEnabled="True">CRC Present</CheckBox>
+        <Label HorizontalAlignment="Right" Margin="0,167,198,0" Name="label10" Width="96" Height="26" VerticalAlignment="Top">Padding Size :</Label>
+        <TextBox HorizontalAlignment="Right" Margin="0,167,155,0" Name="textBoxPadding" Width="52" Height="26" VerticalAlignment="Top" />
         <Label Height="25" HorizontalAlignment="Left" Margin="17,0,0,146" Name="labelPictureDescr" VerticalAlignment="Bottom" Width="86">Picture ( jpg ):</Label>
         <TextBox Height="27" Margin="134,0,62,146" Name="textBoxPicture" VerticalAlignment="Bottom" />
         <Button Height="28.02" HorizontalAlignment="Right" Margin="0,0,13,146" Name="buttonPicture" VerticalAlignment="Bottom" Width="43" Click="buttonPicture_Click">...</Button>

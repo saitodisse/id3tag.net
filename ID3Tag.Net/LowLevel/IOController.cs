@@ -96,15 +96,14 @@ namespace ID3Tag.LowLevel
                 tagContent = rawTagContent;
             }
 
-            // TODO: Wie den CRC prüfen? 
+            //// TODO: Wie den CRC prüfen? Ich muss irgendwie an die Framebytes kommen...
+            //// TODO: Und was dann? Exception werfen? Sofort oder am Ende?
             ////
             ////  Check for CRC bytes
             ////
             //if (tagInfo.ExtendHeader.CRCDataPresent)
             //{
             //    var crc32 = new Crc32(Crc32.DefaultPolynom);
-
-                
             //}
 
             Stream tagStream = new MemoryStream(tagContent);
@@ -122,16 +121,26 @@ namespace ID3Tag.LowLevel
                 //
                 //  Read all frames
                 //
+                var frameBytes = new List<byte>();
                 var pos = reader.BaseStream.Position;
                 while ((pos + 10) < length)
                 {
-                    var continueReading = AnalyseFrame(reader,tagInfo);
+                    var continueReading = AnalyseFrame(reader,tagInfo,frameBytes);
                     if (!continueReading)
                     {
                         break;
                     }
 
                     pos = reader.BaseStream.Position;
+                }
+
+                if (tagInfo.ExtendHeader != null && tagInfo.ExtendHeader.CRCDataPresent)
+                {
+                    var tagData = frameBytes.ToArray();
+                    var crc32Value = tagInfo.ExtendHeader.CRC;
+
+                    var crc32 = new Crc32(Crc32.DefaultPolynom);
+                    var crcOK = crc32.Validate(tagData, crc32Value);
                 }
             }
 
@@ -242,7 +251,7 @@ namespace ID3Tag.LowLevel
             tagInfo.ExtendHeader = extendedHeader;
         }
 
-        private static bool AnalyseFrame(BinaryReader reader, Id3TagInfo tagInfo)
+        private static bool AnalyseFrame(BinaryReader reader, Id3TagInfo tagInfo,List<byte> frameBytes)
         {
             var frameHeader = new byte[10];
             reader.Read(frameHeader, 0, 10);
@@ -264,6 +273,9 @@ namespace ID3Tag.LowLevel
                 return false;
             }
 
+            //
+            //  Read the frame bytes
+            //
             var frameID = Utils.GetFrameID(frameIDBytes);
             var size = Utils.CalculateFrameHeaderSize(sizeBytes);
             var payloadBytes = new byte[size];
@@ -271,6 +283,10 @@ namespace ID3Tag.LowLevel
 
             var frame = RawFrame.CreateFrame(frameID, flagsBytes, payloadBytes);
             tagInfo.Frames.Add(frame);
+
+            // Add the frames to the buffer ( for CRC computing )
+            frameBytes.AddRange(frameHeader);
+            frameBytes.AddRange(payloadBytes);
 
             return true;
         }
@@ -323,12 +339,12 @@ namespace ID3Tag.LowLevel
             //
             //  encode the length
             //
-            var length = tagBytes.LongLength;
-            if (tagContainer.Tag.ExtendedHeader)
-            {
-                // Header + Size Coding.
-                length += extendedHeaderLength + 4;
-            }
+            var length = tagBytes.LongLength -10;
+            //if (tagContainer.Tag.ExtendedHeader)
+            //{
+            //    // Header + Size Coding.
+            //    length += extendedHeaderLength + 4;
+            //}
 
             var bits = GetBitCoding(length);
             var lengthBytes = new byte[4];

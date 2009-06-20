@@ -74,9 +74,6 @@ namespace ID3TagUtility
             {
                 Data.CrCPresent = Convert.ToBoolean(checkBoxCRCPresent.IsChecked);
                 Data.PaddingSize = Convert.ToInt32(textBoxPadding.Text);
-
-                var crcBytes = GetCrc();
-                Data.Crc = crcBytes;
             }
 
             Close();
@@ -114,11 +111,6 @@ namespace ID3TagUtility
                 var filename = dialog.FileName;
                 textBoxTargetFile.Text = filename;
             }
-        }
-
-        private byte[] GetCrc()
-        {
-            return new byte[] {0x20, 0x21, 0x22, 0x23};
         }
 
         private void buttonPicture_Click(object sender, RoutedEventArgs e)
