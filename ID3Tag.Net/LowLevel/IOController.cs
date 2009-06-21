@@ -96,16 +96,6 @@ namespace ID3Tag.LowLevel
                 tagContent = rawTagContent;
             }
 
-            //// TODO: Wie den CRC prüfen? Ich muss irgendwie an die Framebytes kommen...
-            //// TODO: Und was dann? Exception werfen? Sofort oder am Ende?
-            ////
-            ////  Check for CRC bytes
-            ////
-            //if (tagInfo.ExtendHeader.CRCDataPresent)
-            //{
-            //    var crc32 = new Crc32(Crc32.DefaultPolynom);
-            //}
-
             Stream tagStream = new MemoryStream(tagContent);
             var length = tagContent.Length;
             using (var reader = new BinaryReader(tagStream))
@@ -134,6 +124,9 @@ namespace ID3Tag.LowLevel
                     pos = reader.BaseStream.Position;
                 }
 
+                //
+                //  Check CRC if available
+                //
                 if (tagInfo.ExtendHeader != null && tagInfo.ExtendHeader.CRCDataPresent)
                 {
                     var tagData = frameBytes.ToArray();
@@ -141,6 +134,11 @@ namespace ID3Tag.LowLevel
 
                     var crc32 = new Crc32(Crc32.DefaultPolynom);
                     var crcOK = crc32.Validate(tagData, crc32Value);
+
+                    if (!crcOK)
+                    {
+                        throw new ID3TagException("The CRC32 validation failed!");
+                    }
                 }
             }
 
