@@ -156,5 +156,6 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(payload[2], 0xFF);
             Assert.AreEqual(payload[3], 0x02);
         }
+
     }
 }
