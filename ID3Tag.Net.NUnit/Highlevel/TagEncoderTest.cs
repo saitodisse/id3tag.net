@@ -44,8 +44,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.IsTrue(id3Tag.UnsynchronisationFlag);
             Assert.IsTrue(id3Tag.UnsynchronisationFlag);
             Assert.IsTrue(id3Tag.ExtendedHeaderAvailable);
-            Assert.IsNotNull(id3Tag.ExtendHeader);
-            Assert.IsTrue(ComparePayload(id3Tag.ExtendHeader.CRC, crc));
+            Assert.IsNotNull(id3Tag.ExtendHeaderV3);
+            Assert.IsTrue(ComparePayload(id3Tag.ExtendHeaderV3.CRC, crc));
             Assert.AreEqual(id3Tag.Frames.Count, 1);
         }
 
@@ -70,7 +70,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.IsFalse(id3Tag.UnsynchronisationFlag);
             Assert.IsFalse(id3Tag.UnsynchronisationFlag);
             Assert.IsFalse(id3Tag.ExtendedHeaderAvailable);
-            Assert.IsNull(id3Tag.ExtendHeader);
+            Assert.IsNull(id3Tag.ExtendHeaderV3);
             Assert.AreEqual(id3Tag.Frames.Count, 1);
         }
     }

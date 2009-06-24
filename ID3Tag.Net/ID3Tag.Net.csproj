@@ -81,7 +81,7 @@
     <Compile Include="ID3HeaderNotFoundException.cs" />
     <Compile Include="ID3IOException.cs" />
     <Compile Include="InvalidTagFormatException.cs" />
-    <Compile Include="LowLevel\ExtendedTagHeader.cs" />
+    <Compile Include="LowLevel\ExtendedTagHeaderV3.cs" />
     <Compile Include="Factory\ID3TagFactory.cs" />
     <Compile Include="LowLevel\IIOController.cs" />
     <Compile Include="LowLevel\IOController.cs" />

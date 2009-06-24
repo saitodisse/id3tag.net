@@ -43,7 +43,7 @@ namespace ID3Tag.LowLevel
         /// <summary>
         /// The extended header.
         /// </summary>
-        public ExtendedTagHeader ExtendHeader { get; internal set; }
+        public ExtendedTagHeaderV3 ExtendHeaderV3 { get; internal set; }
 
         /// <summary>
         /// The frames of the tag in raw format.

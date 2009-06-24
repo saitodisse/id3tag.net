@@ -127,10 +127,10 @@ namespace ID3Tag.LowLevel
                 //
                 //  Check CRC if available
                 //
-                if (tagInfo.ExtendHeader != null && tagInfo.ExtendHeader.CRCDataPresent)
+                if (tagInfo.ExtendHeaderV3 != null && tagInfo.ExtendHeaderV3.CRCDataPresent)
                 {
                     var tagData = frameBytes.ToArray();
-                    var crc32Value = tagInfo.ExtendHeader.CRC;
+                    var crc32Value = tagInfo.ExtendHeaderV3.CRC;
 
                     var crc32 = new Crc32(Crc32.DefaultPolynom);
                     var crcOK = crc32.Validate(tagData, crc32Value);
@@ -245,8 +245,8 @@ namespace ID3Tag.LowLevel
             var content = new byte[size];
             reader.Read(content, 0, size);
 
-            var extendedHeader = ExtendedTagHeader.Create(content);
-            tagInfo.ExtendHeader = extendedHeader;
+            var extendedHeader = ExtendedTagHeaderV3.Create(content);
+            tagInfo.ExtendHeaderV3 = extendedHeader;
         }
 
         private static bool AnalyseFrame(BinaryReader reader, Id3TagInfo tagInfo,List<byte> frameBytes)
@@ -730,6 +730,8 @@ namespace ID3Tag.LowLevel
             tagInfo.UnsynchronisationFlag = unsynchronisationFlag;
             tagInfo.ExtendedHeaderAvailable = extendedHeaderFlag;
             tagInfo.Experimental = experimentalFlag;
+
+            //TODO: Für ID3v2.4 hier footer auswerten... ( flagByte & 0x10) == ID3Tag Footer
 
             Array.Copy(headerBytes, 6, sizeBytes, 0, 4);
             var size = Utils.CalculateTagHeaderSize(sizeBytes);

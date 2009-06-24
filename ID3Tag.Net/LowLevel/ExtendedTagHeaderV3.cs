@@ -5,9 +5,9 @@ namespace ID3Tag.LowLevel
     /// <summary>
     /// Represents the extended tag header of the ID3 tag.
     /// </summary>
-    public class ExtendedTagHeader
+    public class ExtendedTagHeaderV3
     {
-        private ExtendedTagHeader()
+        private ExtendedTagHeaderV3()
         {
         }
 
@@ -28,9 +28,9 @@ namespace ID3Tag.LowLevel
 
         #region Create Extended Header
 
-        internal static ExtendedTagHeader Create(int paddingSize, bool crcDataPresent, byte[] crc)
+        internal static ExtendedTagHeaderV3 Create(int paddingSize, bool crcDataPresent, byte[] crc)
         {
-            var extendedHeader = new ExtendedTagHeader
+            var extendedHeader = new ExtendedTagHeaderV3
                                      {
                                          PaddingSize = paddingSize,
                                          CRCDataPresent = crcDataPresent,
@@ -40,7 +40,7 @@ namespace ID3Tag.LowLevel
             return extendedHeader;
         }
 
-        internal static ExtendedTagHeader Create(byte[] content)
+        internal static ExtendedTagHeaderV3 Create(byte[] content)
         {
             var flags = new byte[2];
             var paddingBytes = new byte[4];
@@ -48,7 +48,7 @@ namespace ID3Tag.LowLevel
             Array.Copy(content, 0, flags, 0, 2);
             Array.Copy(content, 2, paddingBytes, 0, 4);
 
-            var extendedHeader = new ExtendedTagHeader();
+            var extendedHeader = new ExtendedTagHeaderV3();
             extendedHeader.CRCDataPresent = (flags[0] & 0x80) == 0x80;
             extendedHeader.PaddingSize = Utils.CalculateExtendedHeaderPaddingSize(paddingBytes);
 

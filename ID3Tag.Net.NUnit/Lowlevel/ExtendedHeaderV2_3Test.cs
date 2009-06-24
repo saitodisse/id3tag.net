@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace ID3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
-    public class ExtendedHeaderTest : Test
+    public class ExtendedHeaderV2_3Test : Test
     {
         #region Setup/Teardown
 
@@ -32,7 +32,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(m_TagInfo.UnsynchronisationFlag);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendHeader;
+            var extendedHeader = m_TagInfo.ExtendHeaderV3;
             Assert.IsFalse(extendedHeader.CRCDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
             Assert.IsNull(extendedHeader.CRC);
@@ -62,7 +62,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             //Assert.IsTrue(m_TagInfo.UnsynchronisationFlag);
             //Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            //var extendedHeader = m_TagInfo.ExtendHeader;
+            //var extendedHeader = m_TagInfo.ExtendHeaderV3;
             //Assert.IsTrue(extendedHeader.CRCDataPresent);
             //Assert.AreEqual(extendedHeader.PaddingSize, 10);
             //Assert.IsNotNull(extendedHeader.CRC);
@@ -92,7 +92,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(m_TagInfo.UnsynchronisationFlag);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendHeader;
+            var extendedHeader = m_TagInfo.ExtendHeaderV3;
             Assert.IsTrue(extendedHeader.CRCDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
             Assert.IsNotNull(extendedHeader.CRC);

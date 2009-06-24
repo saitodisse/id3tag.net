@@ -119,5 +119,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var headerBytes = new byte[] {0x54, 0x41, 0x47, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08};
             Read(headerBytes);
         }
+
+        //TODO: ID3v2.4 Header Test ( footer )
     }
 }
