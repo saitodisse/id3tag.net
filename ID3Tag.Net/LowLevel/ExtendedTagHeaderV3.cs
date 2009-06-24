@@ -3,7 +3,7 @@
 namespace ID3Tag.LowLevel
 {
     /// <summary>
-    /// Represents the extended tag header of the ID3 tag.
+    /// Represents the extended tag header of the ID3V2.3 tag.
     /// </summary>
     public class ExtendedTagHeaderV3
     {

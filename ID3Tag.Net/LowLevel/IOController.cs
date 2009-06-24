@@ -75,13 +75,6 @@ namespace ID3Tag.LowLevel
                 reader.Read(rawTagContent, 0, rawTagLength);
             }
 
-            /* 
-             *  - Extended Header
-             *  - CRC
-             *  - Frames
-             *  - Padding Bytes
-             */
-
             //
             //  Check for Unsynchronisation Bytes
             //
@@ -237,16 +230,40 @@ namespace ID3Tag.LowLevel
 
         private static void AnalyseExtendedHeader(BinaryReader reader, Id3TagInfo tagInfo)
         {
-            // Read the extended header size
             var extendedHeaderSize = new byte[4];
             reader.Read(extendedHeaderSize, 0, 4);
 
             var size = Utils.CalculateExtendedHeaderSize(extendedHeaderSize);
-            var content = new byte[size];
-            reader.Read(content, 0, size);
+            byte[] content;
 
-            var extendedHeader = ExtendedTagHeaderV3.Create(content);
-            tagInfo.ExtendHeaderV3 = extendedHeader;
+            switch (tagInfo.MajorVersion)
+            {
+                case 3:
+                    //
+                    // Read the ID3v2.3 extended header
+                    //
+                    content = new byte[size];
+                    reader.Read(content, 0, size);
+
+                    var extendedHeader = ExtendedTagHeaderV3.Create(content);
+                    tagInfo.ExtendHeaderV3 = extendedHeader;
+                    break;
+                case 4:
+                    //
+                    //  Read the ID3v2.4 extended header
+                    //
+                    // We already read the length of the header...
+                    size = size - 4;
+
+                    content = new byte[size];
+                    reader.Read(content, 0, size);
+
+                    var extendedHeaderv4 = ExtendedTagHeaderV4.Create(content);
+                    tagInfo.ExtendHeaderV4 = extendedHeaderv4;
+                    break;
+                default:
+                    throw new ID3TagException("Unknown extended header found! ");
+            }
         }
 
         private static bool AnalyseFrame(BinaryReader reader, Id3TagInfo tagInfo,List<byte> frameBytes)
@@ -731,7 +748,15 @@ namespace ID3Tag.LowLevel
             tagInfo.ExtendedHeaderAvailable = extendedHeaderFlag;
             tagInfo.Experimental = experimentalFlag;
 
-            //TODO: Für ID3v2.4 hier footer auswerten... ( flagByte & 0x10) == ID3Tag Footer
+            if (majorVersion == 4)
+            {
+                //
+                //  ID3V2.4 tag found! check for footer.
+                //
+
+                var footerFlag = (flagByte & 0x10) == 0x10;
+                tagInfo.FooterFlag = footerFlag;
+            }
 
             Array.Copy(headerBytes, 6, sizeBytes, 0, 4);
             var size = Utils.CalculateTagHeaderSize(sizeBytes);

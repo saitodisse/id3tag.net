@@ -39,11 +39,20 @@ namespace ID3Tag.LowLevel
         /// The experminental flag.
         /// </summary>
         public bool Experimental { get; internal set; }
+        /// <summary>
+        /// The Footer Flag ( ID3v2.4 only)
+        /// </summary>
+        public bool FooterFlag { get; internal set; }
 
         /// <summary>
-        /// The extended header.
+        /// The ID3V2.3 extended header.
         /// </summary>
         public ExtendedTagHeaderV3 ExtendHeaderV3 { get; internal set; }
+
+        /// <summary>
+        /// The ID3V2.4 extended header.
+        /// </summary>
+        public ExtendedTagHeaderV4 ExtendHeaderV4 { get; internal set; }
 
         /// <summary>
         /// The frames of the tag in raw format.
@@ -62,6 +71,7 @@ namespace ID3Tag.LowLevel
             UnsynchronisationFlag = false;
             ExtendedHeaderAvailable = false;
             Experimental = false;
+            FooterFlag = false;
         }
 
         #endregion
