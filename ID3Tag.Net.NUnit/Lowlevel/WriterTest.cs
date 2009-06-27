@@ -23,27 +23,6 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
         #endregion
 
-        private byte[] m_AudioData;
-
-        private static void FillData(byte[] array)
-        {
-            byte curValue = 0;
-
-            for (var i = 0; i < array.Length; i++)
-            {
-                array[i] = curValue;
-
-                if (curValue < 0xFF)
-                {
-                    curValue++;
-                }
-                else
-                {
-                    curValue = 0;
-                }
-            }
-        }
-
         private TagContainer WriteAndRead(TagContainer tagContainer1)
         {
             TagContainer tagContainer2;

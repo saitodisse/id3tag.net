@@ -12,6 +12,8 @@ namespace ID3Tag.Net.NUnit
         protected ITagController m_TagController;
         protected Id3TagInfo m_TagInfo;
 
+        protected byte[] m_AudioData;
+
         protected void Read(byte[] tagBytes)
         {
             using (var ms = new MemoryStream(tagBytes))
@@ -137,6 +139,25 @@ namespace ID3Tag.Net.NUnit
             }
 
             return ok;
+        }
+
+        protected static void FillData(byte[] array)
+        {
+            byte curValue = 0;
+
+            for (var i = 0; i < array.Length; i++)
+            {
+                array[i] = curValue;
+
+                if (curValue < 0xFF)
+                {
+                    curValue++;
+                }
+                else
+                {
+                    curValue = 0;
+                }
+            }
         }
     }
 }

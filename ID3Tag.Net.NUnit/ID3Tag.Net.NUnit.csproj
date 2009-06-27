@@ -70,6 +70,7 @@
     <Compile Include="Lowlevel\FramesTest.cs" />
     <Compile Include="Lowlevel\HeaderTest.cs" />
     <Compile Include="Lowlevel\TagDetectionTest.cs" />
+    <Compile Include="Lowlevel\ValidatorTest.cs" />
     <Compile Include="Lowlevel\WriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lowlevel\ReaderTest.cs" />

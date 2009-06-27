@@ -80,12 +80,15 @@
     <Compile Include="HighLevel\ID3Frame\UserDefinedTextFrame.cs" />
     <Compile Include="ID3HeaderNotFoundException.cs" />
     <Compile Include="ID3IOException.cs" />
+    <Compile Include="InvalidID3StructureException.cs" />
     <Compile Include="InvalidTagFormatException.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV3.cs" />
     <Compile Include="Factory\ID3TagFactory.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV4.cs" />
+    <Compile Include="LowLevel\Id3V2Validator.cs" />
     <Compile Include="LowLevel\IIOController.cs" />
     <Compile Include="LowLevel\IOController.cs" />
+    <Compile Include="LowLevel\Validator.cs" />
     <Compile Include="Utils\Crc32.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="LowLevel\RawFrame.cs" />

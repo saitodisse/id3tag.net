@@ -321,13 +321,25 @@ namespace ID3Tag.LowLevel
                 throw new ArgumentNullException("tagContainer");
             }
 
+            //
+            //  Validate whether the tag container is in ID3V2.3 formaz
+            //
+            string message;
+            var isTagValid = ValidateTag(tagContainer, out message);
+            if (!isTagValid)
+            {
+                throw new InvalidID3StructureException(message);
+            }
+
+            //
+            //  OK. ID3Tag is valid. Let's write the tag.
+            //
+            //  Calculate the CRC32 value of the frameBytes ( before unsync!)
+            //
             byte[] extendedHeaderBytes;
             var tagHeader = GetTagHeader(tagContainer);
             var frameBytes = GetFrameBytes(tagContainer);
 
-            //
-            //  Calculate the CRC32 value of the frameBytes ( before unsync!)
-            //
             if (tagContainer.Tag.CrcDataPresent)
             {
                 var crc32 = new Crc32(Crc32.DefaultPolynom);
@@ -381,6 +393,7 @@ namespace ID3Tag.LowLevel
 
             WriteToStream(input, output, tagBytes);
         }
+
 
  
 
@@ -762,7 +775,23 @@ namespace ID3Tag.LowLevel
             var size = Utils.CalculateTagHeaderSize(sizeBytes);
 
             return size;
+        }
 
+        private static bool ValidateTag(TagContainer tagContainer, out string message)
+        {
+            Validator validator = new Id3V2Validator();
+            var isValid = validator.Validate(tagContainer);
+
+            if (isValid)
+            {
+                message = String.Empty;
+            }
+            else
+            {
+                message = validator.FailureDescription;
+            }
+
+            return isValid;
         }
 
         #endregion
