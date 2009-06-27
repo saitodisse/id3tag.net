@@ -18,6 +18,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// </summary>
         public UserDefinedTextFrame()
         {
+            Descriptor.ID = "TXXX";
         }
 
         /// <summary>

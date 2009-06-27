@@ -134,6 +134,9 @@ namespace ID3Tag.HighLevel
                     case "POPM":
                         frame = new PopularimeterFrame();
                         break;
+                    case "UFID":
+                        frame = new UniqueFileIdentifierFrame();
+                        break;
                     default:
                         frame = new UnknownFrame();
                         break;

@@ -52,6 +52,14 @@
         /// <summary>
         /// Play Counter Frame
         /// </summary>
-        PlayCounter
+        PlayCounter,
+        /// <summary>
+        /// Unique File Identifier
+        /// </summary>
+        UniqueFileIdentifier,
+        /// <summary>
+        /// Involved People list
+        /// </summary>
+        InvolvedPeopleList
     }
 }

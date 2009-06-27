@@ -258,5 +258,26 @@ namespace ID3Tag.HighLevel
 
             return popm;
         }
+
+        /// <summary>
+        /// Convert a abstract frame to a UniqueFileIdentifierFrame.
+        /// </summary>
+        /// <param name="frame">the abstract frame.</param>
+        /// <returns>the concrete type.</returns>
+        public static UniqueFileIdentifierFrame ConvertToUniqueIdentifierFrame(IFrame frame)
+        {
+            if (frame.Type != FrameType.UniqueFileIdentifier)
+            {
+                throw new ID3TagException("Frame Type does not mathch");
+            }
+
+            var ufid = frame as UniqueFileIdentifierFrame;
+            if (ufid == null)
+            {
+                throw new ID3TagException("Could not cast To UniqueFileIdentifierFrame!");
+            }
+
+            return ufid;
+        }
     }
 }
