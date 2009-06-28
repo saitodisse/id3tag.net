@@ -279,9 +279,9 @@ namespace ID3Tag.LowLevel
             Array.Copy(frameHeader, 4, sizeBytes, 0, 4);
             Array.Copy(frameHeader, 8, flagsBytes, 0, 2);
 
-            if (frameIDBytes[0] == 0 && 
-                frameIDBytes[1] == 0 &&
-                frameIDBytes[2] == 0 &&
+            if (frameIDBytes[0] == 0 ||
+                frameIDBytes[1] == 0 ||
+                frameIDBytes[2] == 0 ||
                 frameIDBytes[3] == 0)
             {
                 // No valid frame. Padding bytes?
