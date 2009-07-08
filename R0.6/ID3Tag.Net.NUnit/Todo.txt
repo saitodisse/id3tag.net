@@ -1,0 +1,2 @@
+﻿1. NUnit Tests fuer ID3v1 Converter schreiben [ ]
+2. NUnit Tests für ID3 Tag Erkennung schreiben [ ]
