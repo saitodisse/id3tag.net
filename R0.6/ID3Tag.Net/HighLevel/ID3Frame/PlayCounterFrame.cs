@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
@@ -16,14 +13,9 @@ namespace ID3Tag.HighLevel.ID3Frame
     public class PlayCounterFrame : Frame
     {
         /// <summary>
-        /// The play counter of the audio file.
-        /// </summary>
-        public long Counter { get; set; }
-
-        /// <summary>
         /// Creates a new instance of PlayCounterFrame
         /// </summary>
-        public PlayCounterFrame() 
+        public PlayCounterFrame()
             : this(0)
         {
         }
@@ -36,6 +28,19 @@ namespace ID3Tag.HighLevel.ID3Frame
         {
             Descriptor.ID = "PCNT";
             Counter = playCounter;
+        }
+
+        /// <summary>
+        /// The play counter of the audio file.
+        /// </summary>
+        public long Counter { get; set; }
+
+        /// <summary>
+        /// Defines the frame type.
+        /// </summary>
+        public override FrameType Type
+        {
+            get { return FrameType.PlayCounter; }
         }
 
         /// <summary>
@@ -58,7 +63,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             }
 
             var payload = new byte[counterLength];
-            Array.Copy(counterBytes,counterBytes.Length-counterLength, payload,0, counterLength);
+            Array.Copy(counterBytes, counterBytes.Length - counterLength, payload, 0, counterLength);
 
             var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flagBytes, payload);
             return rawFrame;
@@ -73,7 +78,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             ImportRawFrameHeader(rawFrame);
 
             var payload = rawFrame.Payload;
-            if (payload.Length == 0 )
+            if (payload.Length == 0)
             {
                 Counter = 0;
             }
@@ -87,7 +92,7 @@ namespace ID3Tag.HighLevel.ID3Frame
                 var counterBytes = new byte[8];
                 if (payload.Length < 8)
                 {
-                    Array.Copy(payload,0,counterBytes,8-payload.Length,payload.Length);
+                    Array.Copy(payload, 0, counterBytes, 8 - payload.Length, payload.Length);
                 }
                 else
                 {
@@ -98,14 +103,6 @@ namespace ID3Tag.HighLevel.ID3Frame
                 Array.Reverse(counterBytes);
                 Counter = BitConverter.ToInt64(counterBytes, 0);
             }
-        }
-
-        /// <summary>
-        /// Defines the frame type.
-        /// </summary>
-        public override FrameType Type
-        {
-            get { return FrameType.PlayCounter; }
         }
 
         /// <summary>
@@ -127,7 +124,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             var length = bytes.Length;
             var realLength = 0;
-            for (var i = 0; i < length; i++ )
+            for (var i = 0; i < length; i++)
             {
                 if (bytes[i] != 0)
                 {

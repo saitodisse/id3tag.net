@@ -122,7 +122,6 @@ namespace ID3Tag.HighLevel
             {
                 throw new ID3IOException("Cannot write ID3v1 tag", ex);
             }
-
         }
 
         #endregion
@@ -167,21 +166,21 @@ namespace ID3Tag.HighLevel
             tagBytes[2] = 0x47;
 
             // Write the fields...
-            var titleBytes = GetField(tag.Title,30);
+            var titleBytes = GetField(tag.Title, 30);
             var artistBytes = GetField(tag.Artist, 30);
             var albumBytes = GetField(tag.Album, 30);
             var year = GetField(tag.Year, 4);
 
             Array.Copy(titleBytes, 0, tagBytes, 3, 30);
-            Array.Copy(artistBytes,0,tagBytes,33,30);
-            Array.Copy(albumBytes,0,tagBytes,63,30);
-            Array.Copy(year,0,tagBytes,93,4);
-            
+            Array.Copy(artistBytes, 0, tagBytes, 33, 30);
+            Array.Copy(albumBytes, 0, tagBytes, 63, 30);
+            Array.Copy(year, 0, tagBytes, 93, 4);
+
             byte[] commentBytes;
             if (tag.IsID3V1_1Compliant)
             {
                 commentBytes = GetField(tag.Comment, 28);
-                Array.Copy(commentBytes,0,tagBytes,97,28);
+                Array.Copy(commentBytes, 0, tagBytes, 97, 28);
 
                 var trackNr = tag.TrackNr;
                 tagBytes[125] = 0x00;
@@ -190,7 +189,7 @@ namespace ID3Tag.HighLevel
             else
             {
                 commentBytes = GetField(tag.Comment, 30);
-                Array.Copy(commentBytes,0,tagBytes,97,30);
+                Array.Copy(commentBytes, 0, tagBytes, 97, 30);
             }
 
             // Add genre
@@ -218,14 +217,13 @@ namespace ID3Tag.HighLevel
                 else
                 {
                     var fieldCount = fieldBytes.Length;
-                    Array.Copy(valueBytes,fieldBytes,valueBytes.Length);
+                    Array.Copy(valueBytes, fieldBytes, valueBytes.Length);
 
-                    for (var i=valueBytes.Length; i < fieldCount; i++)
+                    for (var i = valueBytes.Length; i < fieldCount; i++)
                     {
                         // Add Space code
                         fieldBytes[i] = 0x20;
                     }
-
                 }
             }
 
@@ -264,7 +262,7 @@ namespace ID3Tag.HighLevel
                 trackNr = Convert.ToString(trackNrValue);
 
                 var newComments = new byte[28];
-                Array.Copy(commentBytes,0,newComments,0,newComments.Length);
+                Array.Copy(commentBytes, 0, newComments, 0, newComments.Length);
 
                 comment = GetString(newComments);
             }
@@ -312,6 +310,5 @@ namespace ID3Tag.HighLevel
         }
 
         #endregion
-
     }
 }

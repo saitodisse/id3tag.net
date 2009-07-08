@@ -22,7 +22,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <summary>
         /// Creates a new PopularityMeterFrame.
         /// </summary>
-        public PopularimeterFrame() : this(String.Empty,0,0)
+        public PopularimeterFrame() : this(String.Empty, 0, 0)
         {
         }
 
@@ -97,6 +97,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var frame = RawFrame.CreateFrame(Descriptor.ID, flagBytes, payload);
             return frame;
         }
+
         ///<summary>
         /// 
         /// </summary>
@@ -125,7 +126,7 @@ namespace ID3Tag.HighLevel.ID3Frame
                     {
                         var bytesleft = payload.Length - pointer;
                         pointer += (bytesleft > 4) ? bytesleft - 4 : 0;
-                            // only read the last 4 bytes (come on who listens to a song mor than Int32.Max times??
+                        // only read the last 4 bytes (come on who listens to a song mor than Int32.Max times??
                         var readlength = (bytesleft < 4) ? bytesleft : 4;
                         var counterbytes = new byte[4] {0, 0, 0, 0};
                         Array.Copy(payload, pointer, counterbytes, 0, readlength);

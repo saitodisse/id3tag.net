@@ -116,16 +116,16 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
             Read(frames);
 
-            Assert.AreEqual(m_TagInfo.Frames.Count,1);
-            Assert.AreEqual(m_TagInfo.Frames[0].ID,"PCNT");
+            Assert.AreEqual(m_TagInfo.Frames.Count, 1);
+            Assert.AreEqual(m_TagInfo.Frames[0].ID, "PCNT");
 
             var payload = m_TagInfo.Frames[0].Payload;
-            Assert.AreEqual(payload.Length,5);
-            Assert.AreEqual(payload[0],0x12);
-            Assert.AreEqual(payload[1],0xFF);
-            Assert.AreEqual(payload[2],0xFF);
-            Assert.AreEqual(payload[3],0xFF);
-            Assert.AreEqual(payload[4],0xFF);
+            Assert.AreEqual(payload.Length, 5);
+            Assert.AreEqual(payload[0], 0x12);
+            Assert.AreEqual(payload[1], 0xFF);
+            Assert.AreEqual(payload[2], 0xFF);
+            Assert.AreEqual(payload[3], 0xFF);
+            Assert.AreEqual(payload[4], 0xFF);
         }
 
         [Test]
@@ -156,6 +156,5 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(payload[2], 0xFF);
             Assert.AreEqual(payload[3], 0x02);
         }
-
     }
 }

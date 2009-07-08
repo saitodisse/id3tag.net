@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ID3Tag
 {
@@ -10,12 +8,12 @@ namespace ID3Tag
     /// </summary>
     internal class Crc32
     {
-        private readonly uint m_GeneratorPolynom;
-
         ///<summary>
         /// The CRC32 generator polynom.
         ///</summary>
         public const uint DefaultPolynom = 0x04C11DB7;
+
+        private readonly uint m_GeneratorPolynom;
 
         /// <summary>
         /// Creates a new instance of Crc32.
@@ -64,7 +62,7 @@ namespace ID3Tag
 
         public bool Validate(byte[] data, byte[] crcBytes)
         {
-            List<byte> bytes = new List<byte>();
+            var bytes = new List<byte>();
 
             bytes.AddRange(data);
             bytes.AddRange(crcBytes);

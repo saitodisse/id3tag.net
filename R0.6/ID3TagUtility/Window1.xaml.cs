@@ -7,6 +7,7 @@ using ID3Tag;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using Microsoft.Win32;
+using Version=ID3Tag.Version;
 
 namespace ID3TagUtility
 {
@@ -33,7 +34,7 @@ namespace ID3TagUtility
                 var filename = dialog.FileName;
                 var state = m_Controller.ReadTagStatus(filename);
 
-                checkBoxID3V1.IsChecked= state.Id3V1TagFound;
+                checkBoxID3V1.IsChecked = state.Id3V1TagFound;
                 checkBoxID3V2.IsChecked = state.Id3V2TagFound;
 
                 if (state.Id3V2TagFound)
@@ -210,8 +211,15 @@ namespace ID3TagUtility
                     return;
                 }
 
-                m_Controller.WriteId3V1Tag(data,sourceFile,targetFile);
+                m_Controller.WriteId3V1Tag(data, sourceFile, targetFile);
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var version = Version.GetReadableVersion();
+
+            versionLabel.Content = String.Format("ID3TagLib Version = {0}", version);
         }
     }
 }

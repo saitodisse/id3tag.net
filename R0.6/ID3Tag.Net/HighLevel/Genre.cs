@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 
 namespace ID3Tag.HighLevel
 {
@@ -12,6 +9,16 @@ namespace ID3Tag.HighLevel
     public class Genre
     {
         private static Genre m_Instance;
+
+        private readonly Dictionary<int, string> m_GenreDict;
+
+        /// <summary>
+        /// Creates a new instance of Genre
+        /// </summary>
+        private Genre()
+        {
+            m_GenreDict = GetDictionary();
+        }
 
         /// <summary>
         /// Gets an instance of Genre.
@@ -27,16 +34,6 @@ namespace ID3Tag.HighLevel
 
                 return m_Instance;
             }
-        }
-
-        private readonly Dictionary<int, string> m_GenreDict;
-
-        /// <summary>
-        /// Creates a new instance of Genre
-        /// </summary>
-        private Genre()
-        {
-            m_GenreDict = GetDictionary();
         }
 
         /// <summary>

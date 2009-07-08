@@ -140,18 +140,18 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void SynchronizedTest1()
         {
             var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3,0);
-            tagContainer1.Tag.SetHeaderFlags(true,false,false);
+            tagContainer1.Tag.SetVersion(3, 0);
+            tagContainer1.Tag.SetHeaderFlags(true, false, false);
 
             const long counter = 0xFF00FF12;
             var playCounter = new PlayCounterFrame(counter);
             tagContainer1.Add(playCounter);
 
             var tagContainer2 = WriteAndRead(tagContainer1);
-            CompareContainer(tagContainer1,tagContainer2);
+            CompareContainer(tagContainer1, tagContainer2);
 
             var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
-            Assert.AreEqual(playCounter2.Counter,counter);
+            Assert.AreEqual(playCounter2.Counter, counter);
         }
 
         [Test]

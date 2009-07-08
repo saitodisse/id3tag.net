@@ -116,7 +116,7 @@ namespace ID3TagUtility
             FileState state = null;
             try
             {
-                state= ioController.DetermineTagStatus(file);
+                state = ioController.DetermineTagStatus(file);
             }
             catch (ID3IOException ioException)
             {
@@ -188,7 +188,7 @@ namespace ID3TagUtility
             {
                 var file = new FileInfo(filename);
                 var id3Converter = Id3TagFactory.CreateId3V1Controller();
-                
+
                 container = id3Converter.Read(file);
             }
             catch (ID3IOException ioException)
@@ -207,7 +207,7 @@ namespace ID3TagUtility
             return container;
         }
 
-        public void WriteId3V1Tag (Id3V1Tag tag, string sourceFile, string targetFile)
+        public void WriteId3V1Tag(Id3V1Tag tag, string sourceFile, string targetFile)
         {
             FileStream inputStream = null;
             FileStream outputStream = null;

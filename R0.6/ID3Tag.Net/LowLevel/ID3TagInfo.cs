@@ -39,6 +39,7 @@ namespace ID3Tag.LowLevel
         /// The experminental flag.
         /// </summary>
         public bool Experimental { get; internal set; }
+
         /// <summary>
         /// The Footer Flag ( ID3v2.4 only)
         /// </summary>

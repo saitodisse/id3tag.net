@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ID3Tag.LowLevel
 {
@@ -18,18 +15,22 @@ namespace ID3Tag.LowLevel
         /// True if the Update Tag flag is set otherwise false.
         /// </summary>
         public bool UpdateTag { get; internal set; }
+
         /// <summary>
         /// True if the Crc32 flag is set otherwise false.
         /// </summary>
         public bool CrcDataPresent { get; internal set; }
+
         /// <summary>
         /// The CRC32 bytes in sync safe format ( 0xxxxxxx 0xxxxxx ...)
         /// </summary>
         public byte[] Crc32 { get; internal set; }
+
         /// <summary>
         /// True if the Restriction flag is set otherwise false.
         /// </summary>
         public bool RestrictionPresent { get; internal set; }
+
         /// <summary>
         /// The Restriction byte
         /// </summary>
@@ -61,7 +62,7 @@ namespace ID3Tag.LowLevel
                 // Read the crc32
 
                 var crcBytes = new byte[5];
-                Array.Copy(content,startIndex+1,crcBytes,0,5);
+                Array.Copy(content, startIndex + 1, crcBytes, 0, 5);
 
                 startIndex += 6;
 

@@ -8,11 +8,10 @@ namespace ID3Tag.Net.NUnit
 {
     public abstract class Test
     {
+        protected byte[] m_AudioData;
         protected IIoController m_Controller;
         protected ITagController m_TagController;
         protected Id3TagInfo m_TagInfo;
-
-        protected byte[] m_AudioData;
 
         protected void Read(byte[] tagBytes)
         {

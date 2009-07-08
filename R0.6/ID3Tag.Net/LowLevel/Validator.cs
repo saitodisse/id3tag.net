@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ID3Tag.HighLevel;
+﻿using ID3Tag.HighLevel;
 
 namespace ID3Tag.LowLevel
 {

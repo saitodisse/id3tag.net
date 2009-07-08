@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.LowLevel;
-
-namespace ID3Tag.HighLevel.ID3Frame
+﻿namespace ID3Tag.HighLevel.ID3Frame
 {
-
     /// <summary>
     /// Since there might be a lot of people contributing to an audio file in various ways, 
     /// such as musicians and technicians, the 'Text information frames' are often insufficient 

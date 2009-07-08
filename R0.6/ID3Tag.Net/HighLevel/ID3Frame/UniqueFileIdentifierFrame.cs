@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
@@ -22,8 +20,8 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <summary>
         /// Creates a new instance of UniqueFileIdentifierFrame
         /// </summary>
-        public UniqueFileIdentifierFrame() 
-            : this(String.Empty,new byte[0])
+        public UniqueFileIdentifierFrame()
+            : this(String.Empty, new byte[0])
         {
         }
 
@@ -43,10 +41,16 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// The Owner Identifier
         /// </summary>
         public string Owner { get; set; }
+
         /// <summary>
         /// The Identifier
         /// </summary>
         public byte[] Identifier { get; set; }
+
+        public override FrameType Type
+        {
+            get { return FrameType.UniqueFileIdentifier; }
+        }
 
         /// <summary>
         /// 
@@ -104,11 +108,6 @@ namespace ID3Tag.HighLevel.ID3Frame
             var ownerChars = Converter.Extract(TextEncodingType.ISO_8859_1, ownerBytes.ToArray());
             Owner = new string(ownerChars);
             Identifier = identifierBytes.ToArray();
-        }
-
-        public override FrameType Type
-        {
-            get { return FrameType.UniqueFileIdentifier; }
         }
 
         public override string ToString()
