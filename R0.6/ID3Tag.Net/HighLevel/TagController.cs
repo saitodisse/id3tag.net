@@ -21,7 +21,7 @@ namespace ID3Tag.HighLevel
 
             if (info.ExtendedHeaderAvailable)
             {
-                var extendedHeader = info.ExtendHeaderV3;
+                var extendedHeader = info.ExtendedHeader.ConvertToV23();
                 descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CrcDataPresent);
                 if (extendedHeader.CrcDataPresent)
                 {
@@ -61,7 +61,7 @@ namespace ID3Tag.HighLevel
             tagInfo.ExtendedHeaderAvailable = tag.ExtendedHeader;
             if (tagInfo.ExtendedHeaderAvailable)
             {
-                tagInfo.ExtendHeaderV3 = ExtendedTagHeaderV3.Create(tag.PaddingSize, tag.CrcDataPresent, tag.Crc);
+                tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(tag.PaddingSize, tag.CrcDataPresent, tag.Crc);
             }
 
             foreach (var frame in container)

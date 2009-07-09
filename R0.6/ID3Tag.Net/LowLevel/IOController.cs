@@ -119,10 +119,10 @@ namespace ID3Tag.LowLevel
                 //
                 //  Check CRC if available
                 //
-                if (tagInfo.ExtendHeaderV3 != null && tagInfo.ExtendHeaderV3.CrcDataPresent)
+                if (tagInfo.ExtendedHeader != null && tagInfo.ExtendedHeader.CrcDataPresent)
                 {
                     var tagData = frameBytes.ToArray();
-                    var crc32Value = tagInfo.ExtendHeaderV3.Crc32;
+                    var crc32Value = tagInfo.ExtendedHeader.Crc32;
 
                     var crc32 = new Crc32(Crc32.DefaultPolynom);
                     var crcOK = crc32.Validate(tagData, crc32Value);
@@ -728,7 +728,7 @@ namespace ID3Tag.LowLevel
                     reader.Read(content, 0, size);
 
                     var extendedHeader = ExtendedTagHeaderV3.Create(content);
-                    tagInfo.ExtendHeaderV3 = extendedHeader;
+                    tagInfo.ExtendedHeader = extendedHeader;
                     break;
                 case 4:
                     //
@@ -741,7 +741,7 @@ namespace ID3Tag.LowLevel
                     reader.Read(content, 0, size);
 
                     var extendedHeaderv4 = ExtendedTagHeaderV4.Create(content);
-                    tagInfo.ExtendHeaderV4 = extendedHeaderv4;
+                    tagInfo.ExtendedHeader = extendedHeaderv4;
                     break;
                 default:
                     throw new ID3TagException("Unknown extended header found! ");
