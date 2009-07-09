@@ -119,10 +119,10 @@ namespace ID3Tag.LowLevel
                 //
                 //  Check CRC if available
                 //
-                if (tagInfo.ExtendHeaderV3 != null && tagInfo.ExtendHeaderV3.CRCDataPresent)
+                if (tagInfo.ExtendHeaderV3 != null && tagInfo.ExtendHeaderV3.CrcDataPresent)
                 {
                     var tagData = frameBytes.ToArray();
-                    var crc32Value = tagInfo.ExtendHeaderV3.CRC;
+                    var crc32Value = tagInfo.ExtendHeaderV3.Crc32;
 
                     var crc32 = new Crc32(Crc32.DefaultPolynom);
                     var crcOK = crc32.Validate(tagData, crc32Value);

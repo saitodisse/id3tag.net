@@ -22,10 +22,10 @@ namespace ID3Tag.HighLevel
             if (info.ExtendedHeaderAvailable)
             {
                 var extendedHeader = info.ExtendHeaderV3;
-                descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CRCDataPresent);
-                if (extendedHeader.CRCDataPresent)
+                descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CrcDataPresent);
+                if (extendedHeader.CrcDataPresent)
                 {
-                    descriptor.SetCrc32(extendedHeader.CRC);
+                    descriptor.SetCrc32(extendedHeader.Crc32);
                 }
             }
 

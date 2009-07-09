@@ -46,16 +46,18 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// The Identifier
         /// </summary>
         public byte[] Identifier { get; set; }
-
+        /// <summary>
+        /// Defines the frame type.
+        /// </summary>
         public override FrameType Type
         {
             get { return FrameType.UniqueFileIdentifier; }
         }
 
         /// <summary>
-        /// 
+        /// Convert the frame to raw frame.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the raw frame</returns>
         public override RawFrame Convert()
         {
             /*
@@ -77,6 +79,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
+        /// <summary>
+        /// Import a raw frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame</param>
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);
@@ -110,6 +116,10 @@ namespace ID3Tag.HighLevel.ID3Frame
             Identifier = identifierBytes.ToArray();
         }
 
+        /// <summary>
+        /// Returns the representative ToString
+        /// </summary>
+        /// <returns>the string</returns>
         public override string ToString()
         {
             var bytes = Utils.BytesToString(Identifier);

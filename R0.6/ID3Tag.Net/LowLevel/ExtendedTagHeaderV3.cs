@@ -5,26 +5,18 @@ namespace ID3Tag.LowLevel
     /// <summary>
     /// Represents the extended tag header of the ID3V2.3 tag.
     /// </summary>
-    public class ExtendedTagHeaderV3
+    public class ExtendedTagHeaderV3 : ExtendedHeader
     {
         private ExtendedTagHeaderV3()
         {
         }
 
-        /// <summary>
-        /// True if CRC data is present.
-        /// </summary>
-        public bool CRCDataPresent { get; private set; }
 
         /// <summary>
         /// The padding size.
         /// </summary>
         public int PaddingSize { get; private set; }
 
-        /// <summary>
-        /// The CRC bytes.
-        /// </summary>
-        public byte[] CRC { get; private set; }
 
         #region Create Extended Header
 
@@ -33,8 +25,8 @@ namespace ID3Tag.LowLevel
             var extendedHeader = new ExtendedTagHeaderV3
                                      {
                                          PaddingSize = paddingSize,
-                                         CRCDataPresent = crcDataPresent,
-                                         CRC = crc
+                                         CrcDataPresent = crcDataPresent,
+                                         Crc32 = crc
                                      };
 
             return extendedHeader;
@@ -49,19 +41,27 @@ namespace ID3Tag.LowLevel
             Array.Copy(content, 2, paddingBytes, 0, 4);
 
             var extendedHeader = new ExtendedTagHeaderV3();
-            extendedHeader.CRCDataPresent = (flags[0] & 0x80) == 0x80;
+            extendedHeader.CrcDataPresent = (flags[0] & 0x80) == 0x80;
             extendedHeader.PaddingSize = Utils.CalculateExtendedHeaderPaddingSize(paddingBytes);
 
-            if (extendedHeader.CRCDataPresent)
+            if (extendedHeader.CrcDataPresent)
             {
                 var crcBytes = new byte[4];
                 Array.Copy(content, 6, crcBytes, 0, 4);
-                extendedHeader.CRC = crcBytes;
+                extendedHeader.Crc32 = crcBytes;
             }
 
             return extendedHeader;
         }
 
         #endregion
+
+        /// <summary>
+        /// Defines the extended header type
+        /// </summary>
+        public override ExtendedHeaderType HeaderType
+        {
+            get { return ExtendedHeaderType.V23; }
+        }
     }
 }

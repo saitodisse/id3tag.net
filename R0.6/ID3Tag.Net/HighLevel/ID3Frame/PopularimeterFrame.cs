@@ -138,7 +138,9 @@ namespace ID3Tag.HighLevel.ID3Frame
         }
 
         /// <summary>
-        /// <returns></returns>
+        /// Returns a string with details.
+        /// </summary>
+        /// <returns>the string.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder("PopularimeterFrame : ");

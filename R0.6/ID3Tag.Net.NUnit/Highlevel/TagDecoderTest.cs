@@ -39,12 +39,12 @@ namespace ID3Tag.Net.NUnit.Highlevel
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
             var extendedHeader = m_TagInfo.ExtendHeaderV3;
-            Assert.IsTrue(extendedHeader.CRCDataPresent);
+            Assert.IsTrue(extendedHeader.CrcDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
-            Assert.IsNotNull(extendedHeader.CRC);
+            Assert.IsNotNull(extendedHeader.Crc32);
 
             var refCRCBytes = new byte[] {0x71, 0xB4, 0x00, 0x0F};
-            Assert.IsTrue(ComparePayload(extendedHeader.CRC, refCRCBytes));
+            Assert.IsTrue(ComparePayload(extendedHeader.Crc32, refCRCBytes));
 
             // Validate TagContainer
             var tagContainer = m_TagController.Decode(m_TagInfo);

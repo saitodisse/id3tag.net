@@ -33,9 +33,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
             var extendedHeader = m_TagInfo.ExtendHeaderV3;
-            Assert.IsFalse(extendedHeader.CRCDataPresent);
+            Assert.IsFalse(extendedHeader.CrcDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
-            Assert.IsNull(extendedHeader.CRC);
+            Assert.IsNull(extendedHeader.Crc32);
         }
 
         [Test]
@@ -95,14 +95,14 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
             var extendedHeader = m_TagInfo.ExtendHeaderV3;
-            Assert.IsTrue(extendedHeader.CRCDataPresent);
+            Assert.IsTrue(extendedHeader.CrcDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
-            Assert.IsNotNull(extendedHeader.CRC);
-            Assert.AreEqual(extendedHeader.CRC.Length, 4);
-            Assert.AreEqual(extendedHeader.CRC[0], 0x71);
-            Assert.AreEqual(extendedHeader.CRC[1], 0xB4);
-            Assert.AreEqual(extendedHeader.CRC[2], 0x00);
-            Assert.AreEqual(extendedHeader.CRC[3], 0x0F);
+            Assert.IsNotNull(extendedHeader.Crc32);
+            Assert.AreEqual(extendedHeader.Crc32.Length, 4);
+            Assert.AreEqual(extendedHeader.Crc32[0], 0x71);
+            Assert.AreEqual(extendedHeader.Crc32[1], 0xB4);
+            Assert.AreEqual(extendedHeader.Crc32[2], 0x00);
+            Assert.AreEqual(extendedHeader.Crc32[3], 0x0F);
         }
 
         [Test]

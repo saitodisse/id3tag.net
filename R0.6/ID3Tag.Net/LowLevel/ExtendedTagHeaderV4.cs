@@ -5,7 +5,7 @@ namespace ID3Tag.LowLevel
     /// <summary>
     /// Represents the extended tag header of the ID3V2.4 tag.
     /// </summary>
-    public class ExtendedTagHeaderV4
+    public class ExtendedTagHeaderV4 : ExtendedHeader
     {
         private ExtendedTagHeaderV4()
         {
@@ -15,16 +15,6 @@ namespace ID3Tag.LowLevel
         /// True if the Update Tag flag is set otherwise false.
         /// </summary>
         public bool UpdateTag { get; internal set; }
-
-        /// <summary>
-        /// True if the Crc32 flag is set otherwise false.
-        /// </summary>
-        public bool CrcDataPresent { get; internal set; }
-
-        /// <summary>
-        /// The CRC32 bytes in sync safe format ( 0xxxxxxx 0xxxxxx ...)
-        /// </summary>
-        public byte[] Crc32 { get; internal set; }
 
         /// <summary>
         /// True if the Restriction flag is set otherwise false.
@@ -81,6 +71,14 @@ namespace ID3Tag.LowLevel
             }
 
             return extendedHeader;
+        }
+
+        /// <summary>
+        /// Defines the extend header type.
+        /// </summary>
+        public override ExtendedHeaderType HeaderType
+        {
+            get { return ExtendedHeaderType.V24; }
         }
     }
 }
