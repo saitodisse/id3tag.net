@@ -93,6 +93,8 @@
     <Compile Include="LowLevel\Id3V2Validator.cs" />
     <Compile Include="LowLevel\IIOController.cs" />
     <Compile Include="LowLevel\IOController.cs" />
+    <Compile Include="LowLevel\RawFrameV3.cs" />
+    <Compile Include="LowLevel\RawFrameV4.cs" />
     <Compile Include="LowLevel\Validator.cs" />
     <Compile Include="Utils\Crc32.cs" />
     <Compile Include="Utils\Utils.cs" />

@@ -125,9 +125,9 @@ namespace ID3Tag.LowLevel
                     var crc32Value = tagInfo.ExtendedHeader.Crc32;
 
                     var crc32 = new Crc32(Crc32.DefaultPolynom);
-                    var crcOK = crc32.Validate(tagData, crc32Value);
+                    var crcOk = crc32.Validate(tagData, crc32Value);
 
-                    if (!crcOK)
+                    if (!crcOk)
                     {
                         throw new ID3TagException("The CRC32 validation failed!");
                     }
@@ -546,7 +546,7 @@ namespace ID3Tag.LowLevel
                 var lengthBytes = BitConverter.GetBytes(rawFrame.Payload.Length);
                 // Convert from LSB to MSB. Better way here??
                 Array.Reverse(lengthBytes);
-                var flagsBytes = rawFrame.GetFlags();
+                var flagsBytes = rawFrame.EncodeFlags();
 
                 Array.Copy(idBytes, 0, headerBytes, 0, 4);
                 Array.Copy(lengthBytes, 0, headerBytes, 4, 4);
