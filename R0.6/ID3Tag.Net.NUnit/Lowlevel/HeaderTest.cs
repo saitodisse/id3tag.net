@@ -21,7 +21,15 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         {
             //TODO: ID3V2.4 Test - > In eigene Klasse verschieben!
 
-            var headerBytes = new byte[] {0x49, 0x44, 0x33, 0x04, 0x00, 0x10, 0x00, 0x00, 0x02, 0x01};
+            var headerBytes = new byte[]
+                                  {
+                                      0x49, 0x44, 0x33, 0x04, 0x00, 0x10, 0x00, 0x00, 0x02, 0x01,
+                                      0x54, 0x41, 0x4C, 0x42, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, // TALB
+                                      0x41, 0x42, 0x43, 0x44,
+                                      0x33, 0x44, 0x49, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Footer
+                                      0x54, 0x49, 0x54, 0x32, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, // TIT2
+                                      0x45, 0x46, 0x47, 0x48,
+                                  };
             Read(headerBytes);
 
             Assert.AreEqual(m_TagInfo.MajorVersion, 4);
@@ -30,6 +38,8 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsFalse(m_TagInfo.Experimental);
             Assert.IsFalse(m_TagInfo.ExtendedHeaderAvailable);
             Assert.IsTrue(m_TagInfo.FooterFlag);
+
+            Assert.AreEqual(m_TagInfo.Frames.Count,1);
         }
 
         [Test]

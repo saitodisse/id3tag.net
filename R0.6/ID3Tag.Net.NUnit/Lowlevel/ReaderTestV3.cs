@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace ID3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
-    public class ReaderTest : Test
+    public class ReaderTestV3 : Test
     {
         #region Setup/Teardown
 

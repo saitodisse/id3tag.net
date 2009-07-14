@@ -101,13 +101,13 @@ namespace ID3Tag.LowLevel
                 }
 
                 //
-                //  Read all frames
+                //  Read the content
                 //
                 var frameBytes = new List<byte>();
                 var pos = reader.BaseStream.Position;
                 while ((pos + 10) < length)
                 {
-                    var continueReading = AnalyseFrame(reader, tagInfo, frameBytes);
+                    var continueReading = ReadContent(reader, tagInfo, frameBytes);
                     if (!continueReading)
                     {
                         break;
@@ -748,44 +748,72 @@ namespace ID3Tag.LowLevel
             }
         }
 
-        private static bool AnalyseFrame(BinaryReader reader, Id3TagInfo tagInfo, List<byte> frameBytes)
+        private static bool ReadContent(BinaryReader reader, Id3TagInfo tagInfo, List<byte> frameBytes)
         {
+            /*
+             * 3.4.   ID3v2 footer
+
+               To speed up the process of locating an ID3v2 tag when searching from
+               the end of a file, a footer can be added to the tag. It is REQUIRED
+               to add a footer to an appended tag, i.e. a tag located after all
+               audio data. The footer is a copy of the header, but with a different
+               identifier.
+
+                 ID3v2 identifier           "3DI"
+                 ID3v2 version              $04 00
+                 ID3v2 flags                %abcd0000
+                 ID3v2 size             4 * %0xxxxxxx
+
+             */
+
+            //
+            //  Read the header ( footer or frame )
+            //
             var frameHeader = new byte[10];
             reader.Read(frameHeader, 0, 10);
 
-            var frameIDBytes = new byte[4];
-            var sizeBytes = new byte[4];
-            var flagsBytes = new byte[2];
-
-            Array.Copy(frameHeader, 0, frameIDBytes, 0, 4);
-            Array.Copy(frameHeader, 4, sizeBytes, 0, 4);
-            Array.Copy(frameHeader, 8, flagsBytes, 0, 2);
-
-            if (frameIDBytes[0] == 0 ||
-                frameIDBytes[1] == 0 ||
-                frameIDBytes[2] == 0 ||
-                frameIDBytes[3] == 0)
+            var isFooter = frameHeader[0] == 0x33 && frameHeader[1] == 0x44 && frameHeader[2] == 0x49;
+            if (!isFooter)
             {
-                // No valid frame. Padding bytes?
-                return false;
+                //
+                //  Frame found!
+                //
+                var frameIdBytes = new byte[4];
+                var sizeBytes = new byte[4];
+                var flagsBytes = new byte[2];
+
+                Array.Copy(frameHeader, 0, frameIdBytes, 0, 4);
+                Array.Copy(frameHeader, 4, sizeBytes, 0, 4);
+                Array.Copy(frameHeader, 8, flagsBytes, 0, 2);
+
+                if (frameIdBytes[0] == 0 ||
+                    frameIdBytes[1] == 0 ||
+                    frameIdBytes[2] == 0 ||
+                    frameIdBytes[3] == 0)
+                {
+                    // No valid frame. Padding bytes?
+                    return false;
+                }
+
+                //
+                //  Read the frame bytes
+                //
+                var frameID = Utils.GetFrameID(frameIdBytes);
+                var size = Utils.CalculateFrameHeaderSize(sizeBytes);
+                var payloadBytes = new byte[size];
+                reader.Read(payloadBytes, 0, (int)size);
+
+                var frame = RawFrame.CreateFrame(frameID, flagsBytes, payloadBytes);
+                tagInfo.Frames.Add(frame);
+
+                // Add the frames to the buffer ( for CRC computing )
+                frameBytes.AddRange(frameHeader);
+                frameBytes.AddRange(payloadBytes);
+
+                return true;
             }
 
-            //
-            //  Read the frame bytes
-            //
-            var frameID = Utils.GetFrameID(frameIDBytes);
-            var size = Utils.CalculateFrameHeaderSize(sizeBytes);
-            var payloadBytes = new byte[size];
-            reader.Read(payloadBytes, 0, (int) size);
-
-            var frame = RawFrame.CreateFrame(frameID, flagsBytes, payloadBytes);
-            tagInfo.Frames.Add(frame);
-
-            // Add the frames to the buffer ( for CRC computing )
-            frameBytes.AddRange(frameHeader);
-            frameBytes.AddRange(payloadBytes);
-
-            return true;
+            return false;
         }
     }
 }
