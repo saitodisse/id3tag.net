@@ -46,12 +46,12 @@ namespace ID3Tag.HighLevel
         protected void ImportRawFrameHeader(RawFrame rawFrame)
         {
             Descriptor.ID = rawFrame.ID;
-            Descriptor.TagAlterPreservation = rawFrame.TagAlterPreservation;
-            Descriptor.FileAlterPreservation = rawFrame.FileAlterPreservation;
-            Descriptor.ReadOnly = rawFrame.ReadOnly;
-            Descriptor.Compression = rawFrame.Compression;
-            Descriptor.Encryption = rawFrame.Encryption;
-            Descriptor.GroupingIdentify = rawFrame.GroupingIdentify;
+            Descriptor.TagAlterPreservation = rawFrame.Flag.TagAlterPreservation;
+            Descriptor.FileAlterPreservation = rawFrame.Flag.FileAlterPreservation;
+            Descriptor.ReadOnly = rawFrame.Flag.ReadOnly;
+            Descriptor.Compression = rawFrame.Flag.Compression;
+            Descriptor.Encryption = rawFrame.Flag.Encryption;
+            Descriptor.GroupingIdentify = rawFrame.Flag.GroupingIdentify;
         }
     }
 }

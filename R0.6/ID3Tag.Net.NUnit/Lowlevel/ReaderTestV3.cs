@@ -43,12 +43,12 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             // frame 1
             Assert.AreEqual(frame1.ID, "1234");
             Assert.AreEqual(frame1.Payload.Length, 4);
-            Assert.IsFalse(frame1.Compression);
-            Assert.IsFalse(frame1.Encryption);
-            Assert.IsFalse(frame1.FileAlterPreservation);
-            Assert.IsFalse(frame1.GroupingIdentify);
-            Assert.IsFalse(frame1.ReadOnly);
-            Assert.IsFalse(frame1.TagAlterPreservation);
+            Assert.IsFalse(frame1.Flag.Compression);
+            Assert.IsFalse(frame1.Flag.Encryption);
+            Assert.IsFalse(frame1.Flag.FileAlterPreservation);
+            Assert.IsFalse(frame1.Flag.GroupingIdentify);
+            Assert.IsFalse(frame1.Flag.ReadOnly);
+            Assert.IsFalse(frame1.Flag.TagAlterPreservation);
         }
 
         [Test]
@@ -81,21 +81,21 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             // frame 1
             Assert.AreEqual(frame1.ID, "1234");
             Assert.AreEqual(frame1.Payload.Length, 4);
-            Assert.IsFalse(frame1.Compression);
-            Assert.IsFalse(frame1.Encryption);
-            Assert.IsFalse(frame1.FileAlterPreservation);
-            Assert.IsFalse(frame1.GroupingIdentify);
-            Assert.IsFalse(frame1.ReadOnly);
-            Assert.IsFalse(frame1.TagAlterPreservation);
+            Assert.IsFalse(frame1.Flag.Compression);
+            Assert.IsFalse(frame1.Flag.Encryption);
+            Assert.IsFalse(frame1.Flag.FileAlterPreservation);
+            Assert.IsFalse(frame1.Flag.GroupingIdentify);
+            Assert.IsFalse(frame1.Flag.ReadOnly);
+            Assert.IsFalse(frame1.Flag.TagAlterPreservation);
             // frame 2
             Assert.AreEqual(frame2.ID, "5678");
             Assert.AreEqual(frame2.Payload.Length, 4);
-            Assert.IsTrue(frame2.Compression);
-            Assert.IsTrue(frame2.Encryption);
-            Assert.IsTrue(frame2.FileAlterPreservation);
-            Assert.IsTrue(frame2.GroupingIdentify);
-            Assert.IsTrue(frame2.ReadOnly);
-            Assert.IsTrue(frame2.TagAlterPreservation);
+            Assert.IsTrue(frame2.Flag.Compression);
+            Assert.IsTrue(frame2.Flag.Encryption);
+            Assert.IsTrue(frame2.Flag.FileAlterPreservation);
+            Assert.IsTrue(frame2.Flag.GroupingIdentify);
+            Assert.IsTrue(frame2.Flag.ReadOnly);
+            Assert.IsTrue(frame2.Flag.TagAlterPreservation);
         }
 
         [Test]

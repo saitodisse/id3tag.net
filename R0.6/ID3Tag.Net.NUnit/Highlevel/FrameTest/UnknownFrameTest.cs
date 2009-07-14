@@ -27,12 +27,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Payload[2], 0x32);
             Assert.AreEqual(rawFrame.Payload[3], 0x33);
 
-            Assert.AreEqual(rawFrame.TagAlterPreservation, true, "Tag Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.FileAlterPreservation, false, "File Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.ReadOnly, false, "Read Only Failed.");
-            Assert.AreEqual(rawFrame.Compression, false, "Compression failed.");
-            Assert.AreEqual(rawFrame.Encryption, false, "Encryption failed.");
-            Assert.AreEqual(rawFrame.GroupingIdentify, false, "Grouping Identify failed.");
+            Assert.AreEqual(rawFrame.Flag.TagAlterPreservation, true, "Tag Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.FileAlterPreservation, false, "File Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.ReadOnly, false, "Read Only Failed.");
+            Assert.AreEqual(rawFrame.Flag.Compression, false, "Compression failed.");
+            Assert.AreEqual(rawFrame.Flag.Encryption, false, "Encryption failed.");
+            Assert.AreEqual(rawFrame.Flag.GroupingIdentify, false, "Grouping Identify failed.");
         }
 
         [Test]
@@ -56,12 +56,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Payload[2], 0x32);
             Assert.AreEqual(rawFrame.Payload[3], 0x33);
 
-            Assert.AreEqual(rawFrame.TagAlterPreservation, false, "Tag Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.FileAlterPreservation, true, "File Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.ReadOnly, false, "Read Only Failed.");
-            Assert.AreEqual(rawFrame.Compression, false, "Compression failed.");
-            Assert.AreEqual(rawFrame.Encryption, false, "Encryption failed.");
-            Assert.AreEqual(rawFrame.GroupingIdentify, false, "Grouping Identify failed.");
+            Assert.AreEqual(rawFrame.Flag.TagAlterPreservation, false, "Tag Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.FileAlterPreservation, true, "File Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.ReadOnly, false, "Read Only Failed.");
+            Assert.AreEqual(rawFrame.Flag.Compression, false, "Compression failed.");
+            Assert.AreEqual(rawFrame.Flag.Encryption, false, "Encryption failed.");
+            Assert.AreEqual(rawFrame.Flag.GroupingIdentify, false, "Grouping Identify failed.");
         }
 
         [Test]
@@ -85,12 +85,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Payload[2], 0x32);
             Assert.AreEqual(rawFrame.Payload[3], 0x33);
 
-            Assert.AreEqual(rawFrame.TagAlterPreservation, false, "Tag Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.FileAlterPreservation, false, "File Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.ReadOnly, true, "Read Only Failed.");
-            Assert.AreEqual(rawFrame.Compression, false, "Compression failed.");
-            Assert.AreEqual(rawFrame.Encryption, false, "Encryption failed.");
-            Assert.AreEqual(rawFrame.GroupingIdentify, false, "Grouping Identify failed.");
+            Assert.AreEqual(rawFrame.Flag.TagAlterPreservation, false, "Tag Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.FileAlterPreservation, false, "File Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.ReadOnly, true, "Read Only Failed.");
+            Assert.AreEqual(rawFrame.Flag.Compression, false, "Compression failed.");
+            Assert.AreEqual(rawFrame.Flag.Encryption, false, "Encryption failed.");
+            Assert.AreEqual(rawFrame.Flag.GroupingIdentify, false, "Grouping Identify failed.");
         }
 
         [Test]
@@ -114,12 +114,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Payload[2], 0x32);
             Assert.AreEqual(rawFrame.Payload[3], 0x33);
 
-            Assert.AreEqual(rawFrame.TagAlterPreservation, false, "Tag Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.FileAlterPreservation, false, "File Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.ReadOnly, false, "Read Only Failed.");
-            Assert.AreEqual(rawFrame.Compression, true, "Compression failed.");
-            Assert.AreEqual(rawFrame.Encryption, false, "Encryption failed.");
-            Assert.AreEqual(rawFrame.GroupingIdentify, false, "Grouping Identify failed.");
+            Assert.AreEqual(rawFrame.Flag.TagAlterPreservation, false, "Tag Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.FileAlterPreservation, false, "File Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.ReadOnly, false, "Read Only Failed.");
+            Assert.AreEqual(rawFrame.Flag.Compression, true, "Compression failed.");
+            Assert.AreEqual(rawFrame.Flag.Encryption, false, "Encryption failed.");
+            Assert.AreEqual(rawFrame.Flag.GroupingIdentify, false, "Grouping Identify failed.");
         }
 
         [Test]
@@ -143,12 +143,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Payload[2], 0x32);
             Assert.AreEqual(rawFrame.Payload[3], 0x33);
 
-            Assert.AreEqual(rawFrame.TagAlterPreservation, false, "Tag Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.FileAlterPreservation, false, "File Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.ReadOnly, false, "Read Only Failed.");
-            Assert.AreEqual(rawFrame.Compression, false, "Compression failed.");
-            Assert.AreEqual(rawFrame.Encryption, true, "Encryption failed.");
-            Assert.AreEqual(rawFrame.GroupingIdentify, false, "Grouping Identify failed.");
+            Assert.AreEqual(rawFrame.Flag.TagAlterPreservation, false, "Tag Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.FileAlterPreservation, false, "File Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.ReadOnly, false, "Read Only Failed.");
+            Assert.AreEqual(rawFrame.Flag.Compression, false, "Compression failed.");
+            Assert.AreEqual(rawFrame.Flag.Encryption, true, "Encryption failed.");
+            Assert.AreEqual(rawFrame.Flag.GroupingIdentify, false, "Grouping Identify failed.");
         }
 
         [Test]
@@ -172,12 +172,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Payload[2], 0x32);
             Assert.AreEqual(rawFrame.Payload[3], 0x33);
 
-            Assert.AreEqual(rawFrame.TagAlterPreservation, false, "Tag Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.FileAlterPreservation, false, "File Alter Preservation failed.");
-            Assert.AreEqual(rawFrame.ReadOnly, false, "Read Only Failed.");
-            Assert.AreEqual(rawFrame.Compression, false, "Compression failed.");
-            Assert.AreEqual(rawFrame.Encryption, false, "Encryption failed.");
-            Assert.AreEqual(rawFrame.GroupingIdentify, true, "Grouping Identify failed.");
+            Assert.AreEqual(rawFrame.Flag.TagAlterPreservation, false, "Tag Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.FileAlterPreservation, false, "File Alter Preservation failed.");
+            Assert.AreEqual(rawFrame.Flag.ReadOnly, false, "Read Only Failed.");
+            Assert.AreEqual(rawFrame.Flag.Compression, false, "Compression failed.");
+            Assert.AreEqual(rawFrame.Flag.Encryption, false, "Encryption failed.");
+            Assert.AreEqual(rawFrame.Flag.GroupingIdentify, true, "Grouping Identify failed.");
         }
     }
 }

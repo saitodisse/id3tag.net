@@ -11,6 +11,7 @@ namespace ID3Tag.LowLevel
         {
             ID = id;
             Payload = payload;
+            Flag = new FrameFlags();
 
             AnalyseFrameTags(flags);
         }
@@ -25,44 +26,16 @@ namespace ID3Tag.LowLevel
         /// </summary>
         public string ID { get; private set; }
 
-        /// <summary>
-        /// The TagAlterPreservation flag.
-        /// </summary>
-        public bool TagAlterPreservation { get; private set; }
-
-        /// <summary>
-        /// The FileAlterPreservation flag.
-        /// </summary>
-        public bool FileAlterPreservation { get; private set; }
-
-        /// <summary>
-        /// The ReadOnly flag.
-        /// </summary>
-        public bool ReadOnly { get; private set; }
-
-        /// <summary>
-        /// The Compression flag.
-        /// </summary>
-        public bool Compression { get; private set; }
-
-        /// <summary>
-        /// The Encryption flag.
-        /// </summary>
-        public bool Encryption { get; private set; }
-
-        /// <summary>
-        /// The GroupingIdentify flag.
-        /// </summary>
-        public bool GroupingIdentify { get; private set; }
+        public FrameFlags Flag { get; private set; }
 
         private void AnalyseFrameTags(byte[] flags)
         {
-            TagAlterPreservation = (flags[0] & 0x80) == 0x80;
-            FileAlterPreservation = (flags[0] & 0x40) == 0x40;
-            ReadOnly = (flags[0] & 0x20) == 0x20;
-            Compression = (flags[1] & 0x80) == 0x80;
-            Encryption = (flags[1] & 0x40) == 0x40;
-            GroupingIdentify = (flags[1] & 0x20) == 0x20;
+            Flag.TagAlterPreservation = (flags[0] & 0x80) == 0x80;
+            Flag.FileAlterPreservation = (flags[0] & 0x40) == 0x40;
+            Flag.ReadOnly = (flags[0] & 0x20) == 0x20;
+            Flag.Compression = (flags[1] & 0x80) == 0x80;
+            Flag.Encryption = (flags[1] & 0x40) == 0x40;
+            Flag.GroupingIdentify = (flags[1] & 0x20) == 0x20;
         }
 
         #region Create a new ID3 Tag Frame
@@ -81,32 +54,32 @@ namespace ID3Tag.LowLevel
             var flagsByte = new byte[2];
 
             // Decode the flags
-            if (TagAlterPreservation)
+            if (Flag.TagAlterPreservation)
             {
                 flagsByte[0] |= 0x80;
             }
 
-            if (FileAlterPreservation)
+            if (Flag.FileAlterPreservation)
             {
                 flagsByte[0] |= 0x40;
             }
 
-            if (ReadOnly)
+            if (Flag.ReadOnly)
             {
                 flagsByte[0] |= 0x20;
             }
 
-            if (Compression)
+            if (Flag.Compression)
             {
                 flagsByte[1] |= 0x80;
             }
 
-            if (Encryption)
+            if (Flag.Encryption)
             {
                 flagsByte[1] |= 0x40;
             }
 
-            if (GroupingIdentify)
+            if (Flag.GroupingIdentify)
             {
                 flagsByte[1] |= 0x20;
             }
