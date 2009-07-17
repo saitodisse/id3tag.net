@@ -7,13 +7,10 @@ namespace ID3Tag.LowLevel
     /// </summary>
     public abstract class RawFrame
     {
-        protected RawFrame(string id, byte[] flags, byte[] payload)
+        protected RawFrame(string id, byte[] payload)
         {
             ID = id;
             Payload = payload;
-            Flag = new FrameFlags();
-
-            DecodeFlags(flags);
         }
 
         /// <summary>
@@ -26,9 +23,8 @@ namespace ID3Tag.LowLevel
         /// </summary>
         public string ID { get; private set; }
 
-        public FrameFlags Flag { get; private set; }
+        public FrameFlags Flag { get; protected set; }
 
-        protected abstract void DecodeFlags(byte[] flags);
         internal abstract byte[] EncodeFlags();
 
         #region Create a new ID3 Tag Frame
@@ -42,9 +38,15 @@ namespace ID3Tag.LowLevel
             return idBytes;
         }
 
-        internal static RawFrame CreateFrame(string frameID, byte[] flags, byte[] payload)
+        internal static RawFrame CreateV3Frame(string frameID, byte[] flags, byte[] payload)
         {
             var f = new RawFrameV3(frameID, flags, payload);
+            return f;
+        }
+
+        internal static RawFrame CreateV4Frame(string frameID, byte[] flags, byte[] payload)
+        {
+            var f = new RawFrameV4(frameID, flags, payload);
             return f;
         }
 

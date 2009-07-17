@@ -94,7 +94,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payload[mailbytes.Length] = Rating;
             Array.Copy(playcounterbytes, counterlength - 4, payload, mailbytes.Length + 1, counterlength);
 
-            var frame = RawFrame.CreateFrame(Descriptor.ID, flagBytes, payload);
+            var frame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, payload);
             return frame;
         }
 

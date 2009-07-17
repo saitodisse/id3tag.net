@@ -65,7 +65,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var payload = new byte[counterLength];
             Array.Copy(counterBytes, counterBytes.Length - counterLength, payload, 0, counterLength);
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flagBytes, payload);
+            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, payload);
             return rawFrame;
         }
 

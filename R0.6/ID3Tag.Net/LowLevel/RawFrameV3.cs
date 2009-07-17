@@ -5,11 +5,12 @@ using System.Text;
 
 namespace ID3Tag.LowLevel
 {
-    public class RawFrameV3 : RawFrame
+    public sealed class RawFrameV3 : RawFrame
     {
         public RawFrameV3(string id, byte[] flags, byte[] payload)
-            : base(id,flags,payload)
+            : base(id,payload)
         {
+            DecodeFlags(flags);
         }
 
         internal override byte[] EncodeFlags()
@@ -50,8 +51,9 @@ namespace ID3Tag.LowLevel
             return flagsByte;
         }
 
-        protected override void DecodeFlags(byte[] flags)
+        private void DecodeFlags(byte[] flags)
         {
+            Flag = new FrameFlags();
             Flag.TagAlterPreservation = (flags[0] & 0x80) == 0x80;
             Flag.FileAlterPreservation = (flags[0] & 0x40) == 0x40;
             Flag.ReadOnly = (flags[0] & 0x20) == 0x20;

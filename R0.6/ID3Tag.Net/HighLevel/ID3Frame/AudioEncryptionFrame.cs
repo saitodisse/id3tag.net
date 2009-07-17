@@ -106,7 +106,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var payload = new byte[dataBytes.Length];
             Array.Copy(dataBytes, 0, payload, 0, dataBytes.Length);
 
-            var rawFrame = RawFrame.CreateFrame("AENC", flagBytes, payload);
+            var rawFrame = RawFrame.CreateV3Frame("AENC", flagBytes, payload);
             return rawFrame;
         }
 

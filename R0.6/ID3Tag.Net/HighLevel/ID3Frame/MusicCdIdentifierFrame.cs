@@ -52,7 +52,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert()
         {
             var flagBytes = Descriptor.GetFlagBytes();
-            var frame = RawFrame.CreateFrame(Descriptor.ID, flagBytes, TOC);
+            var frame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, TOC);
             return frame;
         }
 

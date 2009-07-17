@@ -68,7 +68,8 @@
     <Compile Include="Highlevel\FrameTest\UserDefinedUrlLinkFrameTest.cs" />
     <Compile Include="Lowlevel\ExtendedHeaderV2_3Test.cs" />
     <Compile Include="Lowlevel\ExtendedHeaderV2_4Test.cs" />
-    <Compile Include="Lowlevel\FramesTest.cs" />
+    <Compile Include="Lowlevel\FramesTestV3.cs" />
+    <Compile Include="Lowlevel\FramesTestV4.cs" />
     <Compile Include="Lowlevel\HeaderTest.cs" />
     <Compile Include="Lowlevel\TagDetectionTest.cs" />
     <Compile Include="Lowlevel\ValidatorTest.cs" />

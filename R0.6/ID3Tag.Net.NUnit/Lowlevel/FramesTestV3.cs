@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace ID3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
-    public class FramesTest : Test
+    public class FramesTestV3 : Test
     {
         #region Setup/Teardown
 

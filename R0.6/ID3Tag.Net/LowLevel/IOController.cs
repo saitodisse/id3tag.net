@@ -121,16 +121,41 @@ namespace ID3Tag.LowLevel
                 //
                 if (tagInfo.ExtendedHeader != null && tagInfo.ExtendedHeader.CrcDataPresent)
                 {
-                    var tagData = frameBytes.ToArray();
-                    var crc32Value = tagInfo.ExtendedHeader.Crc32;
-
-                    var crc32 = new Crc32(Crc32.DefaultPolynom);
-                    var crcOk = crc32.Validate(tagData, crc32Value);
-
-                    if (!crcOk)
+                    if (tagInfo.MajorVersion == 3)
                     {
-                        throw new ID3TagException("The CRC32 validation failed!");
+                        var tagData = frameBytes.ToArray();
+                        var crc32Value = tagInfo.ExtendedHeader.Crc32;
+
+                        var crc32 = new Crc32(Crc32.DefaultPolynom);
+                        var crcOk = crc32.Validate(tagData, crc32Value);
+
+                        if (!crcOk)
+                        {
+                            throw new ID3TagException("The CRC32 validation failed!");
+                        }
                     }
+                    else
+                    {
+                        /*
+                         *    c - CRC data present
+
+                             If this flag is set, a CRC-32 [ISO-3309] data is included in the
+                             extended header. The CRC is calculated on all the data between the
+                             header and footer as indicated by the header's tag length field,
+                             minus the extended header. Note that this includes the padding (if
+                             there is any), but excludes the footer. The CRC-32 is stored as an
+                             35 bit synchsafe integer, leaving the upper four bits always
+                             zeroed.
+
+                                Flag data length       $05
+                                Total frame CRC    5 * %0xxxxxxx
+
+                         */
+
+                        // TODO: Die Unsync CRC32 aus dem Header konvertieren und dann prüfen!
+                        throw new NotSupportedException("CRC32 check is not support for > ID3 V2.3");
+                    }
+
                 }
             }
 
@@ -798,12 +823,24 @@ namespace ID3Tag.LowLevel
                 //
                 //  Read the frame bytes
                 //
-                var frameID = Utils.GetFrameID(frameIdBytes);
+                var frameId = Utils.GetFrameID(frameIdBytes);
                 var size = Utils.CalculateFrameHeaderSize(sizeBytes);
                 var payloadBytes = new byte[size];
                 reader.Read(payloadBytes, 0, (int)size);
 
-                var frame = RawFrame.CreateFrame(frameID, flagsBytes, payloadBytes);
+                RawFrame frame;
+                switch (tagInfo.MajorVersion)
+                {
+                    case 3:
+                        frame = RawFrame.CreateV3Frame(frameId, flagsBytes, payloadBytes);
+                        break;
+                    case 4:
+                        frame = RawFrame.CreateV4Frame(frameId, flagsBytes, payloadBytes);
+                        break;
+                    default:
+                        throw new ID3TagException("Not supported major revision found!");
+                }
+
                 tagInfo.Frames.Add(frame);
 
                 // Add the frames to the buffer ( for CRC computing )
