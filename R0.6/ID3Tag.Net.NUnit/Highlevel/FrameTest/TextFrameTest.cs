@@ -122,7 +122,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x45, 0x46, 0x47, 0x48, 0x00, 048
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
@@ -161,7 +161,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
@@ -200,7 +200,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x74, 0x00, 0x2E, 0x00, 0x6D, 0x00, 0x70, 0x00, 0x33
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
             var tagContainer = m_TagController.Decode(m_TagInfo);
 
@@ -225,7 +225,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x74, 0x00, 0x2E, 0x00, 0x6D, 0x00, 0x70, 0x00, 0x33
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
             var tagContainer = m_TagController.Decode(m_TagInfo);
 
@@ -250,7 +250,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x2E, 0x00, 0x6D, 0x00, 0x70, 0x00, 0x33, 0x00
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
             var tagContainer = m_TagController.Decode(m_TagInfo);
 
@@ -274,7 +274,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x74, 0x65, 0x73, 0x74, 0x2E, 0x6D, 0x70, 0x33
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
             var tagContainer = m_TagController.Decode(m_TagInfo);
 

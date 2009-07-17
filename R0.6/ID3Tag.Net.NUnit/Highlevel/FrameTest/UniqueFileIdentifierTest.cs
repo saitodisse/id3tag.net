@@ -82,7 +82,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x31, 0x32, 0x33, 0x34, 0x00, 0x10, 0x11, 0x12, 0x13, 0x14
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
@@ -107,7 +107,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x10, 0x11, 0x12, 0x13, 0x14
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
@@ -132,7 +132,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x31, 0x32, 0x33, 0x34, 0x00
                              };
 
-            var completeTag = GetCompleteTag(frames);
+            var completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);

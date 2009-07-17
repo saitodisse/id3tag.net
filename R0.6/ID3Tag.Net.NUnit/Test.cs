@@ -95,9 +95,26 @@ namespace ID3Tag.Net.NUnit
             return curValue;
         }
 
-        protected static byte[] GetCompleteTag(byte[] frameBytes)
+        protected static byte[] GetCompleteV3Tag(byte[] frameBytes)
         {
             var headerBytes = new byte[] {0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+            // Update the size of the tag.
+            var size = CalculateSize(frameBytes.Length);
+            Array.Copy(size, 0, headerBytes, 6, 4);
+
+            var completeLength = headerBytes.Length + frameBytes.Length;
+            var completeBytes = new byte[completeLength];
+
+            Array.Copy(headerBytes, 0, completeBytes, 0, headerBytes.Length);
+            Array.Copy(frameBytes, 0, completeBytes, headerBytes.Length, frameBytes.Length);
+
+            return completeBytes;
+        }
+
+        protected static byte[] GetCompleteV4Tag(byte[] frameBytes)
+        {
+            var headerBytes = new byte[] { 0x49, 0x44, 0x33, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
             // Update the size of the tag.
             var size = CalculateSize(frameBytes.Length);

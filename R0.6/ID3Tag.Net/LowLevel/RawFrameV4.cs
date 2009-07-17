@@ -36,7 +36,7 @@ namespace ID3Tag.LowLevel
             var isReadOnly = (flags[0] & 0x10) == 0x10;
             var isGroupingIdentity = (flags[1] & 0x40) == 0x40;
             var isCompression = (flags[1] & 0x08) == 0x08;
-            var isEncryption = (flags[1]%0x04) == 0x04;
+            var isEncryption = (flags[1] & 0x04) == 0x04;
             var isUnsync = (flags[1] & 0x02) == 0x02;
             var isDataLengthIndicator = (flags[1] & 0x01) == 0x01;
 
