@@ -44,7 +44,19 @@ namespace ID3Tag.LowLevel
             return f;
         }
 
+        internal static RawFrame CreateV3Frame(string frameID, FrameFlags flags, byte[] payload)
+        {
+            var f = new RawFrameV3(frameID, flags, payload);
+            return f;
+        }
+
         internal static RawFrame CreateV4Frame(string frameID, byte[] flags, byte[] payload)
+        {
+            var f = new RawFrameV4(frameID, flags, payload);
+            return f;
+        }
+
+        internal static RawFrame CreateV4Frame(string frameID, FrameFlags flags, byte[] payload)
         {
             var f = new RawFrameV4(frameID, flags, payload);
             return f;

@@ -67,7 +67,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
              */
 
-            var flagBytes = Descriptor.GetFlagBytes();
+            var flag = Descriptor.GetFlags();
             var owner = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, Owner);
 
             var payload = new List<byte>();
@@ -75,7 +75,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payload.Add(0x00);
             payload.AddRange(Identifier);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, payload.ToArray());
+            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payload.ToArray());
             return rawFrame;
         }
 

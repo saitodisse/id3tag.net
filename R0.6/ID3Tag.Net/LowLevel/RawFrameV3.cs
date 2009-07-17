@@ -13,6 +13,12 @@ namespace ID3Tag.LowLevel
             DecodeFlags(flags);
         }
 
+        public RawFrameV3(string id, FrameFlags flags, byte[] payload) 
+            : base(id,payload)
+        {
+            Flag = flags;
+        }
+
         internal override byte[] EncodeFlags()
         {
             var flagsByte = new byte[2];

@@ -45,16 +45,9 @@ namespace ID3Tag.LowLevel
         /// </summary>
         public bool FooterFlag { get; internal set; }
 
-        ///// <summary>
-        ///// The ID3V2.3 extended header.
-        ///// </summary>
-        //public ExtendedTagHeaderV3 ExtendHeaderV3 { get; internal set; }
-
-        ///// <summary>
-        ///// The ID3V2.4 extended header.
-        ///// </summary>
-        //public ExtendedTagHeaderV4 ExtendHeaderV4 { get; internal set; }
-
+        /// <summary>
+        /// The Extended Header of the tag
+        /// </summary>
         public ExtendedHeader ExtendedHeader { get; set; }
 
         /// <summary>

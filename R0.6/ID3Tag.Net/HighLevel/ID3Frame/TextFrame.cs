@@ -57,7 +57,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
-            var flagBytes = Descriptor.GetFlagBytes();
+            var flags = Descriptor.GetFlags();
             var contentBytes = Converter.GetContentBytes(TextEncoding, Content);
             var payloadBytes = new byte[contentBytes.Length + 1];
 
@@ -67,7 +67,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payloadBytes[0] = System.Convert.ToByte(TextEncoding);
             Array.Copy(contentBytes, 0, payloadBytes, 1, contentBytes.Length);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, payloadBytes);
+            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flags, payloadBytes);
             return rawFrame;
         }
 

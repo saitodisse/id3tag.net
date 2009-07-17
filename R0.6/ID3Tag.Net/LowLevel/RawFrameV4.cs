@@ -13,6 +13,12 @@ namespace ID3Tag.LowLevel
             DecodeFlags(flags);
         }
 
+        public RawFrameV4(string id, FrameFlags flags, byte[] payload)
+            : base(id, payload)
+        {
+            Flag = flags;
+        }
+
         /*
          * 
          *      %0abc 0000 %0h00 kmnp

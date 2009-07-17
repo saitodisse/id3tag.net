@@ -35,8 +35,8 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>a RawFrame.</returns>
         public override RawFrame Convert()
         {
-            var flagBytes = Descriptor.GetFlagBytes();
-            var frame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, Content);
+            var flags = Descriptor.GetFlags();
+            var frame = RawFrame.CreateV3Frame(Descriptor.ID, flags, Content);
             return frame;
         }
 
@@ -47,7 +47,6 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override void Import(RawFrame rawFrame)
         {
             ImportRawFrameHeader(rawFrame);
-
             Content = rawFrame.Payload;
         }
 

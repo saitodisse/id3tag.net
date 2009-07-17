@@ -49,10 +49,10 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the RawFrame.</returns>
         public override RawFrame Convert()
         {
-            var flagBytes = Descriptor.GetFlagBytes();
+            var flag = Descriptor.GetFlags();
             var payloadBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, URL);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, payloadBytes);
+            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payloadBytes);
             return rawFrame;
         }
 

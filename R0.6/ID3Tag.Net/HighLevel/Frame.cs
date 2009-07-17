@@ -52,6 +52,11 @@ namespace ID3Tag.HighLevel
             Descriptor.Compression = rawFrame.Flag.Compression;
             Descriptor.Encryption = rawFrame.Flag.Encryption;
             Descriptor.GroupingIdentify = rawFrame.Flag.GroupingIdentify;
+            //
+            // ID3v2.4 only
+            //
+            Descriptor.Unsynchronisation = rawFrame.Flag.Unsynchronisation;
+            Descriptor.DataLengthIndicator = rawFrame.Flag.DataLengthIndicator;
         }
     }
 }

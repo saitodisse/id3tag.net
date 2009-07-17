@@ -49,7 +49,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
-            var flagBytes = Descriptor.GetFlagBytes();
+            var flag = Descriptor.GetFlags();
 
             // Read and convert to MSB!
             var counterBytes = BitConverter.GetBytes(Counter);
@@ -65,7 +65,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var payload = new byte[counterLength];
             Array.Copy(counterBytes, counterBytes.Length - counterLength, payload, 0, counterLength);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flagBytes, payload);
+            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payload);
             return rawFrame;
         }
 

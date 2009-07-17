@@ -1,4 +1,5 @@
 ﻿using System;
+using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel
 {
@@ -19,12 +20,23 @@ namespace ID3Tag.HighLevel
             Compression = false;
             Encryption = false;
             GroupingIdentify = false;
+            Unsynchronisation = false;
+            DataLengthIndicator = false;
         }
 
         /// <summary>
         /// The frame ID.
         /// </summary>
         public string ID { get; set; }
+
+        /// <summary>
+        /// The Unsynchronisation flag ( ID3v2.4 only)
+        /// </summary>
+        public bool Unsynchronisation { get; set; }
+        /// <summary>
+        /// The DataLengthIndicator ( ID3v2.4 only)
+        /// </summary>
+        public bool DataLengthIndicator { get; set; }
 
         /// <summary>
         /// The TagAlterPreservation flag.
@@ -55,6 +67,27 @@ namespace ID3Tag.HighLevel
         /// The GroupingIdentify flag.
         /// </summary>
         public bool GroupingIdentify { get; set; }
+
+        /// <summary>
+        /// Gets the Flags
+        /// </summary>
+        /// <returns>The flags</returns>
+        public FrameFlags GetFlags()
+        {
+            var flags = new FrameFlags
+                    {
+                        Compression = Compression,
+                        DataLengthIndicator = DataLengthIndicator,
+                        Encryption = Encryption,
+                        FileAlterPreservation = FileAlterPreservation,
+                        GroupingIdentify = GroupingIdentify,
+                        ReadOnly = ReadOnly,
+                        TagAlterPreservation = TagAlterPreservation,
+                        Unsynchronisation = Unsynchronisation
+                    };
+
+            return flags;
+        }
 
         /// <summary>
         /// Gets the flag coding of the frame.

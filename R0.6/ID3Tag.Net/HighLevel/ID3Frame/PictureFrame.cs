@@ -84,7 +84,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert()
         {
-            var flagBytes = Descriptor.GetFlagBytes();
+            var flag = Descriptor.GetFlags();
             var bytes = new List<byte>();
 
             var textEncodingByte = (byte) TextEncoding;
@@ -106,7 +106,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             bytes.AddRange(PictureData);
 
-            var rawFrame = RawFrame.CreateV3Frame("APIC", flagBytes, bytes.ToArray());
+            var rawFrame = RawFrame.CreateV3Frame("APIC", flag, bytes.ToArray());
             return rawFrame;
         }
 
