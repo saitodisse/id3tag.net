@@ -90,61 +90,6 @@ namespace ID3Tag.HighLevel
         }
 
         /// <summary>
-        /// Gets the flag coding of the frame.
-        /// </summary>
-        /// <returns>the byte array with the coding.</returns>
-        public byte[] GetFlagBytes()
-        {
-            /*
-             * %abc00000 %ijk00000 
-             * 
-             * 
-             * a = Tag Alter Preservation
-             * b = File Alter Preservation
-             * c = Read Only
-             * 
-             * i = Compression
-             * j = Encryption
-             * k = GroupingIdentify
-             */
-
-            ushort flagValue = 0;
-
-            if (TagAlterPreservation)
-            {
-                flagValue |= 0x0080;
-            }
-
-            if (FileAlterPreservation)
-            {
-                flagValue |= 0x0040;
-            }
-
-            if (ReadOnly)
-            {
-                flagValue |= 0x0020;
-            }
-
-            if (Compression)
-            {
-                flagValue |= 0x8000;
-            }
-
-            if (Encryption)
-            {
-                flagValue |= 0x4000;
-            }
-
-            if (GroupingIdentify)
-            {
-                flagValue |= 0x2000;
-            }
-
-            var flagBytes = BitConverter.GetBytes(flagValue);
-            return flagBytes;
-        }
-
-        /// <summary>
         /// Overwrites ToString.
         /// </summary>
         /// <returns></returns>
