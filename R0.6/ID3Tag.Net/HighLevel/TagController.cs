@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel.ID3Frame;
+﻿using System;
+using ID3Tag.HighLevel.ID3Frame;
 using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel
@@ -18,6 +19,8 @@ namespace ID3Tag.HighLevel
 
             descriptor.SetVersion(majorVersion, revision);
             descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental);
+
+            //TODO: Was ist mit ID3v.2.4???
 
             if (info.ExtendedHeaderAvailable)
             {
@@ -51,6 +54,16 @@ namespace ID3Tag.HighLevel
 
         public Id3TagInfo Encode(TagContainer container)
         {
+            TagVersion version;
+            if (container.Tag.MajorVersion == 3)
+            {
+                version = TagVersion.Id3V23;
+            }
+            else
+            {
+                version = TagVersion.Id3V24;
+            }
+
             var tagInfo = new Id3TagInfo();
             var tag = container.Tag;
 
@@ -61,12 +74,25 @@ namespace ID3Tag.HighLevel
             tagInfo.ExtendedHeaderAvailable = tag.ExtendedHeader;
             if (tagInfo.ExtendedHeaderAvailable)
             {
-                tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(tag.PaddingSize, tag.CrcDataPresent, tag.Crc);
+                switch (version)
+                {
+                    case TagVersion.Id3V23:
+                        tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(tag.PaddingSize, tag.CrcDataPresent, tag.Crc);
+                        break;
+                    case TagVersion.Id3V24:
+                        //tagInfo.ExtendedHeader = ExtendedTagHeaderV4.Create()
+                        throw  new NotSupportedException("Kann ich noch nich!");
+                        break;
+                    default:
+                        throw new ID3TagException("Unknown Tag version!");
+
+                }
+
             }
 
             foreach (var frame in container)
             {
-                var rawFrame = frame.Convert();
+                var rawFrame = frame.Convert(version);
                 tagInfo.Frames.Add(rawFrame);
             }
 

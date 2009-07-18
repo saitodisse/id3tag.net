@@ -28,7 +28,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             frame.Description = "ABCD";
             frame.Value = "EFGH";
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TXXX");
             Assert.AreEqual(rawFrame.Payload.Length, 10);
@@ -44,7 +44,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             frame.Description = "ABCD";
             frame.Value = "EFGH";
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TXXX");
             Assert.AreEqual(rawFrame.Payload[0], 1); // ISO coding
@@ -62,7 +62,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             frame.Description = "ABCD";
             frame.Value = "EFGH";
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TXXX");
 
@@ -86,7 +86,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             frame.Description = "ABCD";
             frame.Value = "EFGH";
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TXXX");
 

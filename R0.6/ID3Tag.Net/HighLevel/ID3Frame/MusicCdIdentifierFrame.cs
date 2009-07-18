@@ -49,10 +49,10 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Convert the frame.
         /// </summary>
         /// <returns>the raw frame.</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-            var frame = RawFrame.CreateV3Frame(Descriptor.ID, flag, TOC);
+            var frame = RawFrame.CreateFrame(Descriptor.ID, flag, TOC,version);
             return frame;
         }
 

@@ -58,7 +58,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Convert the frame to raw frame.
         /// </summary>
         /// <returns>the raw frame</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             /*
              *  <Header for 'Unique file identifier', ID: "UFID"> 
@@ -75,7 +75,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payload.Add(0x00);
             payload.AddRange(Identifier);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payload.ToArray());
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload.ToArray(),version);
             return rawFrame;
         }
 

@@ -48,7 +48,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var identifier = new byte[] {0x10, 0x11, 0x12};
             var frame = new UniqueFileIdentifierFrame(owner, identifier);
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "UFID");
 
             var payload = rawFrame.Payload;
@@ -64,7 +64,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var identifier = new byte[] {0x10, 0x11, 0x12};
             var frame = new UniqueFileIdentifierFrame(owner, identifier);
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "UFID");
 
             var payload = rawFrame.Payload;

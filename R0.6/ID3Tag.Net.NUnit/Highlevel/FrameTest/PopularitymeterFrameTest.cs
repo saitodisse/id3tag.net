@@ -24,7 +24,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0xFF);
 
-            var rawFrame = popFrame.Convert();
+            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "POPM");
             var payload = rawFrame.Payload;
@@ -38,7 +38,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0xFFFF);
 
-            var rawFrame = popFrame.Convert();
+            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "POPM");
             var payload = rawFrame.Payload;
@@ -52,7 +52,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0xFFFFFF);
 
-            var rawFrame = popFrame.Convert();
+            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "POPM");
             var payload = rawFrame.Payload;
@@ -66,7 +66,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0x7FFFFFFF);
 
-            var rawFrame = popFrame.Convert();
+            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "POPM");
             var payload = rawFrame.Payload;
@@ -106,7 +106,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("", 0xF, 0x7FFFFFFF);
 
-            var rawFrame = popFrame.Convert();
+            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "POPM");
             var payload = rawFrame.Payload;

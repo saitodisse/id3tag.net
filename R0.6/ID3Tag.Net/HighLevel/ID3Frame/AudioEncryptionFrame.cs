@@ -85,7 +85,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Convert the values to a raw frame.
         /// </summary>
         /// <returns>the raw frame.</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
             var ownerBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, Owner);
@@ -106,7 +106,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var payload = new byte[dataBytes.Length];
             Array.Copy(dataBytes, 0, payload, 0, dataBytes.Length);
 
-            var rawFrame = RawFrame.CreateV3Frame("AENC", flag, payload);
+            var rawFrame = RawFrame.CreateFrame("AENC", flag, payload,version);
             return rawFrame;
         }
 

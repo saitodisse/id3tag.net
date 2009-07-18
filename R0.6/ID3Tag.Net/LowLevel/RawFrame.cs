@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ID3Tag.HighLevel;
 
 namespace ID3Tag.LowLevel
 {
@@ -60,6 +61,24 @@ namespace ID3Tag.LowLevel
         {
             var f = new RawFrameV4(frameID, flags, payload);
             return f;
+        }
+
+        internal static RawFrame CreateFrame(string frameID, FrameFlags flags, byte[] payload, TagVersion version)
+        {
+            RawFrame frame;
+            switch (version)
+            {
+                case TagVersion.Id3V23:
+                    frame = new RawFrameV3(frameID, flags, payload);
+                    break;
+                case TagVersion.Id3V24:
+                    frame = new RawFrameV4(frameID, flags, payload);
+                    break;
+                default:
+                    throw new ID3TagException("Unknown Tag Version found!");
+            }
+
+            return frame;
         }
 
         #endregion

@@ -82,7 +82,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Converts the picture frame to a raw frame.
         /// </summary>
         /// <returns>the raw frame.</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
             var bytes = new List<byte>();
@@ -106,7 +106,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             bytes.AddRange(PictureData);
 
-            var rawFrame = RawFrame.CreateV3Frame("APIC", flag, bytes.ToArray());
+            var rawFrame = RawFrame.CreateFrame("APIC", flag, bytes.ToArray(),version);
             return rawFrame;
         }
 

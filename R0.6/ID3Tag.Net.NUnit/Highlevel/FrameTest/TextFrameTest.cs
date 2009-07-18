@@ -39,7 +39,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                     Descriptor = {ID = "TALB"}
                                 };
 
-            var rawFrame = textFrame.Convert();
+            var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TALB");
             Assert.AreEqual(rawFrame.Payload[0], 0); // ISO_8859 coding
@@ -56,7 +56,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                     Descriptor = {ID = "TALB"}
                                 };
 
-            var rawFrame = textFrame.Convert();
+            var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TALB");
             Assert.AreEqual(rawFrame.Payload[0], 1); // UTF 16
@@ -75,7 +75,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                     Descriptor = {ID = "TALB"}
                                 };
 
-            var rawFrame = textFrame.Convert();
+            var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TALB");
 
@@ -97,7 +97,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                     Descriptor = {ID = "TALB"}
                                 };
 
-            var rawFrame = textFrame.Convert();
+            var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "TALB");
 

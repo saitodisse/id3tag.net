@@ -71,6 +71,7 @@
     <Compile Include="HighLevel\ID3Frame\URLLinkFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\UserDefinedURLLinkFrame.cs" />
     <Compile Include="HighLevel\PictureType.cs" />
+    <Compile Include="HighLevel\TagVersion.cs" />
     <Compile Include="HighLevel\TextEncodingType.cs" />
     <Compile Include="HighLevel\ID3Frame\UnknownFrame.cs" />
     <Compile Include="HighLevel\IFrame.cs" />

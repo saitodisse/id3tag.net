@@ -28,7 +28,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Descriptor = {ID = "W123"}
                                    };
 
-            var rawFrame = urlLinkFrame.Convert();
+            var rawFrame = urlLinkFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "W123");
             Assert.AreEqual(rawFrame.Payload.Length, 4);

@@ -29,7 +29,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Data = new byte[] {0x45, 0x46, 0x47, 0x48}
                                    };
 
-            var rawFrame = privateFrame.Convert();
+            var rawFrame = privateFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "PRIV");
             Assert.AreEqual(rawFrame.Payload.Length, 9);

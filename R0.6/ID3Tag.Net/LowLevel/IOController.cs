@@ -561,10 +561,20 @@ namespace ID3Tag.LowLevel
 
         private static byte[] GetFrameBytes(TagContainer tagContainer)
         {
+            TagVersion version;
+            if (tagContainer.Tag.MajorVersion == 3)
+            {
+                version = TagVersion.Id3V23;
+            }
+            else
+            {
+                version = TagVersion.Id3V24;
+            }
+
             var listBytes = new List<byte>();
             foreach (var frame in tagContainer)
             {
-                var rawFrame = frame.Convert();
+                var rawFrame = frame.Convert(version);
 
                 var headerBytes = new byte[10];
                 var idBytes = rawFrame.GetIDBytes();

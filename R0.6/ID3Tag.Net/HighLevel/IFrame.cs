@@ -21,7 +21,7 @@ namespace ID3Tag.HighLevel
         /// Convert a high level frame into a raw frame.
         /// </summary>
         /// <returns>the raw frame.</returns>
-        RawFrame Convert();
+        RawFrame Convert(TagVersion version);
 
         /// <summary>
         /// Imports a raw frame values into a high level frame.

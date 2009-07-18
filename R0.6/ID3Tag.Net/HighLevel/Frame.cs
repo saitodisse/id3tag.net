@@ -19,7 +19,7 @@ namespace ID3Tag.HighLevel
         /// Convert the values from the high level frame to a raw frame.
         /// </summary>
         /// <returns>the raw frame.</returns>
-        public abstract RawFrame Convert();
+        public abstract RawFrame Convert(TagVersion version);
 
         /// <summary>
         /// Import the raw content to a high level frame.

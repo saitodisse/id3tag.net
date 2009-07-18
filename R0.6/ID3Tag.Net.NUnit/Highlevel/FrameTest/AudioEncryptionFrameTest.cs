@@ -36,7 +36,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                    0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
                                };
 
-            var rawFrame = frame.Convert();
+            var rawFrame = frame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.ID, "AENC");
             Assert.IsTrue(ComparePayload(rawFrame.Payload, refBytes));

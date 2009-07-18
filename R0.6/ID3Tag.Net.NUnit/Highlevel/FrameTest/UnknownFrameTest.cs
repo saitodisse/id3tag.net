@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel.ID3Frame;
+﻿using ID3Tag.HighLevel;
+using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
 namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
@@ -19,7 +20,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Content = new byte[] {0x30, 0x31, 0x32, 0x33}
                                    };
 
-            var rawFrame = unknownFrame.Convert();
+            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Length, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -48,7 +49,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Content = new byte[] {0x30, 0x31, 0x32, 0x33}
                                    };
 
-            var rawFrame = unknownFrame.Convert();
+            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Length, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -77,7 +78,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Content = new byte[] {0x30, 0x31, 0x32, 0x33}
                                    };
 
-            var rawFrame = unknownFrame.Convert();
+            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Length, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -106,7 +107,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Content = new byte[] {0x30, 0x31, 0x32, 0x33}
                                    };
 
-            var rawFrame = unknownFrame.Convert();
+            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Length, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -135,7 +136,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Content = new byte[] {0x30, 0x31, 0x32, 0x33}
                                    };
 
-            var rawFrame = unknownFrame.Convert();
+            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Length, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -164,7 +165,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                        Content = new byte[] {0x30, 0x31, 0x32, 0x33}
                                    };
 
-            var rawFrame = unknownFrame.Convert();
+            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Length, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);

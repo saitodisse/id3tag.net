@@ -47,7 +47,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Converts a play counter frame to raw frame.
         /// </summary>
         /// <returns>the raw frame.</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
 
@@ -65,7 +65,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var payload = new byte[counterLength];
             Array.Copy(counterBytes, counterBytes.Length - counterLength, payload, 0, counterLength);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payload);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload,version);
             return rawFrame;
         }
 

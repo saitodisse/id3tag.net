@@ -47,12 +47,12 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Convert the URLLinkFrame.
         /// </summary>
         /// <returns>the RawFrame.</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
             var payloadBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, URL);
 
-            var rawFrame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payloadBytes);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes,version);
             return rawFrame;
         }
 

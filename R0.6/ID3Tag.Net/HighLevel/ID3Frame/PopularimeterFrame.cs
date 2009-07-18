@@ -73,7 +73,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Convert the Popularimeterframe.
         /// </summary>
         /// <returns>a RawFrame.</returns>
-        public override RawFrame Convert()
+        public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
             var sb = new StringBuilder();
@@ -94,7 +94,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payload[mailbytes.Length] = Rating;
             Array.Copy(playcounterbytes, counterlength - 4, payload, mailbytes.Length + 1, counterlength);
 
-            var frame = RawFrame.CreateV3Frame(Descriptor.ID, flag, payload);
+            var frame = RawFrame.CreateFrame(Descriptor.ID, flag, payload,version);
             return frame;
         }
 

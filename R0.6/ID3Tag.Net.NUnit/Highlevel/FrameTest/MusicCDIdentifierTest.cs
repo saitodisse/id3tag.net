@@ -28,7 +28,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             idFrame.TOC = refBytes;
             idFrame.Descriptor.ID = "MCDI";
 
-            var rawFrame = idFrame.Convert();
+            var rawFrame = idFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "MCDI");
             Assert.IsTrue(ComparePayload(rawFrame.Payload, refBytes));
         }

@@ -47,7 +47,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert();
+            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -68,7 +68,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert();
+            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -90,7 +90,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert();
+            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -112,7 +112,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert();
+            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {

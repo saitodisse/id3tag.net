@@ -166,7 +166,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert();
+            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "COMM");
 
             var refBytes = new byte[]
@@ -188,7 +188,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert();
+            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "COMM");
 
             var refBytes = new byte[]
@@ -211,7 +211,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert();
+            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "COMM");
 
             var refBytes = new byte[]
@@ -234,7 +234,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert();
+            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.ID, "COMM");
 
             var refBytes = new byte[]
