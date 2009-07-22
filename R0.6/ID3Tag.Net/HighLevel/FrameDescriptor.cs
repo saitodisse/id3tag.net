@@ -33,6 +33,7 @@ namespace ID3Tag.HighLevel
         /// The Unsynchronisation flag ( ID3v2.4 only)
         /// </summary>
         public bool Unsynchronisation { get; set; }
+
         /// <summary>
         /// The DataLengthIndicator ( ID3v2.4 only)
         /// </summary>
@@ -75,16 +76,16 @@ namespace ID3Tag.HighLevel
         public FrameFlags GetFlags()
         {
             var flags = new FrameFlags
-                    {
-                        Compression = Compression,
-                        DataLengthIndicator = DataLengthIndicator,
-                        Encryption = Encryption,
-                        FileAlterPreservation = FileAlterPreservation,
-                        GroupingIdentify = GroupingIdentify,
-                        ReadOnly = ReadOnly,
-                        TagAlterPreservation = TagAlterPreservation,
-                        Unsynchronisation = Unsynchronisation
-                    };
+                            {
+                                Compression = Compression,
+                                DataLengthIndicator = DataLengthIndicator,
+                                Encryption = Encryption,
+                                FileAlterPreservation = FileAlterPreservation,
+                                GroupingIdentify = GroupingIdentify,
+                                ReadOnly = ReadOnly,
+                                TagAlterPreservation = TagAlterPreservation,
+                                Unsynchronisation = Unsynchronisation
+                            };
 
             return flags;
         }

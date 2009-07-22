@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ID3Tag.HighLevel
+﻿namespace ID3Tag.HighLevel
 {
     /// <summary>
     /// Represents an ID3v2.4 tag 
@@ -45,7 +40,7 @@ namespace ID3Tag.HighLevel
         /// <param name="extendedHeader">the extended header flag.</param>
         /// <param name="experimentalIndicator">the experimental indicator flag.</param>
         /// <param name="footer">the footer flag</param>
-        public void SetHeaderFlags(bool unsynchronisation, bool extendedHeader, bool experimentalIndicator,bool footer)
+        public void SetHeaderFlags(bool unsynchronisation, bool extendedHeader, bool experimentalIndicator, bool footer)
         {
             Unsynchronisation = unsynchronisation;
             ExtendedHeader = extendedHeader;
@@ -60,7 +55,7 @@ namespace ID3Tag.HighLevel
         /// <param name="updateTag">the update tag</param>
         /// <param name="restriction">the restriction byte</param>
         /// <param name="restrictionPresent">enable the restriction</param>
-        public void SetExtendedHeader(bool crcDataPresent,bool updateTag, bool restrictionPresent, byte restriction)
+        public void SetExtendedHeader(bool crcDataPresent, bool updateTag, bool restrictionPresent, byte restriction)
         {
             CrcDataPresent = crcDataPresent;
             UpdateTag = updateTag;

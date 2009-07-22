@@ -92,7 +92,7 @@
     <Compile Include="LowLevel\ExtendedHeader.cs" />
     <Compile Include="LowLevel\ExtendedHeaderType.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV3.cs" />
-    <Compile Include="Factory\ID3TagFactory.cs" />
+    <Compile Include="ID3TagFactory.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV4.cs" />
     <Compile Include="LowLevel\FrameFlags.cs" />
     <Compile Include="LowLevel\Id3V24Validator.cs" />

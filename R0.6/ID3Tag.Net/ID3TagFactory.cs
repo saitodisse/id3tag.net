@@ -1,7 +1,7 @@
 ﻿using ID3Tag.HighLevel;
 using ID3Tag.LowLevel;
 
-namespace ID3Tag.Factory
+namespace ID3Tag
 {
     //TODO: Move this factory to a upper namespace ( ID3Tag only )
 

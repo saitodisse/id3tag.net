@@ -1,5 +1,4 @@
-﻿using System;
-using ID3Tag.HighLevel.ID3Frame;
+﻿using ID3Tag.HighLevel.ID3Frame;
 using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel
@@ -55,7 +54,7 @@ namespace ID3Tag.HighLevel
                 case TagVersion.Id3V23:
                     tagInfo.MajorVersion = 3;
                     tagInfo.Revision = 0;
-                    EncodeV3(tagInfo,container);
+                    EncodeV3(tagInfo, container);
                     break;
                 case TagVersion.Id3V24:
                     tagInfo.MajorVersion = 4;
@@ -152,11 +151,13 @@ namespace ID3Tag.HighLevel
             var container = new TagContainerV4();
             var descriptor = container.Tag;
 
-            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental, info.FooterFlag);
+            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental,
+                                      info.FooterFlag);
             if (info.ExtendedHeaderAvailable)
             {
                 var extendedHeader = info.ExtendedHeader.ConvertToV24();
-                descriptor.SetExtendedHeader(extendedHeader.CrcDataPresent, extendedHeader.UpdateTag, extendedHeader.RestrictionPresent, extendedHeader.Restriction);
+                descriptor.SetExtendedHeader(extendedHeader.CrcDataPresent, extendedHeader.UpdateTag,
+                                             extendedHeader.RestrictionPresent, extendedHeader.Restriction);
 
                 if (extendedHeader.CrcDataPresent)
                 {
@@ -198,7 +199,9 @@ namespace ID3Tag.HighLevel
 
             if (descriptor.ExtendedHeader)
             {
-                tagInfo.ExtendedHeader = ExtendedTagHeaderV4.Create(descriptor.UpdateTag, descriptor.CrcDataPresent, descriptor.RestrictionPresent,descriptor.Restriction,descriptor.Crc);
+                tagInfo.ExtendedHeader = ExtendedTagHeaderV4.Create(descriptor.UpdateTag, descriptor.CrcDataPresent,
+                                                                    descriptor.RestrictionPresent,
+                                                                    descriptor.Restriction, descriptor.Crc);
             }
         }
 
@@ -212,7 +215,8 @@ namespace ID3Tag.HighLevel
 
             if (descriptor.ExtendedHeader)
             {
-                tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(descriptor.PaddingSize, descriptor.CrcDataPresent, descriptor.Crc);
+                tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(descriptor.PaddingSize, descriptor.CrcDataPresent,
+                                                                    descriptor.Crc);
             }
         }
 

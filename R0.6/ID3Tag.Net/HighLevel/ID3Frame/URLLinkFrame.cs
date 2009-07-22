@@ -52,7 +52,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var flag = Descriptor.GetFlags();
             var payloadBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, URL);
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes,version);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes, version);
             return rawFrame;
         }
 

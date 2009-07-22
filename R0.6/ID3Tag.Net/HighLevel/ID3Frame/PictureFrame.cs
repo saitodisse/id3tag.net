@@ -106,7 +106,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             bytes.AddRange(PictureData);
 
-            var rawFrame = RawFrame.CreateFrame("APIC", flag, bytes.ToArray(),version);
+            var rawFrame = RawFrame.CreateFrame("APIC", flag, bytes.ToArray(), version);
             return rawFrame;
         }
 

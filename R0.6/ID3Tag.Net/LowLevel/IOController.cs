@@ -155,7 +155,6 @@ namespace ID3Tag.LowLevel
                         // TODO: Die Unsync CRC32 aus dem Header konvertieren und dann prüfen!
                         throw new NotSupportedException("CRC32 check is not support for > ID3 V2.3");
                     }
-
                 }
             }
 
@@ -215,7 +214,6 @@ namespace ID3Tag.LowLevel
                 {
                     //TODO: Weg damit!
                     throw new ID3TagException("ID3v2.4 write support is in progress... please wait for next releases!");
-
                 }
 
                 GetExtendedHeaderV3(tagContainer, out extendedHeaderBytes);
@@ -584,7 +582,7 @@ namespace ID3Tag.LowLevel
 
         private static byte[] GetFrameBytes(TagContainer tagContainer)
         {
-             var listBytes = new List<byte>();
+            var listBytes = new List<byte>();
             foreach (var frame in tagContainer)
             {
                 var rawFrame = frame.Convert(tagContainer.TagVersion);
@@ -861,7 +859,7 @@ namespace ID3Tag.LowLevel
                 var frameId = Utils.GetFrameID(frameIdBytes);
                 var size = Utils.CalculateFrameHeaderSize(sizeBytes);
                 var payloadBytes = new byte[size];
-                reader.Read(payloadBytes, 0, (int)size);
+                reader.Read(payloadBytes, 0, (int) size);
 
                 RawFrame frame;
                 switch (tagInfo.MajorVersion)

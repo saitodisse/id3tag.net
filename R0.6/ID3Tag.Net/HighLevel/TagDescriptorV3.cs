@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ID3Tag.HighLevel
+﻿namespace ID3Tag.HighLevel
 {
     /// <summary>
     /// Represents an TagDescriptor for ID3v2.3 spec.

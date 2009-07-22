@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ID3Tag.LowLevel
+﻿namespace ID3Tag.LowLevel
 {
     public sealed class RawFrameV3 : RawFrame
     {
         public RawFrameV3(string id, byte[] flags, byte[] payload)
-            : base(id,payload)
+            : base(id, payload)
         {
             DecodeFlags(flags);
         }
 
-        public RawFrameV3(string id, FrameFlags flags, byte[] payload) 
-            : base(id,payload)
+        public RawFrameV3(string id, FrameFlags flags, byte[] payload)
+            : base(id, payload)
         {
             Flag = flags;
         }

@@ -37,7 +37,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         {
             var flags = Descriptor.GetFlags();
 
-            var frame = RawFrame.CreateFrame(Descriptor.ID, flags, Content,version);
+            var frame = RawFrame.CreateFrame(Descriptor.ID, flags, Content, version);
             return frame;
         }
 

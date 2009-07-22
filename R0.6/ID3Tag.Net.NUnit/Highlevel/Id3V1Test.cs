@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ID3Tag.Factory;
 using ID3Tag.HighLevel;
 using NUnit.Framework;
 

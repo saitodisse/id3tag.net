@@ -149,7 +149,7 @@ namespace ID3Tag.HighLevel
         {
             if (TagVersion == TagVersion.Id3V23)
             {
-                TagContainerV3 v3Container = this as TagContainerV3;
+                var v3Container = this as TagContainerV3;
                 return v3Container.Tag;
             }
 
@@ -160,7 +160,7 @@ namespace ID3Tag.HighLevel
         {
             if (TagVersion == TagVersion.Id3V24)
             {
-                TagContainerV4 v3Container = this as TagContainerV4;
+                var v3Container = this as TagContainerV4;
                 return v3Container.Tag;
             }
 

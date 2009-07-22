@@ -1,5 +1,4 @@
-﻿using ID3Tag.Factory;
-using ID3Tag.HighLevel;
+﻿using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 

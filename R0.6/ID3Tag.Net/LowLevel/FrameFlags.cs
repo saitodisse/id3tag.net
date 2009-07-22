@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ID3Tag.LowLevel
+﻿namespace ID3Tag.LowLevel
 {
     public class FrameFlags
     {

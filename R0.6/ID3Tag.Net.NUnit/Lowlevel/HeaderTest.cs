@@ -1,5 +1,4 @@
-﻿using ID3Tag.Factory;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace ID3Tag.Net.NUnit.Lowlevel
 {
@@ -39,7 +38,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.IsFalse(m_TagInfo.ExtendedHeaderAvailable);
             Assert.IsTrue(m_TagInfo.FooterFlag);
 
-            Assert.AreEqual(m_TagInfo.Frames.Count,1);
+            Assert.AreEqual(m_TagInfo.Frames.Count, 1);
         }
 
         [Test]

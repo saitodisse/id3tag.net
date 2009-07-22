@@ -67,7 +67,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payloadBytes[0] = System.Convert.ToByte(TextEncoding);
             Array.Copy(contentBytes, 0, payloadBytes, 1, contentBytes.Length);
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flags, payloadBytes,version);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flags, payloadBytes, version);
             return rawFrame;
         }
 

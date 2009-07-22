@@ -114,7 +114,7 @@ namespace ID3Tag.Net.NUnit
 
         protected static byte[] GetCompleteV4Tag(byte[] frameBytes)
         {
-            var headerBytes = new byte[] { 0x49, 0x44, 0x33, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+            var headerBytes = new byte[] {0x49, 0x44, 0x33, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
             // Update the size of the tag.
             var size = CalculateSize(frameBytes.Length);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ID3Tag.LowLevel
+﻿namespace ID3Tag.LowLevel
 {
     /// <summary>
     /// Defines the basic subset of an Extended Header.
@@ -34,16 +29,16 @@ namespace ID3Tag.LowLevel
             if (HeaderType == ExtendedHeaderType.V23)
             {
                 var extendedHeader = this as ExtendedTagHeaderV3;
-                
+
                 if (extendedHeader == null)
                 {
-                    throw new ID3TagException("Cannot convert header to ID3V2.3");   
+                    throw new ID3TagException("Cannot convert header to ID3V2.3");
                 }
 
                 return extendedHeader;
             }
 
-            throw new ID3TagException("Cannot convert header to ID3V2.3");   
+            throw new ID3TagException("Cannot convert header to ID3V2.3");
         }
 
         /// <summary>

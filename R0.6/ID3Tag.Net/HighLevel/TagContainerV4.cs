@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ID3Tag.HighLevel
+﻿namespace ID3Tag.HighLevel
 {
     public class TagContainerV4 : TagContainer
     {
@@ -16,10 +11,7 @@ namespace ID3Tag.HighLevel
 
         public TagDescriptorV4 Tag
         {
-            get
-            {
-                return m_Descriptor;
-            }
+            get { return m_Descriptor; }
         }
     }
 }

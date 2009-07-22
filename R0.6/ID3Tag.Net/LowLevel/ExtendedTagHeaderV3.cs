@@ -17,6 +17,13 @@ namespace ID3Tag.LowLevel
         /// </summary>
         public int PaddingSize { get; private set; }
 
+        /// <summary>
+        /// Defines the extended header type
+        /// </summary>
+        public override ExtendedHeaderType HeaderType
+        {
+            get { return ExtendedHeaderType.V23; }
+        }
 
         #region Create Extended Header
 
@@ -55,13 +62,5 @@ namespace ID3Tag.LowLevel
         }
 
         #endregion
-
-        /// <summary>
-        /// Defines the extended header type
-        /// </summary>
-        public override ExtendedHeaderType HeaderType
-        {
-            get { return ExtendedHeaderType.V23; }
-        }
     }
 }

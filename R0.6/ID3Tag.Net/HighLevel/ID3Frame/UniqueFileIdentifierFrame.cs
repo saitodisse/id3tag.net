@@ -46,6 +46,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// The Identifier
         /// </summary>
         public byte[] Identifier { get; set; }
+
         /// <summary>
         /// Defines the frame type.
         /// </summary>
@@ -75,7 +76,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             payload.Add(0x00);
             payload.AddRange(Identifier);
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload.ToArray(),version);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload.ToArray(), version);
             return rawFrame;
         }
 

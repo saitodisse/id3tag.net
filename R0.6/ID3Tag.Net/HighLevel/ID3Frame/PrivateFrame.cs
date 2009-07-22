@@ -59,14 +59,14 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag= Descriptor.GetFlags();
+            var flag = Descriptor.GetFlags();
             var ownerBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, Owner);
 
             var payloadBytes = new byte[ownerBytes.Length + 1 + Data.Length];
             Array.Copy(ownerBytes, 0, payloadBytes, 0, ownerBytes.Length);
             Array.Copy(Data, 0, payloadBytes, ownerBytes.Length + 1, Data.Length);
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes,version);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes, version);
             return rawFrame;
         }
 

@@ -66,7 +66,6 @@ namespace ID3TagUtility
                         {
                             MessageBox.Show("ID3v2.4 tag found!");
                         }
-
                     }
                 }
 

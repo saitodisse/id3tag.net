@@ -1,5 +1,4 @@
 ﻿using System;
-using ID3Tag.Factory;
 using NUnit.Framework;
 
 namespace ID3Tag.Net.NUnit.Lowlevel

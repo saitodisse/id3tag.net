@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows;
 using ID3Tag;
-using ID3Tag.Factory;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 
