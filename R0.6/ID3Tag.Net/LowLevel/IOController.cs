@@ -193,30 +193,47 @@ namespace ID3Tag.LowLevel
             //  Calculate the CRC32 value of the frameBytes ( before unsync!)
             //
             byte[] extendedHeaderBytes;
-            var tagHeader = GetTagHeader(tagContainer);
-            var frameBytes = GetFrameBytes(tagContainer);
-
-            if (tagContainer.Tag.CrcDataPresent)
-            {
-                var crc32 = new Crc32(Crc32.DefaultPolynom);
-                var crcValue = crc32.Calculate(frameBytes);
-
-                tagContainer.Tag.SetCrc32(crcValue);
-            }
-
-            //
-            //  OK. Build the complete tag
-            //
             byte[] tagBytes;
-            var extendedHeaderLength = GetExtendedHeaderLength(tagContainer, out extendedHeaderBytes);
-            var rawTagBytes = BuildTag(tagHeader, extendedHeaderBytes, frameBytes, tagContainer.Tag.PaddingSize);
-            if (tagContainer.Tag.Unsynchronisation)
+
+            if (tagContainer.TagVersion == TagVersion.Id3V23)
             {
-                tagBytes = AddUnsyncBytes(rawTagBytes);
+                var tag = tagContainer.GetId3V23Descriptor();
+                var frameBytes = GetFrameBytes(tagContainer);
+
+                if (tag.CrcDataPresent)
+                {
+                    var crc32 = new Crc32(Crc32.DefaultPolynom);
+                    var crcValue = crc32.Calculate(frameBytes);
+
+                    tag.SetCrc32(crcValue);
+                }
+
+                //
+                //  OK. Build the complete tag
+                //
+                if (tagContainer.TagVersion != TagVersion.Id3V23)
+                {
+                    //TODO: Weg damit!
+                    throw new ID3TagException("ID3v2.4 write support is in progress... please wait for next releases!");
+
+                }
+
+                GetExtendedHeaderV3(tagContainer, out extendedHeaderBytes);
+                var tagHeader = GetTagHeader(tagContainer);
+                var rawTagBytes = BuildTag(tagHeader, extendedHeaderBytes, frameBytes, tag.PaddingSize);
+                if (tag.Unsynchronisation)
+                {
+                    tagBytes = AddUnsyncBytes(rawTagBytes);
+                }
+                else
+                {
+                    tagBytes = rawTagBytes;
+                }
             }
             else
             {
-                tagBytes = rawTagBytes;
+                //TODO: ...
+                throw new ID3TagException("There is no ID3v2.4 code here...");
             }
 
             //
@@ -387,13 +404,16 @@ namespace ID3Tag.LowLevel
             }
         }
 
-        private static int GetExtendedHeaderLength(TagContainer tagContainer, out byte[] extendedHeaderBytes)
+        private static void GetExtendedHeaderV3(TagContainer tagContainer, out byte[] extendedHeaderBytes)
         {
             extendedHeaderBytes = null;
-            var extendedHeaderLength = 0;
-            if (tagContainer.Tag.ExtendedHeader)
+            var tag = tagContainer.GetId3V23Descriptor();
+
+            if (tag.ExtendedHeader)
             {
-                if (tagContainer.Tag.CrcDataPresent)
+                var extendedHeaderLength = 0;
+
+                if (tag.CrcDataPresent)
                 {
                     extendedHeaderLength = 10;
                 }
@@ -406,16 +426,15 @@ namespace ID3Tag.LowLevel
                 extendedHeaderBytes = new byte[extendedHeaderLength + 4];
                 extendedHeaderBytes[3] = Convert.ToByte(extendedHeaderLength);
 
-                var paddingBytes = BitConverter.GetBytes(tagContainer.Tag.PaddingSize);
+                var paddingBytes = BitConverter.GetBytes(tag.PaddingSize);
                 Array.Reverse(paddingBytes);
                 Array.Copy(paddingBytes, 0, extendedHeaderBytes, 6, 4);
-                if (tagContainer.Tag.CrcDataPresent)
+                if (tag.CrcDataPresent)
                 {
                     extendedHeaderBytes[4] |= 0x80;
-                    Array.Copy(tagContainer.Tag.Crc, 0, extendedHeaderBytes, 10, 4);
+                    Array.Copy(tag.Crc, 0, extendedHeaderBytes, 10, 4);
                 }
             }
-            return extendedHeaderLength;
         }
 
         private static byte[] GetTagHeader(TagContainer tagContainer)
@@ -424,20 +443,24 @@ namespace ID3Tag.LowLevel
             tagHeader[0] = 0x49;
             tagHeader[1] = 0x44;
             tagHeader[2] = 0x33;
-            tagHeader[3] = Convert.ToByte(tagContainer.Tag.MajorVersion);
-            tagHeader[4] = Convert.ToByte(tagContainer.Tag.Revision);
+            //tagHeader[3] = Convert.ToByte(tagContainer.Tag.MajorVersion);
+            //tagHeader[4] = Convert.ToByte(tagContainer.Tag.Revision);
+            tagHeader[3] = 0x03;
+            tagHeader[4] = 0x00;
 
-            if (tagContainer.Tag.Unsynchronisation)
+            var tag = tagContainer.GetId3V23Descriptor();
+
+            if (tag.Unsynchronisation)
             {
                 tagHeader[5] |= 0x80;
             }
 
-            if (tagContainer.Tag.ExtendedHeader)
+            if (tag.ExtendedHeader)
             {
                 tagHeader[5] |= 0x40;
             }
 
-            if (tagContainer.Tag.ExperimentalIndicator)
+            if (tag.ExperimentalIndicator)
             {
                 tagHeader[5] |= 0x20;
             }
@@ -561,20 +584,10 @@ namespace ID3Tag.LowLevel
 
         private static byte[] GetFrameBytes(TagContainer tagContainer)
         {
-            TagVersion version;
-            if (tagContainer.Tag.MajorVersion == 3)
-            {
-                version = TagVersion.Id3V23;
-            }
-            else
-            {
-                version = TagVersion.Id3V24;
-            }
-
-            var listBytes = new List<byte>();
+             var listBytes = new List<byte>();
             foreach (var frame in tagContainer)
             {
-                var rawFrame = frame.Convert(version);
+                var rawFrame = frame.Convert(tagContainer.TagVersion);
 
                 var headerBytes = new byte[10];
                 var idBytes = rawFrame.GetIDBytes();
@@ -640,7 +653,19 @@ namespace ID3Tag.LowLevel
 
         private static bool ValidateTag(TagContainer tagContainer, out string message)
         {
-            Validator validator = new Id3V2Validator();
+            Validator validator;
+            switch (tagContainer.TagVersion)
+            {
+                case TagVersion.Id3V23:
+                    validator = new Id3V2Validator();
+                    break;
+                case TagVersion.Id3V24:
+                    validator = new Id3V24Validator();
+                    break;
+                default:
+                    throw new ID3TagException("Unknown version!");
+            }
+
             var isValid = validator.Validate(tagContainer);
 
             if (isValid)

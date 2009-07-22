@@ -62,16 +62,18 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         private static void CompareContainer(TagContainer c1, TagContainer c2)
         {
             Assert.AreEqual(c1.Count, c2.Count);
+            var c1Tag = c1.GetId3V23Descriptor();
+            var c2Tag = c2.GetId3V23Descriptor();
 
-            Assert.AreEqual(c1.Tag.MajorVersion, c2.Tag.MajorVersion);
-            Assert.AreEqual(c1.Tag.Revision, c2.Tag.Revision);
-            Assert.AreEqual(c1.Tag.ExperimentalIndicator, c2.Tag.ExperimentalIndicator);
-            Assert.AreEqual(c1.Tag.ExtendedHeader, c2.Tag.ExtendedHeader);
-            Assert.AreEqual(c1.Tag.Unsynchronisation, c2.Tag.Unsynchronisation);
+            Assert.AreEqual(c1Tag.MajorVersion, c2Tag.MajorVersion);
+            Assert.AreEqual(c1Tag.Revision, c2Tag.Revision);
+            Assert.AreEqual(c1Tag.ExperimentalIndicator, c2Tag.ExperimentalIndicator);
+            Assert.AreEqual(c1Tag.ExtendedHeader, c2Tag.ExtendedHeader);
+            Assert.AreEqual(c1Tag.Unsynchronisation, c2Tag.Unsynchronisation);
 
-            Assert.AreEqual(c1.Tag.CrcDataPresent, c2.Tag.CrcDataPresent);
-            Assert.IsTrue(ComparePayload(c1.Tag.Crc, c2.Tag.Crc));
-            Assert.AreEqual(c1.Tag.PaddingSize, c2.Tag.PaddingSize);
+            Assert.AreEqual(c1Tag.CrcDataPresent, c2Tag.CrcDataPresent);
+            Assert.IsTrue(ComparePayload(c1Tag.Crc, c2Tag.Crc));
+            Assert.AreEqual(c1Tag.PaddingSize, c2Tag.PaddingSize);
         }
 
         [Test]
@@ -80,8 +82,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             //
             // Configure the tag
             //
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(true, true, true);
             tagContainer1.Tag.SetExtendedHeader(10, true);
             tagContainer1.Tag.SetCrc32(new byte[] {0x10, 0x20, 0x30, 0x40});
@@ -112,8 +113,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             //
             // Configure the tag
             //
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(false, false, false);
 
             var titleFrame = new TextFrame
@@ -139,8 +139,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [Test]
         public void SynchronizedTest1()
         {
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(true, false, false);
 
             const long counter = 0xFF00FF12;
@@ -157,8 +156,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [Test]
         public void SynchronizedTest2()
         {
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(true, false, false);
 
             const long counter = 0xFFFFFF12;
@@ -175,8 +173,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [Test]
         public void SynchronizedTest3()
         {
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(true, false, false);
 
             const long counter = 0xFFE0;
@@ -193,8 +190,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [Test]
         public void SynchronizedTest4()
         {
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(true, false, false);
 
             const long counter = 0xFFE1;
@@ -211,8 +207,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [Test]
         public void SynchronizedTest5()
         {
-            var tagContainer1 = new TagContainer();
-            tagContainer1.Tag.SetVersion(3, 0);
+            var tagContainer1 = new TagContainerV3();
             tagContainer1.Tag.SetHeaderFlags(true, false, false);
 
             const long counter = 0x12FF;

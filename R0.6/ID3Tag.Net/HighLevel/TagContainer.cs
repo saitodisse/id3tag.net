@@ -6,23 +6,23 @@ namespace ID3Tag.HighLevel
     /// <summary>
     /// Represents a high level ID3 tag.
     /// </summary>
-    public class TagContainer : ICollection<IFrame>
+    public abstract class TagContainer : ICollection<IFrame>
     {
         private readonly List<IFrame> m_Frames;
 
         /// <summary>
         /// Creates a new TagContainer.
         /// </summary>
-        public TagContainer()
+        protected TagContainer(TagVersion version)
         {
             m_Frames = new List<IFrame>();
-            Tag = new TagDescriptor();
+            TagVersion = version;
         }
 
         /// <summary>
-        /// The tag descriptor.
+        /// The ID3v2 version
         /// </summary>
-        public TagDescriptor Tag { get; private set; }
+        public TagVersion TagVersion { get; private set; }
 
         /// <summary>
         /// Get a specific IFrame from the container.
@@ -143,6 +143,28 @@ namespace ID3Tag.HighLevel
             }
 
             return null;
+        }
+
+        public TagDescriptorV3 GetId3V23Descriptor()
+        {
+            if (TagVersion == TagVersion.Id3V23)
+            {
+                TagContainerV3 v3Container = this as TagContainerV3;
+                return v3Container.Tag;
+            }
+
+            throw new ID3TagException("Invaild tag container!");
+        }
+
+        public TagDescriptorV4 GetId3V24Descriptor()
+        {
+            if (TagVersion == TagVersion.Id3V24)
+            {
+                TagContainerV4 v3Container = this as TagContainerV4;
+                return v3Container.Tag;
+            }
+
+            throw new ID3TagException("Invaild tag container!");
         }
 
         /// <summary>

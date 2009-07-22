@@ -125,9 +125,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
+            var tag = tagContainer.GetId3V23Descriptor();
 
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
@@ -156,9 +157,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
+            var tag = tagContainer.GetId3V23Descriptor();
 
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
@@ -185,9 +187,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
+            var tag = tagContainer.GetId3V23Descriptor();
 
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
@@ -216,9 +219,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
+            var tag = tagContainer.GetId3V23Descriptor();
 
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
@@ -247,9 +251,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Read(completeTag);
 
             var tagContainer = m_TagController.Decode(m_TagInfo);
+            var tag = tagContainer.GetId3V23Descriptor();
 
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];

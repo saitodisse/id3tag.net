@@ -52,70 +52,6 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         }
 
         [Test]
-        [ExpectedException(typeof (InvalidID3StructureException))]
-        public void ValidationHeaderFailed1()
-        {
-            /*
-             *  T___
-             *  TXXX
-             *  WXXX
-             *  APIC
-             */
-
-            var tagContainer = new TagContainer();
-            tagContainer.Tag.SetExtendedHeader(0, false);
-            tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(4, 0);
-
-            var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF16);
-            var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16);
-            var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16);
-            var pictureFrame = new PictureFrame(TextEncodingType.UTF16, "image/jpeg", "la", PictureType.Other,
-                                                new byte[] {0x11, 0x12, 0x13, 0x14});
-
-            tagContainer.Add(textFrame);
-            tagContainer.Add(userDefineTextFrame);
-            tagContainer.Add(linkFrame);
-            tagContainer.Add(pictureFrame);
-
-            WriteTagContainer(tagContainer);
-
-            // OK... passed!
-        }
-
-        [Test]
-        [ExpectedException(typeof (InvalidID3StructureException))]
-        public void ValidationHeaderFailed2()
-        {
-            /*
-             *  T___
-             *  TXXX
-             *  WXXX
-             *  APIC
-             */
-
-            var tagContainer = new TagContainer();
-            tagContainer.Tag.SetExtendedHeader(0, false);
-            tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 1);
-
-            var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF16);
-            var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16);
-            var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16);
-            var pictureFrame = new PictureFrame(TextEncodingType.UTF16, "image/jpeg", "la", PictureType.Other,
-                                                new byte[] {0x11, 0x12, 0x13, 0x14});
-
-            tagContainer.Add(textFrame);
-            tagContainer.Add(userDefineTextFrame);
-            tagContainer.Add(linkFrame);
-            tagContainer.Add(pictureFrame);
-
-            WriteTagContainer(tagContainer);
-
-            // OK... passed!
-        }
-
-        [Test]
         public void ValidationOKTest()
         {
             /*
@@ -125,10 +61,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.ISO_8859_1);
@@ -156,10 +91,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF16);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16);
@@ -188,10 +122,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.ISO_8859_1);
@@ -220,10 +153,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.ISO_8859_1);
@@ -252,10 +184,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF16_BE);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16);
@@ -284,10 +215,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF8);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16);
@@ -316,10 +246,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16_BE);
@@ -348,10 +277,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF8);
@@ -380,10 +308,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.ISO_8859_1);
@@ -412,10 +339,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
              *  APIC
              */
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetExtendedHeader(0, false);
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.ISO_8859_1);
             var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.ISO_8859_1);

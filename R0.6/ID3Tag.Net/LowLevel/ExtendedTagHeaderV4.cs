@@ -26,6 +26,19 @@ namespace ID3Tag.LowLevel
         /// </summary>
         public byte Restriction { get; internal set; }
 
+        internal static ExtendedTagHeaderV4 Create(bool updateFlag, bool crcPresent, bool restrictionPresent, byte restriction, byte[] crc32)
+        {
+            var extendedHeader = new ExtendedTagHeaderV4();
+
+            extendedHeader.UpdateTag = updateFlag;
+            extendedHeader.CrcDataPresent = crcPresent;
+            extendedHeader.RestrictionPresent = restrictionPresent;
+            extendedHeader.Restriction = restriction;
+            extendedHeader.Crc32 = crc32;
+
+            return extendedHeader;
+        }
+
         internal static ExtendedTagHeaderV4 Create(byte[] content)
         {
             var extendedHeader = new ExtendedTagHeaderV4();

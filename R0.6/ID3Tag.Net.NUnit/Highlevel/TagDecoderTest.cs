@@ -48,15 +48,16 @@ namespace ID3Tag.Net.NUnit.Highlevel
 
             // Validate TagContainer
             var tagContainer = m_TagController.Decode(m_TagInfo);
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
-            Assert.IsTrue(tagContainer.Tag.ExperimentalIndicator);
-            Assert.IsTrue(tagContainer.Tag.Unsynchronisation);
+            var tag = tagContainer.GetId3V23Descriptor();
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
+            Assert.IsTrue(tag.ExperimentalIndicator);
+            Assert.IsTrue(tag.Unsynchronisation);
 
-            Assert.IsTrue(tagContainer.Tag.ExtendedHeader);
-            Assert.AreEqual(tagContainer.Tag.PaddingSize, 10);
-            Assert.IsTrue(tagContainer.Tag.CrcDataPresent);
-            Assert.IsTrue(ComparePayload(tagContainer.Tag.Crc, refCRCBytes));
+            Assert.IsTrue(tag.ExtendedHeader);
+            Assert.AreEqual(tag.PaddingSize, 10);
+            Assert.IsTrue(tag.CrcDataPresent);
+            Assert.IsTrue(ComparePayload(tag.Crc, refCRCBytes));
         }
 
         [Test]
@@ -79,16 +80,17 @@ namespace ID3Tag.Net.NUnit.Highlevel
 
             // Validate TagContainer
             var tagContainer = m_TagController.Decode(m_TagInfo);
+            var tag = tagContainer.GetId3V23Descriptor();
 
-            Assert.AreEqual(tagContainer.Tag.MajorVersion, 3);
-            Assert.AreEqual(tagContainer.Tag.Revision, 0);
-            Assert.IsTrue(tagContainer.Tag.ExperimentalIndicator);
-            Assert.IsFalse(tagContainer.Tag.Unsynchronisation);
-            Assert.IsFalse(tagContainer.Tag.ExtendedHeader);
+            Assert.AreEqual(tag.MajorVersion, 3);
+            Assert.AreEqual(tag.Revision, 0);
+            Assert.IsTrue(tag.ExperimentalIndicator);
+            Assert.IsFalse(tag.Unsynchronisation);
+            Assert.IsFalse(tag.ExtendedHeader);
 
-            Assert.AreEqual(tagContainer.Tag.PaddingSize, 0);
-            Assert.IsFalse(tagContainer.Tag.CrcDataPresent);
-            Assert.AreEqual(tagContainer.Tag.Crc.Length, 0);
+            Assert.AreEqual(tag.PaddingSize, 0);
+            Assert.IsFalse(tag.CrcDataPresent);
+            Assert.AreEqual(tag.Crc.Length, 0);
         }
     }
 }

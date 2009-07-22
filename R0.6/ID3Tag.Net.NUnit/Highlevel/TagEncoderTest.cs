@@ -24,9 +24,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
         {
             var crc = new byte[] {0x20, 0x21, 0x22, 0x23};
 
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetHeaderFlags(true, true, true);
-            tagContainer.Tag.SetVersion(3, 0);
             tagContainer.Tag.SetExtendedHeader(10, true);
             tagContainer.Tag.SetCrc32(crc);
 
@@ -54,9 +53,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
         [Test]
         public void SimpleEncoderTest()
         {
-            var tagContainer = new TagContainer();
+            var tagContainer = new TagContainerV3();
             tagContainer.Tag.SetHeaderFlags(false, false, false);
-            tagContainer.Tag.SetVersion(3, 0);
 
             var titleFrame = new TextFrame();
             titleFrame.TextEncoding = TextEncodingType.UTF16;

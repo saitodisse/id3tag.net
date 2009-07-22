@@ -45,20 +45,28 @@ namespace ID3TagUtility
                     var tagContainer = m_Controller.ReadTag(dialog.FileName);
                     if (tagContainer != null)
                     {
-                        var tagDescriptor = tagContainer.Tag;
-
-                        //
-                        //  OK. Update the UI.
-                        //
-                        UpdateID3v2View(filename, tagDescriptor);
-                        ShowTagFrames(tagContainer);
-
-                        var frame = tagContainer.SearchFrame("APIC");
-                        if (frame != null)
+                        if (tagContainer.TagVersion == TagVersion.Id3V23)
                         {
-                            var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
-                            ShowPicture(pictureFrame);
+                            var tagDescriptor = tagContainer.GetId3V23Descriptor();
+
+                            //
+                            //  OK. Update the UI.
+                            //
+                            UpdateID3v2View(filename, tagDescriptor);
+                            ShowTagFrames(tagContainer);
+
+                            var frame = tagContainer.SearchFrame("APIC");
+                            if (frame != null)
+                            {
+                                var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
+                                ShowPicture(pictureFrame);
+                            }
                         }
+                        else
+                        {
+                            MessageBox.Show("ID3v2.4 tag found!");
+                        }
+
                     }
                 }
 
@@ -121,7 +129,7 @@ namespace ID3TagUtility
             }
         }
 
-        private void UpdateID3v2View(string filename, TagDescriptor tagDescriptor)
+        private void UpdateID3v2View(string filename, TagDescriptorV3 tagDescriptor)
         {
             //
             //  Decode the header of the tag.

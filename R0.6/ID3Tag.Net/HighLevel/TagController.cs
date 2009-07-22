@@ -10,28 +10,22 @@ namespace ID3Tag.HighLevel
 
         public TagContainer Decode(Id3TagInfo info)
         {
-            var container = new TagContainer();
-            var descriptor = container.Tag;
-
-            // Decode the ID3 Tag info
-            var majorVersion = info.MajorVersion;
-            var revision = info.Revision;
-
-            descriptor.SetVersion(majorVersion, revision);
-            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental);
-
-            //TODO: Was ist mit ID3v.2.4???
-
-            if (info.ExtendedHeaderAvailable)
+            TagContainer container;
+            switch (info.MajorVersion)
             {
-                var extendedHeader = info.ExtendedHeader.ConvertToV23();
-                descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CrcDataPresent);
-                if (extendedHeader.CrcDataPresent)
-                {
-                    descriptor.SetCrc32(extendedHeader.Crc32);
-                }
+                case 3:
+                    container = DecodeV3Tag(info);
+                    break;
+                case 4:
+                    container = DecodeV4Tag(info);
+                    break;
+                default:
+                    throw new ID3TagException("This major revision is not supported!");
             }
 
+            //
+            //  Import the frames
+            //
             foreach (var rawFrame in info.Frames)
             {
                 //
@@ -54,45 +48,27 @@ namespace ID3Tag.HighLevel
 
         public Id3TagInfo Encode(TagContainer container)
         {
-            TagVersion version;
-            if (container.Tag.MajorVersion == 3)
-            {
-                version = TagVersion.Id3V23;
-            }
-            else
-            {
-                version = TagVersion.Id3V24;
-            }
-
             var tagInfo = new Id3TagInfo();
-            var tag = container.Tag;
 
-            tagInfo.MajorVersion = tag.MajorVersion;
-            tagInfo.Revision = tag.Revision;
-            tagInfo.Experimental = tag.ExperimentalIndicator;
-            tagInfo.UnsynchronisationFlag = tag.Unsynchronisation;
-            tagInfo.ExtendedHeaderAvailable = tag.ExtendedHeader;
-            if (tagInfo.ExtendedHeaderAvailable)
+            switch (container.TagVersion)
             {
-                switch (version)
-                {
-                    case TagVersion.Id3V23:
-                        tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(tag.PaddingSize, tag.CrcDataPresent, tag.Crc);
-                        break;
-                    case TagVersion.Id3V24:
-                        //tagInfo.ExtendedHeader = ExtendedTagHeaderV4.Create()
-                        throw  new NotSupportedException("Kann ich noch nich!");
-                        break;
-                    default:
-                        throw new ID3TagException("Unknown Tag version!");
-
-                }
-
+                case TagVersion.Id3V23:
+                    tagInfo.MajorVersion = 3;
+                    tagInfo.Revision = 0;
+                    EncodeV3(tagInfo,container);
+                    break;
+                case TagVersion.Id3V24:
+                    tagInfo.MajorVersion = 4;
+                    tagInfo.Revision = 0;
+                    EncodeV4(tagInfo, container);
+                    break;
+                default:
+                    throw new ID3TagException("Unknown version!");
             }
 
             foreach (var frame in container)
             {
-                var rawFrame = frame.Convert(version);
+                var rawFrame = frame.Convert(container.TagVersion);
                 tagInfo.Frames.Add(rawFrame);
             }
 
@@ -169,6 +145,75 @@ namespace ID3Tag.HighLevel
                 }
             }
             return frame;
+        }
+
+        private static TagContainer DecodeV4Tag(Id3TagInfo info)
+        {
+            var container = new TagContainerV4();
+            var descriptor = container.Tag;
+
+            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental, info.FooterFlag);
+            if (info.ExtendedHeaderAvailable)
+            {
+                var extendedHeader = info.ExtendedHeader.ConvertToV24();
+                descriptor.SetExtendedHeader(extendedHeader.CrcDataPresent, extendedHeader.UpdateTag, extendedHeader.RestrictionPresent, extendedHeader.Restriction);
+
+                if (extendedHeader.CrcDataPresent)
+                {
+                    descriptor.SetCrc32(extendedHeader.Crc32);
+                }
+            }
+
+            return container;
+        }
+
+        private static TagContainer DecodeV3Tag(Id3TagInfo info)
+        {
+            var container = new TagContainerV3();
+            var descriptor = container.Tag;
+
+            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental);
+
+            if (info.ExtendedHeaderAvailable)
+            {
+                var extendedHeader = info.ExtendedHeader.ConvertToV23();
+                descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CrcDataPresent);
+                if (extendedHeader.CrcDataPresent)
+                {
+                    descriptor.SetCrc32(extendedHeader.Crc32);
+                }
+            }
+
+            return container;
+        }
+
+        private void EncodeV4(Id3TagInfo tagInfo, TagContainer container)
+        {
+            var descriptor = container.GetId3V24Descriptor();
+
+            tagInfo.Experimental = descriptor.ExperimentalIndicator;
+            tagInfo.ExtendedHeaderAvailable = descriptor.ExtendedHeader;
+            tagInfo.UnsynchronisationFlag = descriptor.Unsynchronisation;
+            tagInfo.FooterFlag = descriptor.Footer;
+
+            if (descriptor.ExtendedHeader)
+            {
+                tagInfo.ExtendedHeader = ExtendedTagHeaderV4.Create(descriptor.UpdateTag, descriptor.CrcDataPresent, descriptor.RestrictionPresent,descriptor.Restriction,descriptor.Crc);
+            }
+        }
+
+        private void EncodeV3(Id3TagInfo tagInfo, TagContainer container)
+        {
+            var descriptor = container.GetId3V23Descriptor();
+
+            tagInfo.Experimental = descriptor.ExperimentalIndicator;
+            tagInfo.ExtendedHeaderAvailable = descriptor.ExtendedHeader;
+            tagInfo.UnsynchronisationFlag = descriptor.Unsynchronisation;
+
+            if (descriptor.ExtendedHeader)
+            {
+                tagInfo.ExtendedHeader = ExtendedTagHeaderV3.Create(descriptor.PaddingSize, descriptor.CrcDataPresent, descriptor.Crc);
+            }
         }
 
         #endregion

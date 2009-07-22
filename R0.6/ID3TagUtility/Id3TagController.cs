@@ -136,10 +136,9 @@ namespace ID3TagUtility
 
         public TagContainer BuildTag(ID3V2TagData data)
         {
-            var tagController = new TagContainer();
+            var tagController = new TagContainerV3();
 
             // Configure the tag header.
-            tagController.Tag.SetVersion(3, 0);
             tagController.Tag.SetHeaderFlags(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
 
             if (data.ExtendedHeader)

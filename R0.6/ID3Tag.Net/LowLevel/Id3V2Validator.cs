@@ -7,7 +7,7 @@ namespace ID3Tag.LowLevel
     {
         public override bool Validate(TagContainer container)
         {
-            if (container.Tag.MajorVersion == 3 && container.Tag.Revision == 0)
+            if (container.TagVersion == TagVersion.Id3V23)
             {
                 var valid = true;
 
