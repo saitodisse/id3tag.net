@@ -434,6 +434,8 @@ namespace ID3Tag.LowLevel
             var id3PatternFound = (headerBytes[0] == 0x49) && (headerBytes[1] == 0x44) && (headerBytes[2] == 0x33);
             if (id3PatternFound)
             {
+                //TODO: Footer ignorieren bei ID3v2.4
+
                 // Ignore the tag
                 var sizeBytes = new byte[4];
                 Array.Copy(headerBytes, 6, sizeBytes, 0, 4);
