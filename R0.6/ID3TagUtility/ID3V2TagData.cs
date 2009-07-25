@@ -4,6 +4,8 @@ namespace ID3TagUtility
 {
     public class ID3V2TagData
     {
+        public TagVersion Version { get; set; }
+
         public TextEncodingType EncodingType { get; set; }
         public string Album { get; set; }
         public string Artist { get; set; }

@@ -44,17 +44,39 @@ namespace ID3TagUtility
         {
             DialogResult = true;
 
-            if (comboBoxEncoding.SelectedIndex == 0)
+            switch(comboBoxEncoding.SelectedIndex)
             {
-                Data.EncodingType = TextEncodingType.ISO_8859_1;
+                case 0:
+                    Data.EncodingType = TextEncodingType.ISO_8859_1;
+                    break;
+                case 1:
+                    Data.EncodingType = TextEncodingType.UTF16;
+                    break;
+                case 2:
+                    Data.EncodingType = TextEncodingType.UTF16_BE;
+                    break;
+                case 3:
+                    Data.EncodingType = TextEncodingType.UTF8;
+                    break;
+                default:
+                    //
+                    //  Hmm.. invalid type. Throw exception in production code...
+                    //
+                    Data.EncodingType = TextEncodingType.ISO_8859_1;
+                    break;
             }
 
-            if (comboBoxEncoding.SelectedIndex == 1)
+            switch (comboBoxTagVersion.SelectedIndex)
             {
-                Data.EncodingType = TextEncodingType.UTF16;
+                case 0:
+                    Data.Version = TagVersion.Id3V23;
+                    break;
+                case 1:
+                    Data.Version = TagVersion.Id3V24;
+                    break;
+                default:
+                    break;
             }
-
-            // The other codings are only valid for 2.4 !
 
             Data.Album = textBoxAlbum.Text;
             Data.Artist = textBoxArtist.Text;

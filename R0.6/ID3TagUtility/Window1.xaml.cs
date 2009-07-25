@@ -47,12 +47,12 @@ namespace ID3TagUtility
                     {
                         if (tagContainer.TagVersion == TagVersion.Id3V23)
                         {
-                            var tagDescriptor = tagContainer.GetId3V23Descriptor();
+                            var tagDescriptorV3 = tagContainer.GetId3V23Descriptor();
 
                             //
                             //  OK. Update the UI.
                             //
-                            UpdateID3v2View(filename, tagDescriptor);
+                            ShowID3V23Tag(filename, tagDescriptorV3);
                             ShowTagFrames(tagContainer);
 
                             var frame = tagContainer.SearchFrame("APIC");
@@ -64,7 +64,16 @@ namespace ID3TagUtility
                         }
                         else
                         {
-                            MessageBox.Show("ID3v2.4 tag found!");
+                            var tagDescriptorV4 = tagContainer.GetId3V24Descriptor();
+                            ShowID3V24Tag(filename, tagDescriptorV4);
+                            ShowTagFrames(tagContainer);
+
+                            var frame = tagContainer.SearchFrame("APIC");
+                            if (frame != null)
+                            {
+                                var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
+                                ShowPicture(pictureFrame);
+                            }
                         }
                     }
                 }
@@ -128,7 +137,17 @@ namespace ID3TagUtility
             }
         }
 
-        private void UpdateID3v2View(string filename, TagDescriptorV3 tagDescriptor)
+        private void ShowID3V24Tag(string filename, TagDescriptorV4 tagDescriptor)
+        {
+            //
+            //  Decode the header of the tag.
+            //
+            labelFilename.Content = filename;
+            labelTagVersion.Content = String.Format("ID3v2.{0}.{1}", tagDescriptor.MajorVersion, tagDescriptor.Revision);
+
+        }
+
+        private void ShowID3V23Tag(string filename, TagDescriptorV3 tagDescriptor)
         {
             //
             //  Decode the header of the tag.

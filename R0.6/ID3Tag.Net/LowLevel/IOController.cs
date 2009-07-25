@@ -381,41 +381,49 @@ namespace ID3Tag.LowLevel
             //
             //  Create a list with dummy bytes for length and flags...
             //
-            var bytes = new List<byte> {0x00, 0x00, 0x00, 0x00, 0x01, 0x00};
-
-            byte flagByte = 0x00;
-            if (descriptor.UpdateTag)
+            if (descriptor.ExtendedHeader)
             {
-                flagByte |= 0x40;
-                bytes.Add(0x00);
+                var bytes = new List<byte> { 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 };
+
+                byte flagByte = 0x00;
+                if (descriptor.UpdateTag)
+                {
+                    flagByte |= 0x40;
+                    bytes.Add(0x00);
+                }
+
+                if (descriptor.CrcDataPresent)
+                {
+                    flagByte |= 0x20;
+                    bytes.Add(0x05);
+
+                    //TODO: Check byte array here...
+                    bytes.AddRange(descriptor.Crc);
+                }
+
+                if (descriptor.RestrictionPresent)
+                {
+                    flagByte |= 0x10;
+                    bytes.Add(0x01);
+                    bytes.Add(descriptor.Restriction);
+                }
+
+                bytes[5] = flagByte;
+
+                var byteArray = bytes.ToArray();
+                var bits = GetBitCoding(byteArray.Length);
+                var lengthBytes = new byte[4];
+
+                EncodeLength(bits, lengthBytes);
+                Array.Copy(lengthBytes, 0, byteArray, 0, 4);
+
+                return byteArray;
+            }
+            else
+            {
+                return new byte[0];
             }
 
-            if (descriptor.CrcDataPresent)
-            {
-                flagByte |= 0x20;
-                bytes.Add(0x05);
-
-                //TODO: Check byte array here...
-                bytes.AddRange(descriptor.Crc);
-            }
-
-            if (descriptor.RestrictionPresent)
-            {
-                flagByte |= 0x10;
-                bytes.Add(0x01);
-                bytes.Add(descriptor.Restriction);
-            }
-
-            bytes[5] = flagByte;
-
-            var byteArray = bytes.ToArray();
-            var bits = GetBitCoding(byteArray.Length);
-            var lengthBytes = new byte[4];
-
-            EncodeLength(bits, lengthBytes);
-            Array.Copy(lengthBytes, 0, byteArray, 6, 4);
-
-            return byteArray;
         }
 
         private static byte[] SuppressTags(Stream input)

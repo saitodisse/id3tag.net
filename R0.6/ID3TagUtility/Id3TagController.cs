@@ -135,15 +135,30 @@ namespace ID3TagUtility
 
         public TagContainer BuildTag(ID3V2TagData data)
         {
-            var tagController = new TagContainerV3();
-
-            // Configure the tag header.
-            tagController.Tag.SetHeaderFlags(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
-
-            if (data.ExtendedHeader)
+            TagContainer tagController;
+            if (data.Version == TagVersion.Id3V23)
             {
-                tagController.Tag.SetExtendedHeader(data.PaddingSize, data.CrCPresent);
-                tagController.Tag.SetCrc32(data.Crc);
+                var tagContainerV3 = new TagContainerV3();
+                // Configure the tag header.
+                tagContainerV3.Tag.SetHeaderFlags(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
+
+                if (data.ExtendedHeader)
+                {
+                    tagContainerV3.Tag.SetExtendedHeader(data.PaddingSize, data.CrCPresent);
+                    tagContainerV3.Tag.SetCrc32(data.Crc);
+                }
+
+                tagController = tagContainerV3;
+            }
+            else
+            {
+                var tagContainerV4 = new TagContainerV4();
+
+                tagContainerV4.Tag.SetHeaderFlags(false,false,false,true);
+
+                //TODO: Read the data from parameter!
+
+                tagController = tagContainerV4;
             }
 
             // OK. Build the frames.
