@@ -21,11 +21,12 @@ namespace ID3Tag.HighLevel
         /// <returns>the raw frame.</returns>
         public abstract RawFrame Convert(TagVersion version);
 
-        /// <summary>
-        /// Import the raw content to a high level frame.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public abstract void Import(RawFrame rawFrame);
+		/// <summary>
+		/// Import the raw content to a high level frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public abstract void Import(RawFrame rawFrame, int codePage);
 
         /// <summary>
         /// The frame type.

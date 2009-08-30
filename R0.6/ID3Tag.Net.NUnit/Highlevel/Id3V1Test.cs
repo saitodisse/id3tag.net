@@ -76,7 +76,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
                 outputStream = new MemoryStream(output, true);
 
                 var id3Controller = Id3TagFactory.CreateId3V1Controller();
-                id3Controller.Write(id3Tag, inputSteam, outputStream);
+                id3Controller.Write(id3Tag, inputSteam, outputStream, 0);
             }
             catch (Exception)
             {
@@ -102,7 +102,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             using (var stream = new MemoryStream(bytes))
             {
                 var id3Controller = Id3TagFactory.CreateId3V1Controller();
-                tag = id3Controller.Read(stream);
+                tag = id3Controller.Read(stream, 0);
             }
             return tag;
         }

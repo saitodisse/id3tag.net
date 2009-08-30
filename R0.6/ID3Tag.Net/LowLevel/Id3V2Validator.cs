@@ -101,7 +101,7 @@ namespace ID3Tag.LowLevel
         private static bool ValidateTextEncoding(TextEncodingType type)
         {
             bool result;
-            if (type == TextEncodingType.ISO_8859_1 || type == TextEncodingType.UTF16)
+            if (type == TextEncodingType.Ansi || type == TextEncodingType.UTF16)
             {
                 result = true;
             }

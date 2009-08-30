@@ -19,20 +19,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Debug\ID3Tag.Net.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\ID3Tag.Net.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\ID3Tag.Net.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileState.cs" />
+    <Compile Include="HighLevel\EncodedTextFrame.cs" />
     <Compile Include="HighLevel\Genre.cs" />
     <Compile Include="HighLevel\ID3Frame\InvolvedPeopleListFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PlayCounterFrame.cs" />

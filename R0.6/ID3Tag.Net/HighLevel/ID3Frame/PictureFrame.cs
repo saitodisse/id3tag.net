@@ -17,38 +17,35 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// file by using the 'MIME type' "-->" and having a complete URL instead of picture data. 
     /// The use of linked files should however be used sparingly since there is the risk of separation of files.
     /// </summary>
-    public class PictureFrame : Frame
+    public class PictureFrame : EncodedTextFrame
     {
         /// <summary>
         /// Creates a new instance of PictureFrame.
         /// </summary>
         public PictureFrame()
-            : this(TextEncodingType.ISO_8859_1, String.Empty, String.Empty, PictureType.Other, new byte[0])
+            : this(TextEncodingType.Ansi, 0, String.Empty, String.Empty, PictureType.Other, new byte[0])
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of PictureFrame.
-        /// </summary>
-        /// <param name="encoding">the text encoding</param>
-        /// <param name="mimeType">the MIME type</param>
-        /// <param name="description">the description</param>
-        /// <param name="picture">the picture type</param>
-        /// <param name="data">the picture bytes</param>
-        public PictureFrame(TextEncodingType encoding, string mimeType, string description, PictureType picture,
+		/// <summary>
+		/// Creates a new instance of PictureFrame.
+		/// </summary>
+		/// <param name="encoding">the text encoding</param>
+		/// <param name="codePage">The codepage for text encoding = 0.</param>
+		/// <param name="mimeType">the MIME type</param>
+		/// <param name="description">the description</param>
+		/// <param name="picture">the picture type</param>
+		/// <param name="data">the picture bytes</param>
+        public PictureFrame(TextEncodingType encoding, int codePage, string mimeType, string description, PictureType picture,
                             byte[] data)
         {
             TextEncoding = encoding;
+			CodePage = codePage;
             MimeType = mimeType;
             Description = description;
             PictureCoding = picture;
             PictureData = data;
         }
-
-        /// <summary>
-        /// The Text Encoding.
-        /// </summary>
-        public TextEncodingType TextEncoding { get; set; }
 
         /// <summary>
         /// The MIME Type.
@@ -88,9 +85,9 @@ namespace ID3Tag.HighLevel.ID3Frame
             var bytes = new List<byte>();
 
             var textEncodingByte = (byte) TextEncoding;
-            var mimeBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, MimeType);
+			var mimeBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, MimeType);
             var pictureEncodingByte = (byte) PictureCoding;
-            var descriptionBytes = Converter.GetContentBytes(TextEncoding, Description);
+            var descriptionBytes = Converter.GetContentBytes(TextEncoding, CodePage, Description);
 
             bytes.Add(textEncodingByte);
             bytes.AddRange(mimeBytes);
@@ -119,11 +116,12 @@ namespace ID3Tag.HighLevel.ID3Frame
             Picture data    <binary data>
          */
 
-        /// <summary>
-        /// Import a raw frame
-        /// </summary>
-        /// <param name="rawFrame">the raw frame</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import a raw frame
+		/// </summary>
+		/// <param name="rawFrame">the raw frame</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
@@ -138,12 +136,13 @@ namespace ID3Tag.HighLevel.ID3Frame
             //
             var encodingByte = payload[0];
             TextEncoding = (TextEncodingType) encodingByte;
+			CodePage = codePage;
 
             //
             //  Get the Mime.
             //
             var mimeBytes = new List<byte>();
-            var curPos = 0;
+            int curPos;
             for (curPos = 1; curPos < payload.Length; curPos++)
             {
                 var curByte = payload[curPos];
@@ -155,7 +154,7 @@ namespace ID3Tag.HighLevel.ID3Frame
                 mimeBytes.Add(curByte);
             }
 
-            var charBytes = Converter.Extract(TextEncodingType.ISO_8859_1, mimeBytes);
+			var charBytes = Converter.Extract(TextEncodingType.Ansi, 28591, mimeBytes);
             MimeType = new string(charBytes);
 
             //
@@ -184,7 +183,7 @@ namespace ID3Tag.HighLevel.ID3Frame
                 descriptionBytes.AddRange(values);
             }
 
-            var descriptionChars = Converter.Extract(TextEncoding, descriptionBytes.ToArray());
+            var descriptionChars = Converter.Extract(TextEncoding, codePage, descriptionBytes.ToArray());
             Description = new string(descriptionChars);
 
             //

@@ -11,7 +11,7 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// as a terminated string, followed by the actual URL. The URL is always encoded with ISO-8859-1. 
     /// There may be more than one "WXXX" frame in each tag, but only one with the same description.
     /// </summary>
-    public class UserDefinedURLLinkFrame : Frame
+    public class UserDefinedURLLinkFrame : EncodedTextFrame
     {
         /// <summary>
         /// Creates a new UserDefinedURLLinkFrame
@@ -20,24 +20,21 @@ namespace ID3Tag.HighLevel.ID3Frame
         {
         }
 
-        /// <summary>
-        /// Creates a new UserDefinedURLLinkFrame
-        /// </summary>
-        /// <param name="description">the Description</param>
-        /// <param name="url">The URL</param>
-        /// <param name="type">The text encoding type.</param>
-        public UserDefinedURLLinkFrame(string description, string url, TextEncodingType type)
+		/// <summary>
+		/// Creates a new UserDefinedURLLinkFrame
+		/// </summary>
+		/// <param name="description">the Description</param>
+		/// <param name="url">The URL</param>
+		/// <param name="type">The text encoding type.</param>
+		/// <param name="codePage">The code page.</param>
+        public UserDefinedURLLinkFrame(string description, string url, TextEncodingType type, int codePage)
         {
             Descriptor.ID = "WXXX";
             Description = description;
             URL = url;
             TextEncoding = type;
+			CodePage = codePage;
         }
-
-        /// <summary>
-        /// The text encoding
-        /// </summary>
-        public TextEncodingType TextEncoding { get; set; }
 
         /// <summary>
         /// The description
@@ -64,8 +61,8 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-            var descrBytes = Converter.GetContentBytes(TextEncoding, Description);
-            var urlBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, URL);
+            var descrBytes = Converter.GetContentBytes(TextEncoding, CodePage, Description);
+            var urlBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, URL);
             var terminateCharLength = Converter.GetTerminationCharLength(TextEncoding);
 
             var payloadSize = 1 + descrBytes.Length + terminateCharLength + urlBytes.Length;
@@ -79,11 +76,12 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
-        /// <summary>
-        /// Import the raw frame.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
@@ -94,13 +92,15 @@ namespace ID3Tag.HighLevel.ID3Frame
              */
 
             TextEncoding = (TextEncodingType) rawFrame.Payload[0];
+        	CodePage = codePage;
+
             var dataBytes = new byte[rawFrame.Payload.Length - 1];
             Array.Copy(rawFrame.Payload, 1, dataBytes, 0, dataBytes.Length);
 
             int increment;
             switch (TextEncoding)
             {
-                case TextEncodingType.ISO_8859_1:
+                case TextEncodingType.Ansi:
                     increment = 1;
                     break;
                 case TextEncodingType.UTF16:
@@ -145,10 +145,10 @@ namespace ID3Tag.HighLevel.ID3Frame
                 urlBytes.Add(dataBytes[j]);
             }
 
-            var descrChars = Converter.Extract(TextEncoding, descrBytes.ToArray());
+            var descrChars = Converter.Extract(TextEncoding, codePage, descrBytes.ToArray());
             Description = new string(descrChars);
 
-            var urlChars = Converter.Extract(TextEncodingType.ISO_8859_1, urlBytes.ToArray(), false);
+            var urlChars = Converter.Extract(TextEncodingType.Ansi, 28591, urlBytes.ToArray(), false);
             URL = new string(urlChars);
         }
 

@@ -8,7 +8,7 @@
         /// <summary>
         /// ISO-8859-1 coding.
         /// </summary>
-        ISO_8859_1 = 0,
+        Ansi = 0,
         /// <summary>
         /// Unicode UTF16 coding.
         /// </summary>

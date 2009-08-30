@@ -56,11 +56,12 @@ namespace ID3Tag.HighLevel.ID3Frame
             return frame;
         }
 
-        /// <summary>
-        /// Import the raw frame.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 

@@ -88,7 +88,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-            var ownerBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, Owner);
+			var ownerBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, Owner);
             var startBytes = BitConverter.GetBytes(PreviewStart);
             var lengthBytes = BitConverter.GetBytes(PreviewLength);
 
@@ -110,22 +110,23 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
-        /// <summary>
-        /// Import the raw frame.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
             var payloadBytes = rawFrame.Payload;
 
             // Read the text bytes.
             var textBytes = new List<byte>();
-            var curPos = 0;
+            int curPos;
             for (curPos = 0; curPos < payloadBytes.Length; curPos++)
             {
                 var curByte = payloadBytes[curPos];
-                if (curByte == 0)
+                if (curByte == 0x00)
                 {
                     // Termination found. Abort.
                     break;
@@ -136,7 +137,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
             curPos++;
 
-            var chars = Converter.Extract(TextEncodingType.ISO_8859_1, textBytes.ToArray());
+			var chars = Converter.Extract(TextEncodingType.Ansi, 28591, textBytes.ToArray());
             Owner = new string(chars);
 
             var startBytes = new byte[2];

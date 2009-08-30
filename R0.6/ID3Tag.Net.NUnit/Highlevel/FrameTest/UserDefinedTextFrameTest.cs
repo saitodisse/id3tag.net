@@ -22,7 +22,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Convert_ISO8859_1_Test()
         {
             var frame = new UserDefinedTextFrame();
-            frame.TextEncoding = TextEncodingType.ISO_8859_1;
+            frame.TextEncoding = TextEncodingType.Ansi;
             frame.Descriptor.ID = "TXXX";
             frame.Description = "ABCD";
             frame.Value = "EFGH";
@@ -103,7 +103,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void CreateTest()
         {
-            var frame = new UserDefinedTextFrame("ABCD", "EFGH", TextEncodingType.UTF16);
+            var frame = new UserDefinedTextFrame("ABCD", "EFGH", TextEncodingType.UTF16, 0);
 
             Assert.AreEqual(frame.Descriptor.ID, "TXXX");
             Assert.AreEqual(frame.Description, "ABCD");
@@ -136,7 +136,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(userDefined1.Descriptor.ID, "TXXX");
             Assert.AreEqual(userDefined1.Type, FrameType.UserDefinedText);
-            Assert.AreEqual(userDefined1.TextEncoding, TextEncodingType.ISO_8859_1);
+            Assert.AreEqual(userDefined1.TextEncoding, TextEncodingType.Ansi);
             Assert.AreEqual(userDefined1.Description, "ABCD");
             Assert.AreEqual(userDefined1.Value, "EFGH");
         }

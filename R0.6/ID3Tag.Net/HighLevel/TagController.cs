@@ -7,7 +7,23 @@ namespace ID3Tag.HighLevel
     {
         #region ITagController Members
 
+		/// <summary>
+		/// Decodes a low level tag into a high level.
+		/// </summary>
+		/// <param name="info">the low level tag.</param>
+		/// <returns>the high level tag representation.</returns>
         public TagContainer Decode(Id3TagInfo info)
+		{
+			return Decode(info, 0);
+		}
+
+		/// <summary>
+		/// Decodes a low level tag into a high level.
+		/// </summary>
+		/// <param name="info">the low level tag.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding.</param>
+		/// <returns>the high level tag representation.</returns>
+        public TagContainer Decode(Id3TagInfo info, int codePage)
         {
             TagContainer container;
             switch (info.MajorVersion)
@@ -33,7 +49,7 @@ namespace ID3Tag.HighLevel
                 var frame = AnalyseFrameId(rawFrame);
                 if (frame != null)
                 {
-                    frame.Import(rawFrame);
+                    frame.Import(rawFrame, codePage);
                     container.Add(frame);
                 }
                 else
@@ -188,7 +204,7 @@ namespace ID3Tag.HighLevel
             return container;
         }
 
-        private void EncodeV4(Id3TagInfo tagInfo, TagContainer container)
+        private static void EncodeV4(Id3TagInfo tagInfo, TagContainer container)
         {
             var descriptor = container.GetId3V24Descriptor();
 
@@ -205,7 +221,7 @@ namespace ID3Tag.HighLevel
             }
         }
 
-        private void EncodeV3(Id3TagInfo tagInfo, TagContainer container)
+        private static void EncodeV3(Id3TagInfo tagInfo, TagContainer container)
         {
             var descriptor = container.GetId3V23Descriptor();
 

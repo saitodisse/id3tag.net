@@ -1,314 +1,376 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace ID3Tag.HighLevel
 {
-    internal class Id3V1Controller : IId3V1Controller
-    {
-        #region IId3V1Controller Members
+	internal class Id3V1Controller : IId3V1Controller
+	{
+		#region IId3V1Controller Members
 
-        public Id3V1Tag Read(Stream inputStream)
-        {
-            if (!inputStream.CanSeek)
-            {
-                throw new ID3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
-            }
+		/// <summary>
+		/// Reads the ID3v1 tag using specified code page for text encoding.
+		/// </summary>
+		/// <param name="inputStream">the input stream (i.e. the file.)</param>
+		/// <param name="codePage">The code page for text encoding.</param>
+		/// <returns>An ID3v1 container.</returns>
+		public Id3V1Tag Read(Stream inputStream, int codePage)
+		{
+			if (!inputStream.CanSeek)
+			{
+				throw new ID3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+			}
 
-            if (inputStream.Length < 128)
-            {
-                throw new ID3IOException("Cannot read ID3v1 tag because the stream is too short");
-            }
+			if (inputStream.Length < 128)
+			{
+				throw new ID3IOException("Cannot read ID3v1 tag because the stream is too short");
+			}
 
-            //
-            //  Read the last 128 Bytes from the stream (ID3v1 Position)
-            //
-            var tagBytes = new byte[128];
-            inputStream.Seek(-128, SeekOrigin.End);
-            inputStream.Read(tagBytes, 0, 128);
+			//
+			//  Read the last 128 Bytes from the stream (ID3v1 Position)
+			//
+			var tagBytes = new byte[128];
+			inputStream.Seek(-128, SeekOrigin.End);
+			inputStream.Read(tagBytes, 0, 128);
 
-            var isValidTag = CheckID(tagBytes);
-            if (!isValidTag)
-            {
-                throw new ID3HeaderNotFoundException("TAG header not found");
-            }
+			bool isValidTag = CheckID(tagBytes);
+			if (!isValidTag)
+			{
+				throw new ID3HeaderNotFoundException("TAG header not found");
+			}
 
-            var v1Tag = ExtractTag(tagBytes);
-            return v1Tag;
-        }
+			Id3V1Tag v1Tag = ExtractTag(tagBytes, codePage);
+			return v1Tag;
+		}
 
-        public Id3V1Tag Read(FileInfo file)
-        {
-            var fileExists = file.Exists;
-            if (!fileExists)
-            {
-                throw new FileNotFoundException("File " + file.FullName + " not found!.");
-            }
+		/// <summary>
+		/// Reads the ID3v1 tag using default code page for text encoding.
+		/// </summary>
+		/// <param name="file">the file.</param>
+		/// <returns>An ID3v1 container.</returns>
+		public Id3V1Tag Read(FileInfo file)
+		{
+			return Read(file, 0);
+		}
 
-            FileStream fs = null;
-            Id3V1Tag info;
-            try
-            {
-                fs = File.Open(file.FullName, FileMode.Open);
-                info = Read(fs);
-            }
-            catch (ID3TagException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new ID3TagException("Unknown Exception during reading.", ex);
-            }
-            finally
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                }
-            }
+		/// <summary>
+		/// Reads the ID3v1 tag using default code page for text encoding.
+		/// </summary>
+		/// <param name="inputStream">the input stream (i.e. the file.)</param>
+		/// <returns>An ID3v1 container.</returns>
+		public Id3V1Tag Read(Stream inputStream)
+		{
+			return Read(inputStream, 0);
+		}
 
-            return info;
-        }
+		/// <summary>
+		/// Reads the ID3v1 tag using specified code page for text encoding.
+		/// </summary>
+		/// <param name="file">the file.</param>
+		/// <param name="codePage">The code page.</param>
+		/// <returns>An ID3v1 container.</returns>
+		public Id3V1Tag Read(FileInfo file, int codePage)
+		{
+			bool fileExists = file.Exists;
+			if (!fileExists)
+			{
+				throw new FileNotFoundException("File " + file.FullName + " not found!.");
+			}
 
-        public void Write(Id3V1Tag tag, Stream input, Stream output)
-        {
-            //
-            //  Validate the parameter.
-            //
-            if (tag == null)
-            {
-                throw new ArgumentNullException("tag");
-            }
+			FileStream fs = null;
+			Id3V1Tag info;
+			try
+			{
+				fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
+				info = Read(fs, codePage);
+			}
+			catch (ID3TagException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				throw new ID3TagException("Unknown Exception during reading.", ex);
+			}
+			finally
+			{
+				if (fs != null)
+				{
+					fs.Close();
+				}
+			}
 
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+			return info;
+		}
 
-            if (output == null)
-            {
-                throw new ArgumentNullException("output");
-            }
+		/// <summary>
+		/// Writes a new ID3v1 tag using default code page for text encoding.
+		/// </summary>
+		/// <param name="tag">the tag.</param>
+		/// <param name="input">the audio input stream.</param>
+		/// <param name="output">the target stream.</param>
+		public void Write(Id3V1Tag tag, Stream input, Stream output)
+		{
+			Write(tag, input, output);
+		}
 
-            if (!input.CanSeek)
-            {
-                throw new ID3TagException("Cannot write ID3V1 tag because the source does not support seek.");
-            }
+		/// <summary>
+		/// Writes a new ID3v1 tag using specified code page for text encoding.
+		/// </summary>
+		/// <param name="tag">the tag.</param>
+		/// <param name="input">the audio input stream.</param>
+		/// <param name="output">the target stream.</param>
+		/// <param name="codePage">The code page for text encoding.</param>
+		public void Write(Id3V1Tag tag, Stream input, Stream output, int codePage)
+		{
+			//
+			//  Validate the parameter.
+			//
+			if (tag == null)
+			{
+				throw new ArgumentNullException("tag");
+			}
 
-            if (!output.CanWrite)
-            {
-                throw new ID3TagException("Cannot write ID3V1 tag because the output does not support writing.");
-            }
+			if (input == null)
+			{
+				throw new ArgumentNullException("input");
+			}
 
-            try
-            {
-                //
-                //  Read the last 128 Bytes from the stream (ID3v1 Position)
-                //
-                var audioBytesCount = GetAudioBytesCount(input);
+			if (output == null)
+			{
+				throw new ArgumentNullException("output");
+			}
 
-                //
-                //  Write the audio data and tag
-                //
-                input.Seek(0, SeekOrigin.Begin);
-                Utils.WriteAudioStream(output, input, audioBytesCount);
+			if (!input.CanSeek)
+			{
+				throw new ID3TagException("Cannot write ID3V1 tag because the source does not support seek.");
+			}
 
-                var tagBytes = ConvertToByte(tag);
-                output.Write(tagBytes, 0, tagBytes.Length);
-            }
-            catch (Exception ex)
-            {
-                throw new ID3IOException("Cannot write ID3v1 tag", ex);
-            }
-        }
+			if (!output.CanWrite)
+			{
+				throw new ID3TagException("Cannot write ID3V1 tag because the output does not support writing.");
+			}
 
-        #endregion
+			try
+			{
+				//
+				//  Read the last 128 Bytes from the stream (ID3v1 Position)
+				//
+				long audioBytesCount = GetAudioBytesCount(input);
 
-        #region Private helper
+				//
+				//  Write the audio data and tag
+				//
+				input.Seek(0, SeekOrigin.Begin);
+				Utils.WriteAudioStream(output, input, audioBytesCount);
 
-        private static long GetAudioBytesCount(Stream input)
-        {
-            var tagBytes = new byte[128];
-            long audioBytesCount;
+				byte[] tagBytes = ConvertToByte(tag, codePage);
+				output.Write(tagBytes, 0, tagBytes.Length);
+			}
+			catch (Exception ex)
+			{
+				throw new ID3IOException("Cannot write ID3v1 tag", ex);
+			}
+		}
 
-            if (input.Length > 127)
-            {
-                input.Seek(-128, SeekOrigin.End);
-                input.Read(tagBytes, 0, 128);
+		#endregion
 
-                var id3TagFound = CheckID(tagBytes);
-                if (id3TagFound)
-                {
-                    // Ignore the ID3Tag from the source
-                    audioBytesCount = input.Length - 128;
-                }
-                else
-                {
-                    audioBytesCount = input.Length;
-                }
-            }
-            else
-            {
-                audioBytesCount = input.Length;
-            }
+		#region Private helper
 
-            return audioBytesCount;
-        }
+		private static long GetAudioBytesCount(Stream input)
+		{
+			var tagBytes = new byte[128];
+			long audioBytesCount;
 
-        private byte[] ConvertToByte(Id3V1Tag tag)
-        {
-            var tagBytes = new byte[128];
-            // Write the tag ID ( TAG)
-            tagBytes[0] = 0x54;
-            tagBytes[1] = 0x41;
-            tagBytes[2] = 0x47;
+			if (input.Length > 127)
+			{
+				input.Seek(-128, SeekOrigin.End);
+				input.Read(tagBytes, 0, 128);
 
-            // Write the fields...
-            var titleBytes = GetField(tag.Title, 30);
-            var artistBytes = GetField(tag.Artist, 30);
-            var albumBytes = GetField(tag.Album, 30);
-            var year = GetField(tag.Year, 4);
+				bool id3TagFound = CheckID(tagBytes);
+				if (id3TagFound)
+				{
+					// Ignore the ID3Tag from the source
+					audioBytesCount = input.Length - 128;
+				}
+				else
+				{
+					audioBytesCount = input.Length;
+				}
+			}
+			else
+			{
+				audioBytesCount = input.Length;
+			}
 
-            Array.Copy(titleBytes, 0, tagBytes, 3, 30);
-            Array.Copy(artistBytes, 0, tagBytes, 33, 30);
-            Array.Copy(albumBytes, 0, tagBytes, 63, 30);
-            Array.Copy(year, 0, tagBytes, 93, 4);
+			return audioBytesCount;
+		}
 
-            byte[] commentBytes;
-            if (tag.IsID3V1_1Compliant)
-            {
-                commentBytes = GetField(tag.Comment, 28);
-                Array.Copy(commentBytes, 0, tagBytes, 97, 28);
+		private static byte[] ConvertToByte(Id3V1Tag tag, int codePage)
+		{
+			var tagBytes = new byte[128];
+			// Write the tag ID ( TAG)
+			tagBytes[0] = 0x54;
+			tagBytes[1] = 0x41;
+			tagBytes[2] = 0x47;
 
-                var trackNr = tag.TrackNr;
-                tagBytes[125] = 0x00;
-                tagBytes[126] = Convert.ToByte(trackNr);
-            }
-            else
-            {
-                commentBytes = GetField(tag.Comment, 30);
-                Array.Copy(commentBytes, 0, tagBytes, 97, 30);
-            }
+			// Write the fields...
+			byte[] titleBytes = GetField(tag.Title, 30, codePage);
+			byte[] artistBytes = GetField(tag.Artist, 30, codePage);
+			byte[] albumBytes = GetField(tag.Album, 30, codePage);
+			byte[] year = GetField(tag.Year, 4, codePage);
 
-            // Add genre
-            tagBytes[127] = Convert.ToByte(tag.GenreIdentifier);
+			Array.Copy(titleBytes, 0, tagBytes, 3, 30);
+			Array.Copy(artistBytes, 0, tagBytes, 33, 30);
+			Array.Copy(albumBytes, 0, tagBytes, 63, 30);
+			Array.Copy(year, 0, tagBytes, 93, 4);
 
-            return tagBytes;
-        }
+			byte[] commentBytes;
+			if (tag.IsID3V1_1Compliant)
+			{
+				commentBytes = GetField(tag.Comment, 28, codePage);
+				Array.Copy(commentBytes, 0, tagBytes, 97, 28);
 
-        private byte[] GetField(string value, int size)
-        {
-            var valueBytes = Encoding.ASCII.GetBytes(value);
-            var fieldBytes = new byte[size];
+				string trackNr = tag.TrackNr;
+				tagBytes[125] = 0x00;
+				tagBytes[126] = Convert.ToByte(trackNr);
+			}
+			else
+			{
+				commentBytes = GetField(tag.Comment, 30, codePage);
+				Array.Copy(commentBytes, 0, tagBytes, 97, 30);
+			}
 
-            if (valueBytes.Length == size)
-            {
-                fieldBytes = valueBytes;
-            }
-            else
-            {
-                // OK. Fit to size
-                if (valueBytes.Length > size)
-                {
-                    Array.Copy(valueBytes, fieldBytes, size);
-                }
-                else
-                {
-                    var fieldCount = fieldBytes.Length;
-                    Array.Copy(valueBytes, fieldBytes, valueBytes.Length);
+			// Add genre
+			tagBytes[127] = Convert.ToByte(tag.GenreIdentifier);
 
-                    for (var i = valueBytes.Length; i < fieldCount; i++)
-                    {
-                        // Add Space code
-                        fieldBytes[i] = 0x20;
-                    }
-                }
-            }
+			return tagBytes;
+		}
 
-            return fieldBytes;
-        }
+		private static byte[] GetField(string value, int size, int codePage)
+		{
+			Encoding encoding = codePage == 0 ? Encoding.Default : Encoding.GetEncoding(codePage);
 
-        private Id3V1Tag ExtractTag(byte[] tagBytes)
-        {
-            // Read the tag
+			if (!encoding.IsSingleByte)
+			{
+				throw new InvalidOperationException("Text encoding {0} is not a single-byte and it cannot be used in ID3v1 tags.");
+			}
 
-            var titleBytes = new byte[30];
-            var artistBytes = new byte[30];
-            var albumBytes = new byte[30];
-            var yearBytes = new byte[4];
-            var commentBytes = new byte[30];
+			byte[] valueBytes = encoding.GetBytes(value);
+			var fieldBytes = new byte[size];
 
-            Array.Copy(tagBytes, 3, titleBytes, 0, 30);
-            Array.Copy(tagBytes, 33, artistBytes, 0, 30);
-            Array.Copy(tagBytes, 63, albumBytes, 0, 30);
-            Array.Copy(tagBytes, 93, yearBytes, 0, 4);
-            Array.Copy(tagBytes, 97, commentBytes, 0, 30);
-            var genreByte = tagBytes[127];
+			if (valueBytes.Length == size)
+			{
+				fieldBytes = valueBytes;
+			}
+			else
+			{
+				// OK. Fit to size
+				if (valueBytes.Length > size)
+				{
+					Array.Copy(valueBytes, fieldBytes, size);
+				}
+				else
+				{
+					int fieldCount = fieldBytes.Length;
+					Array.Copy(valueBytes, fieldBytes, valueBytes.Length);
 
-            var title = GetString(titleBytes);
-            var artits = GetString(artistBytes);
-            var album = GetString(albumBytes);
-            var year = GetString(yearBytes);
+					for (int i = valueBytes.Length; i < fieldCount; i++)
+					{
+						// Add Space code
+						fieldBytes[i] = 0x20;
+					}
+				}
+			}
 
-            var id3v1_1Support = ((commentBytes[28] == 0) && (commentBytes[29] != 0));
-            var trackNr = String.Empty;
-            var comment = String.Empty;
+			return fieldBytes;
+		}
 
-            if (id3v1_1Support)
-            {
-                var trackNrValue = commentBytes[29];
-                trackNr = Convert.ToString(trackNrValue);
+		private static Id3V1Tag ExtractTag(byte[] tagBytes, int codePage)
+		{
+			// Read the tag
 
-                var newComments = new byte[28];
-                Array.Copy(commentBytes, 0, newComments, 0, newComments.Length);
+			var titleBytes = new byte[30];
+			var artistBytes = new byte[30];
+			var albumBytes = new byte[30];
+			var yearBytes = new byte[4];
+			var commentBytes = new byte[30];
 
-                comment = GetString(newComments);
-            }
-            else
-            {
-                comment = GetString(commentBytes);
-            }
+			Array.Copy(tagBytes, 3, titleBytes, 0, 30);
+			Array.Copy(tagBytes, 33, artistBytes, 0, 30);
+			Array.Copy(tagBytes, 63, albumBytes, 0, 30);
+			Array.Copy(tagBytes, 93, yearBytes, 0, 4);
+			Array.Copy(tagBytes, 97, commentBytes, 0, 30);
+			byte genreByte = tagBytes[127];
 
-            var id3v1 = new Id3V1Tag
-                            {
-                                Title = title,
-                                Artist = artits,
-                                Album = album,
-                                Year = year,
-                                Comment = comment,
-                                GenreIdentifier = genreByte,
-                                IsID3V1_1Compliant = id3v1_1Support,
-                                TrackNr = trackNr
-                            };
+			string title = GetString(titleBytes, codePage);
+			string artits = GetString(artistBytes, codePage);
+			string album = GetString(albumBytes, codePage);
+			string year = GetString(yearBytes, codePage);
 
-            return id3v1;
-        }
+			bool id3v1_1Support = ((commentBytes[28] == 0) && (commentBytes[29] != 0));
+			string trackNr = String.Empty;
+			string comment = String.Empty;
 
-        private static string GetString(IEnumerable<byte> array)
-        {
-            var sb = new StringBuilder();
+			if (id3v1_1Support)
+			{
+				byte trackNrValue = commentBytes[29];
+				trackNr = Convert.ToString(trackNrValue);
 
-            foreach (var byteValue in array)
-            {
-                if (byteValue != 0)
-                {
-                    var vharValue = Convert.ToChar(byteValue);
-                    sb.Append(vharValue);
-                }
-            }
+				var newComments = new byte[28];
+				Array.Copy(commentBytes, 0, newComments, 0, newComments.Length);
 
-            var stringValue = sb.ToString();
-            return stringValue.Trim();
-        }
+				comment = GetString(newComments, codePage);
+			}
+			else
+			{
+				comment = GetString(commentBytes, codePage);
+			}
 
-        private static bool CheckID(byte[] tag)
-        {
-            // TAG
-            return (tag[0] == 0x54) && (tag[1] == 0x41) && (tag[2] == 0x47);
-        }
+			var id3v1 = new Id3V1Tag
+			            	{
+			            		Title = title,
+			            		Artist = artits,
+			            		Album = album,
+			            		Year = year,
+			            		Comment = comment,
+			            		GenreIdentifier = genreByte,
+			            		IsID3V1_1Compliant = id3v1_1Support,
+			            		TrackNr = trackNr
+			            	};
 
-        #endregion
-    }
+			return id3v1;
+		}
+
+		private static string GetString(byte[] array, int codePage)
+		{
+			int count = array.Length;
+
+			for (int i = 0; i < array.Length; i++)
+			{
+				if (array[i] == 0x00)
+				{
+					count = i;
+					break;
+				}
+			}
+
+			Encoding encoding = codePage == 0 ? Encoding.Default : Encoding.GetEncoding(codePage);
+
+			if (!encoding.IsSingleByte)
+			{
+				throw new InvalidOperationException("Text encoding {0} is not a single-byte and it cannot be used in ID3v1 tags.");
+			}
+
+			return encoding.GetString(array, 0, count).TrimEnd();
+		}
+
+		private static bool CheckID(byte[] tag)
+		{
+			// TAG
+			return (tag[0] == 0x54) && (tag[1] == 0x41) && (tag[2] == 0x47);
+		}
+
+		#endregion
+	}
 }

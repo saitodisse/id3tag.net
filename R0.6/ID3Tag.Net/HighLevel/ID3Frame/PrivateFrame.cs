@@ -60,7 +60,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-            var ownerBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, Owner);
+			var ownerBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, Owner);
 
             var payloadBytes = new byte[ownerBytes.Length + 1 + Data.Length];
             Array.Copy(ownerBytes, 0, payloadBytes, 0, ownerBytes.Length);
@@ -70,11 +70,12 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
-        /// <summary>
-        /// Import the raw frame.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
@@ -90,7 +91,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             }
 
             var ownerBytes = items[0];
-            var ownerChars = Converter.Extract(TextEncodingType.ISO_8859_1, ownerBytes, false);
+			var ownerChars = Converter.Extract(TextEncodingType.Ansi, 28591, ownerBytes, false);
             Owner = new string(ownerChars);
 
             Data = items[1];

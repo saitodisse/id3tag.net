@@ -6,20 +6,28 @@ namespace ID3Tag.HighLevel
 {
     internal static class Converter
     {
-        public static char[] Extract(TextEncodingType type, byte[] content)
+		public static char[] Extract(TextEncodingType type, int codePage, byte[] content)
         {
-            return PerformExtract(type, content, false);
+            return PerformExtract(type, codePage, content, false);
         }
 
-        public static char[] Extract(TextEncodingType type, List<byte> content)
+		public static char[] Extract(TextEncodingType type, int codePage, List<byte> content)
         {
             var contentBytes = content.ToArray();
-            return PerformExtract(type, contentBytes, false);
+            return PerformExtract(type, codePage, contentBytes, false);
         }
 
-        public static char[] Extract(TextEncodingType type, byte[] content, bool abortAfterTermination)
+		/// <summary>
+		/// Converts <paramref name="content"/> into an array of characters.
+		/// </summary>
+		/// <param name="type">The encoding type.</param>
+		/// <param name="codePage">The code page for Ansi encoding.</param>
+		/// <param name="content">The content.</param>
+		/// <param name="abortAfterTermination">if set to <c>true</c> [abort after termination].</param>
+		/// <returns></returns>
+        public static char[] Extract(TextEncodingType type, int codePage, byte[] content, bool abortAfterTermination)
         {
-            return PerformExtract(type, content, abortAfterTermination);
+            return PerformExtract(type, codePage, content, abortAfterTermination);
         }
 
         public static List<byte[]> SplitByteArray(byte[] data)
@@ -53,7 +61,7 @@ namespace ID3Tag.HighLevel
             int length;
             switch (type)
             {
-                case TextEncodingType.ISO_8859_1:
+                case TextEncodingType.Ansi:
                     length = 1;
                     break;
                 case TextEncodingType.UTF16:
@@ -125,13 +133,17 @@ namespace ID3Tag.HighLevel
             return isNull;
         }
 
-        internal static byte[] GetContentBytes(TextEncodingType encodingType, string content)
+        internal static byte[] GetContentBytes(TextEncodingType encodingType, int codePage, string content)
         {
             byte[] contentBytes;
             switch (encodingType)
             {
-                case TextEncodingType.ISO_8859_1:
-                    var asciiEncoding = new ASCIIEncoding();
+                case TextEncodingType.Ansi:
+					var asciiEncoding = codePage == 0 ? Encoding.Default : Encoding.GetEncoding(codePage);
+					if (!asciiEncoding.IsSingleByte)
+					{
+						throw new InvalidOperationException(String.Format("Code page {0} cannot be used for single-byte Ansi encoding.", codePage));
+					}
                     contentBytes = asciiEncoding.GetBytes(content);
                     break;
                 case TextEncodingType.UTF16:
@@ -161,31 +173,38 @@ namespace ID3Tag.HighLevel
 
         #region Private Helper
 
-        private static char[] ExtractISO8859_1(byte[] content, bool abortAfterTermination)
+        private static char[] ExtractAnsi(int codePage, byte[] content, bool abortAfterTermination)
         {
-            var chars = new List<char>();
-            for (var index = 0; index < content.Length; index++)
-            {
-                if (abortAfterTermination && content[index] == 00)
-                {
-                    // Termination detected
-                    break;
-                }
+        	var encoding = Encoding.GetEncoding(codePage);
 
-                var c = (char) content[index];
-                chars.Add(c);
+			if (!encoding.IsSingleByte)
+			{
+				throw new InvalidOperationException(String.Format("Code page {0} cannot be used for single-byte Ansi encoding.", codePage));
+			}
+
+        	var count = content.Length;
+            if (abortAfterTermination)
+            {
+            	for (var index = 0; index < content.Length; index++)
+            	{
+					if (content[index] == 0x00)
+					{
+						count = index;
+						break;
+					}
+            	}
             }
 
-            return chars.ToArray();
+        	return encoding.GetChars(content, 0, count);
         }
 
-        private static char[] PerformExtract(TextEncodingType type, byte[] content, bool abortAfterTermination)
+        private static char[] PerformExtract(TextEncodingType type, int codePage, byte[] content, bool abortAfterTermination)
         {
             char[] chars;
             switch (type)
             {
-                case TextEncodingType.ISO_8859_1:
-                    chars = ExtractISO8859_1(content, abortAfterTermination);
+                case TextEncodingType.Ansi:
+                    chars = ExtractAnsi(codePage, content, abortAfterTermination);
                     break;
                 case TextEncodingType.UTF16:
                     chars = ExtractUTF16(content, abortAfterTermination);

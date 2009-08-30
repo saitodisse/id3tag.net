@@ -83,7 +83,7 @@ namespace ID3TagUtility
                     //
                     //  Read the ID3V1 Tag.
                     //
-                    var tag = m_Controller.ReadId3V1Tag(dialog.FileName);
+                    var tag = m_Controller.ReadId3V1Tag(dialog.FileName, 0);
 
                     labelTitle.Content = tag.Title;
                     labelArtist.Content = tag.Artist;
@@ -237,7 +237,7 @@ namespace ID3TagUtility
                     return;
                 }
 
-                m_Controller.WriteId3V1Tag(data, sourceFile, targetFile);
+                m_Controller.WriteId3V1Tag(data, sourceFile, targetFile, 0);
             }
         }
 

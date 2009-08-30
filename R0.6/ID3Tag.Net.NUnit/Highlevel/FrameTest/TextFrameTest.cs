@@ -21,7 +21,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConstructorTest()
         {
-            var textFrame = new TextFrame("TALB", "ABCD", TextEncodingType.UTF16);
+            var textFrame = new TextFrame("TALB", "ABCD", TextEncodingType.UTF16, 0);
 
             Assert.AreEqual(textFrame.Descriptor.ID, "TALB");
             Assert.AreEqual(textFrame.Content, "ABCD");
@@ -33,7 +33,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var textFrame = new TextFrame
                                 {
-                                    TextEncoding = TextEncodingType.ISO_8859_1,
+                                    TextEncoding = TextEncodingType.Ansi,
                                     Content = "ABCD",
                                     Descriptor = {ID = "TALB"}
                                 };
@@ -138,12 +138,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(text1.Descriptor.ID, "TALB");
             Assert.AreEqual(text1.Type, FrameType.Text);
-            Assert.AreEqual(text1.TextEncoding, TextEncodingType.ISO_8859_1);
+            Assert.AreEqual(text1.TextEncoding, TextEncodingType.Ansi);
             Assert.AreEqual(text1.Content, "ABCD");
 
             Assert.AreEqual(text2.Descriptor.ID, "TIT2");
             Assert.AreEqual(text2.Type, FrameType.Text);
-            Assert.AreEqual(text2.TextEncoding, TextEncodingType.ISO_8859_1);
+            Assert.AreEqual(text2.TextEncoding, TextEncodingType.Ansi);
             Assert.AreEqual(text2.Content, "EFGH");
         }
 

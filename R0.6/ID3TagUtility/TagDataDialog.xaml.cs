@@ -16,7 +16,7 @@ namespace ID3TagUtility
 
             Data = new ID3V2TagData
                        {
-                           EncodingType = TextEncodingType.ISO_8859_1,
+                           EncodingType = TextEncodingType.Ansi,
                            Album = "My Album",
                            Artist = "My Artist",
                            Title = "My Title",
@@ -47,7 +47,7 @@ namespace ID3TagUtility
             switch(comboBoxEncoding.SelectedIndex)
             {
                 case 0:
-                    Data.EncodingType = TextEncodingType.ISO_8859_1;
+                    Data.EncodingType = TextEncodingType.Ansi;
                     break;
                 case 1:
                     Data.EncodingType = TextEncodingType.UTF16;
@@ -62,7 +62,7 @@ namespace ID3TagUtility
                     //
                     //  Hmm.. invalid type. Throw exception in production code...
                     //
-                    Data.EncodingType = TextEncodingType.ISO_8859_1;
+                    Data.EncodingType = TextEncodingType.Ansi;
                     break;
             }
 

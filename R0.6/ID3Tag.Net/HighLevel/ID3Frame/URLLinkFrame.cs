@@ -43,30 +43,31 @@ namespace ID3Tag.HighLevel.ID3Frame
             get { return FrameType.URLLink; }
         }
 
-        /// <summary>
-        /// Convert the URLLinkFrame.
-        /// </summary>
-        /// <returns>the RawFrame.</returns>
+		/// <summary>
+		/// Convert the URLLinkFrame.
+		/// </summary>
+		/// <param name="version">The version.</param>
+		/// <returns>the RawFrame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-            var payloadBytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, URL);
+			var payloadBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, URL);
 
             var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes, version);
             return rawFrame;
         }
 
-        /// <summary>
-        /// Import the raw frame data.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw frame data.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
-            // Simple ISO8859-1 coding in the payload!
-
-            var chars = Converter.Extract(TextEncodingType.ISO_8859_1, rawFrame.Payload, true);
+            // Simple ANSI coding in the payload!
+			var chars = Converter.Extract(TextEncodingType.Ansi, 28591, rawFrame.Payload, true);
             URL = new string(chars);
         }
 

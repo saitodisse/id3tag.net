@@ -11,7 +11,7 @@ namespace ID3Tag.HighLevel.ID3Frame
     /// should be ignored and not be displayed. All text frame identifiers begin with "T". 
     /// Only text frame identifiers begin with "T", with the exception of the "TXXX" frame. 
     /// </summary>
-    public class TextFrame : Frame
+    public class TextFrame : EncodedTextFrame
     {
         /// <summary>
         /// Creates a new TextFrame.
@@ -20,23 +20,20 @@ namespace ID3Tag.HighLevel.ID3Frame
         {
         }
 
-        /// <summary>
-        /// Creates a new TextFrame.
-        /// </summary>
-        /// <param name="id">the frame id.</param>
-        /// <param name="content">the content.</param>
-        /// <param name="type">the text encoding.</param>
-        public TextFrame(string id, string content, TextEncodingType type)
+		/// <summary>
+		/// Creates a new TextFrame.
+		/// </summary>
+		/// <param name="id">the frame id.</param>
+		/// <param name="content">the content.</param>
+		/// <param name="type">the text encoding.</param>
+		/// <param name="codePage">The code page.</param>
+        public TextFrame(string id, string content, TextEncodingType type, int codePage)
         {
             Descriptor.ID = id;
             Content = content;
             TextEncoding = type;
+        	CodePage = codePage;
         }
-
-        /// <summary>
-        /// The text encoding.
-        /// </summary>
-        public TextEncodingType TextEncoding { get; set; }
 
         /// <summary>
         /// The content.
@@ -58,7 +55,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert(TagVersion version)
         {
             var flags = Descriptor.GetFlags();
-            var contentBytes = Converter.GetContentBytes(TextEncoding, Content);
+            var contentBytes = Converter.GetContentBytes(TextEncoding, CodePage, Content);
             var payloadBytes = new byte[contentBytes.Length + 1];
 
             //
@@ -71,17 +68,19 @@ namespace ID3Tag.HighLevel.ID3Frame
             return rawFrame;
         }
 
-        /// <summary>
-        /// Import the raw frame.
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
             if (rawFrame.Payload.Length > 0)
             {
                 TextEncoding = (TextEncodingType) rawFrame.Payload[0];
+            	CodePage = codePage;
             }
 
             if (rawFrame.Payload.Length > 1)
@@ -90,7 +89,7 @@ namespace ID3Tag.HighLevel.ID3Frame
                 var content = new byte[contentLength];
                 Array.Copy(rawFrame.Payload, 1, content, 0, contentLength);
 
-                var chars = Converter.Extract(TextEncoding, content, true);
+                var chars = Converter.Extract(TextEncoding, codePage, content, true);
                 Content = new string(chars);
             }
             else

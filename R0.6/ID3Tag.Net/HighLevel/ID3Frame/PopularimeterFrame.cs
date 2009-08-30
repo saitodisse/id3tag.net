@@ -79,7 +79,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var sb = new StringBuilder();
             sb.Append(eMail);
             sb.Append('\0');
-            var mailbytes = Converter.GetContentBytes(TextEncodingType.ISO_8859_1, sb.ToString());
+			var mailbytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, sb.ToString());
             var playcounterbytes = BitConverter.GetBytes(PlayCounter);
             Array.Reverse(playcounterbytes);
 
@@ -98,11 +98,12 @@ namespace ID3Tag.HighLevel.ID3Frame
             return frame;
         }
 
-        ///<summary>
-        /// 
-        /// </summary>
-        /// <param name="rawFrame">the raw frame.</param>
-        public override void Import(RawFrame rawFrame)
+		/// <summary>
+		/// Import the raw content to a high level frame.
+		/// </summary>
+		/// <param name="rawFrame">the raw frame.</param>
+		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        public override void Import(RawFrame rawFrame, int codePage)
         {
             /*
              * ID = "POPM"
@@ -115,7 +116,7 @@ namespace ID3Tag.HighLevel.ID3Frame
             var payload = rawFrame.Payload;
             if (payload.Length > 0)
             {
-                var chars = Converter.Extract(TextEncodingType.ISO_8859_1, payload, true);
+				var chars = Converter.Extract(TextEncodingType.Ansi, 28591, payload, true);
                 var pointer = chars.Length;
                 eMail = new string(chars);
 
