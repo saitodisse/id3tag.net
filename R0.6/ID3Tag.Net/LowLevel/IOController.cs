@@ -152,7 +152,7 @@ namespace ID3Tag.LowLevel
 
                          */
 
-                        // TODO: Die Unsync CRC32 aus dem Header konvertieren und dann prüfen!
+                        // TODO: Implement the CRC32 check for ID3v2.4
                         throw new NotSupportedException("CRC32 check is not support for > ID3 V2.3");
                     }
                 }
@@ -366,11 +366,11 @@ namespace ID3Tag.LowLevel
             var tag = tagContainer.GetId3V24Descriptor();
 
             var frameBytes = GetFrameBytes(tagContainer);
-            //TODO: CRC32 Code implementieren...
+            //TODO: Implement CRC32 code here...
 
             var extendedHeaderBytes = GetExtendedHeaderV4(tag);
             var tagHeader = GetTagHeader(tagContainer);
-            //TODO: Unsync Code implementieren...
+            //TODO: Implement Unsync Code...
 
             tagBytes = BuildFinalTag(tagHeader, extendedHeaderBytes, frameBytes, 0,tag.Footer);
             return tagBytes;
@@ -434,8 +434,6 @@ namespace ID3Tag.LowLevel
             var id3PatternFound = (headerBytes[0] == 0x49) && (headerBytes[1] == 0x44) && (headerBytes[2] == 0x33);
             if (id3PatternFound)
             {
-                //TODO: Footer ignorieren bei ID3v2.4
-
                 // Ignore the tag
                 var sizeBytes = new byte[4];
                 Array.Copy(headerBytes, 6, sizeBytes, 0, 4);

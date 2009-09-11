@@ -3,8 +3,6 @@ using ID3Tag.LowLevel;
 
 namespace ID3Tag
 {
-    //TODO: Move this factory to a upper namespace ( ID3Tag only )
-
     /// <summary>
     /// Factory for the ID3 tag controller.
     /// </summary>
