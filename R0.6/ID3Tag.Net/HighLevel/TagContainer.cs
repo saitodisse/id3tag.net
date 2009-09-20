@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ID3Tag.HighLevel
@@ -35,7 +36,7 @@ namespace ID3Tag.HighLevel
             {
                 if (index > m_Frames.Count)
                 {
-                    throw new ID3TagException("Index is not available");
+					throw new ArgumentOutOfRangeException("index", index, "Value exceeds the count");
                 }
 
                 return m_Frames[index];

@@ -24,7 +24,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Creates a new instance of PlayCounterFrame
         /// </summary>
         /// <param name="playCounter">the play counter</param>
-        public PlayCounterFrame(long playCounter)
+        public PlayCounterFrame(ulong playCounter)
         {
             Descriptor.ID = "PCNT";
             Counter = playCounter;
@@ -33,7 +33,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <summary>
         /// The play counter of the audio file.
         /// </summary>
-        public long Counter { get; set; }
+        public ulong Counter { get; set; }
 
         /// <summary>
         /// Defines the frame type.
@@ -51,19 +51,13 @@ namespace ID3Tag.HighLevel.ID3Frame
         {
             var flag = Descriptor.GetFlags();
 
-            // Read and convert to MSB!
-            var counterBytes = BitConverter.GetBytes(Counter);
-            Array.Reverse(counterBytes);
+        	byte[] payload;
 
-            var counterLength = GetRealCounterLength(counterBytes);
-            if (counterLength <= 4)
-            {
-                // There are at least 4 bytes!
-                counterLength = 4;
-            }
-
-            var payload = new byte[counterLength];
-            Array.Copy(counterBytes, counterBytes.Length - counterLength, payload, 0, counterLength);
+			using (var writer = new FrameDataWriter(8))
+			{
+				writer.WriteUInt64(Counter);
+				payload = writer.ToArray();
+			}
 
             var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
             return rawFrame;
@@ -77,34 +71,17 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// s
         public override void Import(RawFrame rawFrame, int codePage)
         {
+			/*
+				ID = "PCNT"
+				Counter         $xx xx xx xx (xx ...)
+			*/
+
             ImportRawFrameHeader(rawFrame);
 
-            var payload = rawFrame.Payload;
-            if (payload.Length == 0)
-            {
-                Counter = 0;
-            }
-            else
-            {
-                /*
-                 * This lib supports 8 bytes of the play counter values. The frames supports up to 8 bytes with a least 4 bytes.
-                 * We must add zero bytes for the byte conversion.
-                 */
-
-                var counterBytes = new byte[8];
-                if (payload.Length < 8)
-                {
-                    Array.Copy(payload, 0, counterBytes, 8 - payload.Length, payload.Length);
-                }
-                else
-                {
-                    counterBytes = payload;
-                }
-
-                // Convert To LSB and decode!
-                Array.Reverse(counterBytes);
-                Counter = BitConverter.ToInt64(counterBytes, 0);
-            }
+			using (var reader = new FrameDataReader(rawFrame.Payload))
+			{
+				Counter = reader.ReadUInt64();
+			}
         }
 
         /// <summary>
@@ -113,29 +90,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the ToString representation</returns>
         public override string ToString()
         {
-            return String.Format("PlayCounter : Counter = {0}", Counter);
-        }
-
-        private static int GetRealCounterLength(byte[] bytes)
-        {
-            // MSB                 LSB
-            //
-            // xx xx xx xx xx xx xx xx
-            //          12 00 1A 00 45
-            //
-
-            var length = bytes.Length;
-            var realLength = 0;
-            for (var i = 0; i < length; i++)
-            {
-                if (bytes[i] != 0)
-                {
-                    realLength = length - i;
-                    break;
-                }
-            }
-
-            return realLength;
+            return String.Format("Play Counter : Value = {0}", Counter);
         }
     }
 }

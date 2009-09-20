@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using ID3Tag.HighLevel;
 
 namespace ID3Tag.LowLevel
@@ -986,7 +987,7 @@ namespace ID3Tag.LowLevel
                 //
                 //  Read the frame bytes
                 //
-                var frameId = Utils.GetFrameID(frameIdBytes);
+				var frameId = Encoding.ASCII.GetString(frameIdBytes);
                 var size = Utils.CalculateFrameHeaderSize(sizeBytes);
                 var payloadBytes = new byte[size];
                 reader.Read(payloadBytes, 0, (int) size);

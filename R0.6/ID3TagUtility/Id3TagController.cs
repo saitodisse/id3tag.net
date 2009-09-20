@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Windows;
 using ID3Tag;
 using ID3Tag.HighLevel;
@@ -163,13 +164,13 @@ namespace ID3TagUtility
 			}
 
 			// OK. Build the frames.
-			var albumFrame = new TextFrame("TALB", data.Album, data.EncodingType, 0);
-			var artistFrame = new TextFrame("TPE2", data.Artist, data.EncodingType, 0);
-			var yearFrame = new TextFrame("TYER", data.Year, data.EncodingType, 0);
-			var titleFrame = new TextFrame("TIT2", data.Title, data.EncodingType, 0);
-			var textComment = new UserDefinedTextFrame("Your comment", data.Comment, data.EncodingType, 0);
-			var comment = new CommentFrame("ENG", "Your Comment", data.Comment, data.EncodingType, 0);
-			var encoder = new TextFrame("TENC", data.Encoder, data.EncodingType, 0);
+			var albumFrame = new TextFrame("TALB", data.Album, data.TextEncoding);
+			var artistFrame = new TextFrame("TPE2", data.Artist, data.TextEncoding);
+			var yearFrame = new TextFrame("TYER", data.Year, data.TextEncoding);
+			var titleFrame = new TextFrame("TIT2", data.Title, data.TextEncoding);
+			var textComment = new UserDefinedTextFrame("Your comment", data.Comment, data.TextEncoding);
+			var comment = new CommentFrame("ENG", "Your Comment", data.Comment, data.TextEncoding);
+			var encoder = new TextFrame("TENC", data.Encoder, data.TextEncoding);
 
 			tagController.Add(albumFrame);
 			tagController.Add(artistFrame);
@@ -278,12 +279,12 @@ namespace ID3TagUtility
 				//  Add the picture frame.
 				//  
 				var pictureFrame = new PictureFrame(
-					TextEncodingType.Ansi,
-					0,
+					Encoding.Default,
 					"image/jpg",
 					"Other",
 					PictureType.Other,
 					pictureData);
+
 				container.Add(pictureFrame);
 			}
 		}

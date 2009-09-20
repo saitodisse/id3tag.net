@@ -25,16 +25,14 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <param name="language">the language.</param>
 		/// <param name="descriptor">the descriptor.</param>
 		/// <param name="text">the text.</param>
-		/// <param name="type">the text encoding.</param>
-		/// <param name="codePage">The code page.</param>
-		public CommentFrame(string language, string descriptor, string text, TextEncodingType type, int codePage)
+		/// <param name="encoding">the text encoding.</param>
+		public CommentFrame(string language, string descriptor, string text, Encoding encoding)
 		{
 			Descriptor.ID = "COMM";
 			Language = language;
 			ContentDescriptor = descriptor;
 			Text = text;
-			TextEncoding = type;
-			CodePage = codePage;
+			TextEncoding = encoding;
 		}
 
 		/// <summary>
@@ -67,22 +65,19 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override RawFrame Convert(TagVersion version)
 		{
 			FrameFlags flags = Descriptor.GetFlags();
-			var dataBuilder = new StringBuilder();
 
-			dataBuilder.Append(ContentDescriptor);
-			dataBuilder.Append('\u0000');
-			dataBuilder.Append(Text);
+			byte[] payload;
+			using (var writer = new FrameDataWriter())
+			{
+				writer.WriteEncodingByte(TextEncoding);
+				writer.WriteString(Language, Encoding.ASCII, 3);
+				writer.WritePreamble(TextEncoding);
+				writer.WriteString(ContentDescriptor, TextEncoding, true);
+				writer.WriteString(Text, TextEncoding);
+				payload = writer.ToArray();
+			}
 
-			byte[] dataBytes = Converter.GetContentBytes(TextEncoding, CodePage, dataBuilder.ToString());
-			byte[] languageBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, Language);
-			var payloadBytes = new byte[4 + dataBytes.Length];
-
-			payloadBytes[0] = System.Convert.ToByte(TextEncoding);
-			Array.Copy(languageBytes, 0, payloadBytes, 1, 3);
-			Array.Copy(dataBytes, 0, payloadBytes, 4, dataBytes.Length);
-
-			RawFrame rawFrame = RawFrame.CreateFrame(Descriptor.ID, flags, payloadBytes, version);
-			return rawFrame;
+			return RawFrame.CreateFrame(Descriptor.ID, flags, payload, version);
 		}
 
 		/// <summary>
@@ -95,32 +90,21 @@ namespace ID3Tag.HighLevel.ID3Frame
 			ImportRawFrameHeader(rawFrame);
 
 			/*
-             *  ID = "COMM"
-             *  TextEncoding    xx
-             *  Language        xx xx xx
-             *  Short Content   (xx xx ... xx) (00 / 00 00)
-             *  Text            (xx xx ... xx)
-             */
+				ID = "COMM"
+				TextEncoding    xx
+				Language        xx xx xx
+				Short Content   (xx xx ... xx) (00 / 00 00)
+				Text            (xx xx ... xx)
+            */
 
-			byte[] payload = rawFrame.Payload;
-			var languageBytes = new byte[3];
-			var textBytes = new byte[payload.Length - 4];
-
-			TextEncoding = (TextEncodingType)payload[0];
-			CodePage = codePage;
-
-			Array.Copy(payload, 1, languageBytes, 0, 3);
-			var languageChars = Converter.Extract(TextEncodingType.Ansi, 28591, languageBytes, false);
-			Language = new string(languageChars);
-
-			Array.Copy(payload, 4, textBytes, 0, textBytes.Length);
-			var chars = Converter.Extract(TextEncoding, codePage, textBytes);
-
-			string descriptor;
-			string text;
-			Converter.DecodeDescriptionValuePairs(chars, out descriptor, out text);
-			ContentDescriptor = descriptor;
-			Text = text;
+			using (var reader = new FrameDataReader(rawFrame.Payload))
+			{
+				byte encodingByte = reader.ReadByte();
+				Language = reader.ReadFixedString(Encoding.ASCII, 3);
+				TextEncoding = reader.ReadEncoding(encodingByte, codePage);
+				ContentDescriptor = reader.ReadVariableString(TextEncoding);
+				Text = reader.ReadVariableString(TextEncoding);
+			}
 		}
 
 		/// <summary>
@@ -129,14 +113,12 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns></returns>
 		public override string ToString()
 		{
-			var builder = new StringBuilder("Comment : ");
-
-			builder.AppendFormat("Encoding = {0} ", TextEncoding);
-			builder.AppendFormat("Language = {0} ", Language);
-			builder.AppendFormat("Descriptor = {0} ", ContentDescriptor);
-			builder.AppendFormat("Text = {0}", Text);
-
-			return builder.ToString();
+			return String.Format(
+				"Comment : Encoding = {0}, Language = {1}, Descriptor = {2}, Text = {3}",
+				TextEncoding.EncodingName,
+				Language,
+				ContentDescriptor,
+				Text);
 		}
 	}
 }

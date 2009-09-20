@@ -7,6 +7,11 @@ namespace ID3Tag
     /// </summary>
     public class FileState
     {
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FileState"/> class.
+		/// </summary>
+		/// <param name="id3V1TagFound">if set to <c>true</c>, then ID3 v1 tag is found.</param>
+		/// <param name="id3V2TagFound">if set to <c>true</c>, then ID3 v2 tag is found.</param>
         internal FileState(bool id3V1TagFound, bool id3V2TagFound)
         {
             Id3V1TagFound = id3V1TagFound;

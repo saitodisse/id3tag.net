@@ -36,6 +36,7 @@
     <DocumentationFile>bin\Release\ID3Tag.Net.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -60,7 +61,6 @@
     <Compile Include="HighLevel\ID3V1Controller.cs" />
     <Compile Include="HighLevel\ID3V1Tag.cs" />
     <Compile Include="HighLevel\IID3V1Controller.cs" />
-    <Compile Include="HighLevel\Converter.cs" />
     <Compile Include="HighLevel\Frame.cs" />
     <Compile Include="HighLevel\FrameDescriptor.cs" />
     <Compile Include="HighLevel\FrameType.cs" />
@@ -101,6 +101,8 @@
     <Compile Include="LowLevel\Id3V2Validator.cs" />
     <Compile Include="LowLevel\IIOController.cs" />
     <Compile Include="LowLevel\IOController.cs" />
+    <Compile Include="HighLevel\FrameDataReader.cs" />
+    <Compile Include="HighLevel\FrameDataWriter.cs" />
     <Compile Include="LowLevel\RawFrameV3.cs" />
     <Compile Include="LowLevel\RawFrameV4.cs" />
     <Compile Include="LowLevel\Validator.cs" />
@@ -116,6 +118,7 @@
     <None Include="ID3Tag.snk" />
   </ItemGroup>
   <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
     <Content Include="HighLevel\Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel;
+﻿using System.Text;
+using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
@@ -22,7 +23,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Convert_ISO8859_1_Test()
         {
             var frame = new UserDefinedTextFrame();
-            frame.TextEncoding = TextEncodingType.Ansi;
+            frame.TextEncoding = Encoding.Default;
             frame.Descriptor.ID = "TXXX";
             frame.Description = "ABCD";
             frame.Value = "EFGH";
@@ -38,7 +39,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Convert_UTF16_Test()
         {
             var frame = new UserDefinedTextFrame();
-            frame.TextEncoding = TextEncodingType.UTF16;
+            frame.TextEncoding = Encoding.Unicode;
             frame.Descriptor.ID = "TXXX";
             frame.Description = "ABCD";
             frame.Value = "EFGH";
@@ -56,7 +57,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Convert_UTF16BE_Test()
         {
             var frame = new UserDefinedTextFrame();
-            frame.TextEncoding = TextEncodingType.UTF16_BE;
+            frame.TextEncoding = Encoding.BigEndianUnicode;
             frame.Descriptor.ID = "TXXX";
             frame.Description = "ABCD";
             frame.Value = "EFGH";
@@ -80,7 +81,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Convert_UTF8_Test()
         {
             var frame = new UserDefinedTextFrame();
-            frame.TextEncoding = TextEncodingType.UTF8;
+            frame.TextEncoding = Encoding.UTF8;
             frame.Descriptor.ID = "TXXX";
             frame.Description = "ABCD";
             frame.Value = "EFGH";
@@ -103,12 +104,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void CreateTest()
         {
-            var frame = new UserDefinedTextFrame("ABCD", "EFGH", TextEncodingType.UTF16, 0);
+            var frame = new UserDefinedTextFrame("ABCD", "EFGH", Encoding.Unicode);
 
             Assert.AreEqual(frame.Descriptor.ID, "TXXX");
             Assert.AreEqual(frame.Description, "ABCD");
             Assert.AreEqual(frame.Value, "EFGH");
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(frame.TextEncoding, Encoding.Unicode);
         }
 
         [Test]
@@ -136,7 +137,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(userDefined1.Descriptor.ID, "TXXX");
             Assert.AreEqual(userDefined1.Type, FrameType.UserDefinedText);
-            Assert.AreEqual(userDefined1.TextEncoding, TextEncodingType.Ansi);
+            Assert.AreEqual(userDefined1.TextEncoding, Encoding.Default);
             Assert.AreEqual(userDefined1.Description, "ABCD");
             Assert.AreEqual(userDefined1.Value, "EFGH");
         }
@@ -163,7 +164,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var userDefinedTextFrame = FrameUtils.ConvertToUserDefinedText(tagContainer[0]);
             Assert.AreEqual(userDefinedTextFrame.Type, FrameType.UserDefinedText);
-            Assert.AreEqual(userDefinedTextFrame.TextEncoding, TextEncodingType.UTF16_BE);
+            Assert.AreEqual(userDefinedTextFrame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(userDefinedTextFrame.Description, "ABCD");
             Assert.AreEqual(userDefinedTextFrame.Value, "EFGH");
         }
@@ -175,7 +176,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                              {
                                  // TXXX
                                  0x54, 0x58, 0x58, 0x58, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00,
-                                 // UTF 16 Encoding
+                                 // UTF 16 BEEncoding
                                  0x01,
                                  // Data..
                                  0xFE, 0xFF, 0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x44,
@@ -190,7 +191,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var userDefinedTextFrae = FrameUtils.ConvertToUserDefinedText(tagContainer[0]);
             Assert.AreEqual(userDefinedTextFrae.Type, FrameType.UserDefinedText);
-            Assert.AreEqual(userDefinedTextFrae.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(userDefinedTextFrae.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(userDefinedTextFrae.Description, "ABCD");
             Assert.AreEqual(userDefinedTextFrae.Value, "EFGH");
         }
@@ -217,7 +218,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var userDefinedTextFrae = FrameUtils.ConvertToUserDefinedText(tagContainer[0]);
             Assert.AreEqual(userDefinedTextFrae.Type, FrameType.UserDefinedText);
-            Assert.AreEqual(userDefinedTextFrae.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(userDefinedTextFrae.TextEncoding, Encoding.Unicode);
             Assert.AreEqual(userDefinedTextFrae.Description, "ABCD");
             Assert.AreEqual(userDefinedTextFrae.Value, "EFGH");
         }
@@ -244,7 +245,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var userDefinedTextFrame = FrameUtils.ConvertToUserDefinedText(tagContainer[0]);
             Assert.AreEqual(userDefinedTextFrame.Type, FrameType.UserDefinedText);
-            Assert.AreEqual(userDefinedTextFrame.TextEncoding, TextEncodingType.UTF8);
+            Assert.AreEqual(userDefinedTextFrame.TextEncoding.CodePage, Encoding.UTF8.CodePage);
             Assert.AreEqual(userDefinedTextFrame.Description, "ABCD");
             Assert.AreEqual(userDefinedTextFrame.Value, "EFGH");
         }

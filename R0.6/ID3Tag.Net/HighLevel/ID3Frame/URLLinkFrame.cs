@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
@@ -51,24 +52,30 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-			var payloadBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, URL);
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes, version);
-            return rawFrame;
+			byte[] payload;
+			using (var writer = new FrameDataWriter())
+			{
+				writer.WriteString(URL, Encoding.ASCII);
+				payload = writer.ToArray();
+			}
+
+            return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
         }
 
 		/// <summary>
 		/// Import the raw frame data.
 		/// </summary>
 		/// <param name="rawFrame">the raw frame.</param>
-		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+		/// <param name="codePage">Not used</param>
         public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
-            // Simple ANSI coding in the payload!
-			var chars = Converter.Extract(TextEncodingType.Ansi, 28591, rawFrame.Payload, true);
-            URL = new string(chars);
+			using (var reader = new FrameDataReader(rawFrame.Payload))
+			{
+				URL = reader.ReadVariableString(Encoding.ASCII);
+			}
         }
 
         /// <summary>
@@ -77,12 +84,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns></returns>
         public override string ToString()
         {
-            var stringBuilder = new StringBuilder("URL Link Frame : ");
-
-            stringBuilder.Append("URL : ");
-            stringBuilder.Append(URL);
-
-            return stringBuilder.ToString();
+            return String.Format("URL : URL = {0}", URL);
         }
     }
 }

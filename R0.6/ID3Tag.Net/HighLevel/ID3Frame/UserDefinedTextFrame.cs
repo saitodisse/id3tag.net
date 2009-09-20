@@ -26,27 +26,19 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// </summary>
 		/// <param name="description">the description.</param>
 		/// <param name="value">the value.</param>
-		/// <param name="type">the text encoding.</param>
-		/// <param name="codePage">The code page.</param>
-		public UserDefinedTextFrame(string description, string value, TextEncodingType type, int codePage)
+		/// <param name="encoding">the text encoding.</param>
+		public UserDefinedTextFrame(string description, string value, Encoding encoding)
 		{
 			Descriptor.ID = "TXXX";
 			Description = description;
 			Value = value;
-			TextEncoding = type;
-			CodePage = codePage;
+			TextEncoding = encoding;
 		}
-
-		/// <summary>
-		/// Gets or sets the code page.
-		/// </summary>
-		/// <value>The code page.</value>
-		public int CodePage { get; set; }
 
 		/// <summary>
 		/// The text encoding.
 		/// </summary>
-		public TextEncodingType TextEncoding { get; set; }
+		public Encoding TextEncoding { get; set; }
 
 		/// <summary>
 		/// The description.
@@ -73,26 +65,18 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override RawFrame Convert(TagVersion version)
 		{
 			FrameFlags flag = Descriptor.GetFlags();
-			byte encodingByte = System.Convert.ToByte(TextEncoding);
-			var contentBuilder = new StringBuilder();
-			contentBuilder.Append(Description);
-			contentBuilder.Append('\u0000');
-			contentBuilder.Append(Value);
 
-			byte[] contentBytes = Converter.GetContentBytes(TextEncoding, CodePage, contentBuilder.ToString());
-
-			//
-			//  Payload :  XX Y1 Y2 ... Yn 00 Z1 Z2 ... Zn
-			//
-			// ( XX = Endoding Type, Yx = Data, Zx = Data )
-			//
-
-			var payloadBytes = new byte[contentBytes.Length + 1];
-			payloadBytes[0] = System.Convert.ToByte(encodingByte);
-			Array.Copy(contentBytes, 0, payloadBytes, 1, contentBytes.Length);
-
-			RawFrame rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payloadBytes, version);
-			return rawFrame;
+			byte[] payload;
+			using (var writer = new FrameDataWriter())
+			{
+				writer.WriteEncodingByte(TextEncoding);
+				writer.WritePreamble(TextEncoding);
+				writer.WriteString(Description, TextEncoding, true);
+				writer.WriteString(Value, TextEncoding);
+				payload = writer.ToArray();
+			}
+			
+			return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
 		}
 
 		/// <summary>
@@ -103,28 +87,21 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override void Import(RawFrame rawFrame, int codePage)
 		{
 			ImportRawFrameHeader(rawFrame);
-			TextEncoding = (TextEncodingType)rawFrame.Payload[0];
-			CodePage = codePage;
-
-			int contentLength = rawFrame.Payload.Length - 1;
-			var content = new byte[contentLength];
-			Array.Copy(rawFrame.Payload, 1, content, 0, contentLength);
 
 			/*
-             *  TextEncoding        XX
-             *  Desc                Data (00 | 0000)
-             *  Value               Data
-             * 
-             */
+				<Header for 'User defined text information frame', ID: "TXXX"> 
+				Text encoding : $xx
+				Description   : <text string according to encoding> $00 (00)
+				Value         : <text string according to encoding>
+			*/
 
-			var chars = Converter.Extract(TextEncoding, codePage, content);
-
-			string descriptionText;
-			string valueText;
-			Converter.DecodeDescriptionValuePairs(chars, out descriptionText, out valueText);
-
-			Description = descriptionText;
-			Value = valueText;
+			using (var reader = new FrameDataReader(rawFrame.Payload))
+			{
+				byte encodingByte = reader.ReadByte();
+				TextEncoding = reader.ReadEncoding(encodingByte, codePage);
+				Description = reader.ReadVariableString(TextEncoding);
+				Value = reader.ReadVariableString(TextEncoding);
+			}
 		}
 
 		/// <summary>
@@ -134,8 +111,8 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override string ToString()
 		{
 			return String.Format(
-				"UserDefinedTextFrame : Coding : {0}, Description = {1}, Value = {2}",
-				TextEncoding,
+				"User-Defined Text : Encoding = {0}, Description = {1}, Value = {2}",
+				TextEncoding.EncodingName,
 				Description,
 				Value);
 		}

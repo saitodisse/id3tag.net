@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -233,7 +234,7 @@ namespace ID3Tag.HighLevel
 
 				string trackNr = tag.TrackNr;
 				tagBytes[125] = 0x00;
-				tagBytes[126] = Convert.ToByte(trackNr);
+				tagBytes[126] = Convert.ToByte(trackNr, CultureInfo.InvariantCulture);
 			}
 			else
 			{
@@ -315,7 +316,7 @@ namespace ID3Tag.HighLevel
 			if (id3v1_1Support)
 			{
 				byte trackNrValue = commentBytes[29];
-				trackNr = Convert.ToString(trackNrValue);
+				trackNr = Convert.ToString(trackNrValue, CultureInfo.InvariantCulture);
 
 				var newComments = new byte[28];
 				Array.Copy(commentBytes, 0, newComments, 0, newComments.Length);

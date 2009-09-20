@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel;
+﻿using System.Text;
+using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
@@ -39,7 +40,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(commentFrame.Descriptor.ID, "COMM");
             Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
-            Assert.AreEqual(commentFrame.TextEncoding, TextEncodingType.Ansi);
+            Assert.AreEqual(commentFrame.TextEncoding.CodePage, Encoding.Default.CodePage);
             Assert.AreEqual(commentFrame.Text, "EFGH");
             Assert.AreEqual(commentFrame.Text.Length, 4);
         }
@@ -67,7 +68,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.ID, "COMM");
             Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
-            Assert.AreEqual(commentFrame.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(commentFrame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(commentFrame.Text, "EFGH");
             Assert.AreEqual(commentFrame.Text.Length, 4);
         }
@@ -95,7 +96,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.ID, "COMM");
             Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
-            Assert.AreEqual(commentFrame.TextEncoding, TextEncodingType.UTF16_BE);
+            Assert.AreEqual(commentFrame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(commentFrame.Text, "EFGH");
             Assert.AreEqual(commentFrame.Text.Length, 4);
         }
@@ -122,9 +123,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.ID, "COMM");
-            Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
-            Assert.AreEqual(commentFrame.TextEncoding, TextEncodingType.UTF16);
-            Assert.AreEqual(commentFrame.Text, "EFGH");
+            Assert.AreEqual(commentFrame.TextEncoding.CodePage, Encoding.Unicode.CodePage);
+			Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
+			Assert.AreEqual(commentFrame.Text, "EFGH");
             Assert.AreEqual(commentFrame.Text.Length, 4);
         }
 
@@ -150,7 +151,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.ID, "COMM");
             Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
-            Assert.AreEqual(commentFrame.TextEncoding, TextEncodingType.UTF8);
+            Assert.AreEqual(commentFrame.TextEncoding.CodePage, Encoding.UTF8.CodePage);
             Assert.AreEqual(commentFrame.Text, "EFGH");
             Assert.AreEqual(commentFrame.Text.Length, 4);
         }
@@ -160,7 +161,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var commentFrame = new CommentFrame();
             commentFrame.Descriptor.ID = "COMM";
-            commentFrame.TextEncoding = TextEncodingType.Ansi;
+            commentFrame.TextEncoding = Encoding.Default;
             commentFrame.ContentDescriptor = "ABCD";
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
@@ -182,7 +183,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var commentFrame = new CommentFrame();
             commentFrame.Descriptor.ID = "COMM";
-            commentFrame.TextEncoding = TextEncodingType.UTF16_BE;
+            commentFrame.TextEncoding = new UnicodeEncoding(true, false) ;
             commentFrame.ContentDescriptor = "ABCD";
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
@@ -205,7 +206,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var commentFrame = new CommentFrame();
             commentFrame.Descriptor.ID = "COMM";
-            commentFrame.TextEncoding = TextEncodingType.UTF16;
+            commentFrame.TextEncoding = Encoding.Unicode;
             commentFrame.ContentDescriptor = "ABCD";
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
@@ -228,7 +229,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var commentFrame = new CommentFrame();
             commentFrame.Descriptor.ID = "COMM";
-            commentFrame.TextEncoding = TextEncodingType.UTF8;
+            commentFrame.TextEncoding = new UTF8Encoding();
             commentFrame.ContentDescriptor = "ABCD";
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
@@ -249,13 +250,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void CreateTest()
         {
-            var frame = new CommentFrame("ENG", "ABCD", "EFGH", TextEncodingType.UTF16, 0);
+            var frame = new CommentFrame("ENG", "ABCD", "EFGH", Encoding.Unicode);
 
             Assert.AreEqual(frame.Descriptor.ID, "COMM");
             Assert.AreEqual(frame.Language, "ENG");
             Assert.AreEqual(frame.ContentDescriptor, "ABCD");
             Assert.AreEqual(frame.Text, "EFGH");
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(frame.TextEncoding, Encoding.Unicode);
         }
     }
 }

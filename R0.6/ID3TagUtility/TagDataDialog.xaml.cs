@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Windows;
 using ID3Tag.HighLevel;
 using Microsoft.Win32;
@@ -8,7 +9,7 @@ namespace ID3TagUtility
     /// <summary>
     /// Interaction logic for TagDataDialog.xaml
     /// </summary>
-    public partial class TagDataDialog : Window
+    public partial class TagDataDialog
     {
         public TagDataDialog()
         {
@@ -16,7 +17,7 @@ namespace ID3TagUtility
 
             Data = new ID3V2TagData
                        {
-                           EncodingType = TextEncodingType.Ansi,
+                           TextEncoding = Encoding.Default,
                            Album = "My Album",
                            Artist = "My Artist",
                            Title = "My Title",
@@ -47,22 +48,22 @@ namespace ID3TagUtility
             switch(comboBoxEncoding.SelectedIndex)
             {
                 case 0:
-                    Data.EncodingType = TextEncodingType.Ansi;
+                    Data.TextEncoding = Encoding.Default;
                     break;
                 case 1:
-                    Data.EncodingType = TextEncodingType.UTF16;
+					Data.TextEncoding = Encoding.Unicode;
                     break;
                 case 2:
-                    Data.EncodingType = TextEncodingType.UTF16_BE;
+					Data.TextEncoding = Encoding.BigEndianUnicode;
                     break;
                 case 3:
-                    Data.EncodingType = TextEncodingType.UTF8;
+					Data.TextEncoding = Encoding.UTF8;
                     break;
                 default:
                     //
                     //  Hmm.. invalid type. Throw exception in production code...
                     //
-                    Data.EncodingType = TextEncodingType.Ansi;
+					Data.TextEncoding = Encoding.Default;
                     break;
             }
 

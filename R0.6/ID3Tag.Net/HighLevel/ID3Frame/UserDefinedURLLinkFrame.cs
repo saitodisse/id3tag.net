@@ -1,170 +1,108 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using ID3Tag.LowLevel;
 
 namespace ID3Tag.HighLevel.ID3Frame
 {
-    /// <summary>
-    /// This frame is intended for URL links concerning the audiofile in a similar way to the 
-    /// other "W"-frames. The frame body consists of a description of the string, represented 
-    /// as a terminated string, followed by the actual URL. The URL is always encoded with ISO-8859-1. 
-    /// There may be more than one "WXXX" frame in each tag, but only one with the same description.
-    /// </summary>
-    public class UserDefinedURLLinkFrame : EncodedTextFrame
-    {
-        /// <summary>
-        /// Creates a new UserDefinedURLLinkFrame
-        /// </summary>
-        public UserDefinedURLLinkFrame()
-        {
-        }
+	/// <summary>
+	/// This frame is intended for URL links concerning the audiofile in a similar way to the 
+	/// other "W"-frames. The frame body consists of a description of the string, represented 
+	/// as a terminated string, followed by the actual URL. The URL is always encoded with ISO-8859-1. 
+	/// There may be more than one "WXXX" frame in each tag, but only one with the same description.
+	/// </summary>
+	public class UserDefinedURLLinkFrame : EncodedTextFrame
+	{
+		/// <summary>
+		/// Creates a new UserDefinedURLLinkFrame
+		/// </summary>
+		public UserDefinedURLLinkFrame()
+		{}
 
 		/// <summary>
 		/// Creates a new UserDefinedURLLinkFrame
 		/// </summary>
 		/// <param name="description">the Description</param>
 		/// <param name="url">The URL</param>
-		/// <param name="type">The text encoding type.</param>
-		/// <param name="codePage">The code page.</param>
-        public UserDefinedURLLinkFrame(string description, string url, TextEncodingType type, int codePage)
-        {
-            Descriptor.ID = "WXXX";
-            Description = description;
-            URL = url;
-            TextEncoding = type;
-			CodePage = codePage;
-        }
+		/// <param name="encoding">The text encoding type.</param>
+		public UserDefinedURLLinkFrame(string description, string url, Encoding encoding)
+		{
+			Descriptor.ID = "WXXX";
+			Description = description;
+			URL = url;
+			TextEncoding = encoding;
+		}
 
-        /// <summary>
-        /// The description
-        /// </summary>
-        public string Description { get; set; }
+		/// <summary>
+		/// The description
+		/// </summary>
+		public string Description { get; set; }
 
-        /// <summary>
-        /// The URL.
-        /// </summary>
-        public string URL { get; set; }
+		/// <summary>
+		/// The URL.
+		/// </summary>
+		public string URL { get; set; }
 
-        /// <summary>
-        /// The frame type.
-        /// </summary>
-        public override FrameType Type
-        {
-            get { return FrameType.UserDefindedURLLink; }
-        }
+		/// <summary>
+		/// The frame type.
+		/// </summary>
+		public override FrameType Type
+		{
+			get { return FrameType.UserDefindedURLLink; }
+		}
 
-        /// <summary>
-        /// Convert the values to a raw frame.
-        /// </summary>
-        /// <returns>the raw frame.</returns>
-        public override RawFrame Convert(TagVersion version)
-        {
-            var flag = Descriptor.GetFlags();
-            var descrBytes = Converter.GetContentBytes(TextEncoding, CodePage, Description);
-            var urlBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, URL);
-            var terminateCharLength = Converter.GetTerminationCharLength(TextEncoding);
+		/// <summary>
+		/// Convert the values to a raw frame.
+		/// </summary>
+		/// <returns>the raw frame.</returns>
+		public override RawFrame Convert(TagVersion version)
+		{
+			FrameFlags flag = Descriptor.GetFlags();
 
-            var payloadSize = 1 + descrBytes.Length + terminateCharLength + urlBytes.Length;
-            var payload = new byte[payloadSize];
+			byte[] payload;
+			using (var writer = new FrameDataWriter())
+			{
+				writer.WriteEncodingByte(TextEncoding);
+				writer.WritePreamble(TextEncoding);
+				writer.WriteString(Description, TextEncoding, true);
+				writer.WriteString(URL, Encoding.GetEncoding(28591));
+				payload = writer.ToArray();
+			}
 
-            payload[0] = System.Convert.ToByte(TextEncoding);
-            Array.Copy(descrBytes, 0, payload, 1, descrBytes.Length);
-            Array.Copy(urlBytes, 0, payload, 1 + terminateCharLength + descrBytes.Length, urlBytes.Length);
-
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
-            return rawFrame;
-        }
+			return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+		}
 
 		/// <summary>
 		/// Import the raw frame.
 		/// </summary>
 		/// <param name="rawFrame">the raw frame.</param>
 		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
-        public override void Import(RawFrame rawFrame, int codePage)
-        {
-            ImportRawFrameHeader(rawFrame);
+		public override void Import(RawFrame rawFrame, int codePage)
+		{
+			ImportRawFrameHeader(rawFrame);
 
-            /*
+			/*
              *  Text Encoding   xx
              *  Description     (xx xx .. xx) (00 / 00 00)
              *  URL             (xx xx ... xx)  als ISO8859-1 !
              */
 
-            TextEncoding = (TextEncodingType) rawFrame.Payload[0];
-        	CodePage = codePage;
+			using (var reader = new FrameDataReader(rawFrame.Payload))
+			{
+				byte encodingByte = reader.ReadByte();
+				TextEncoding = reader.ReadEncoding(encodingByte, codePage);
+				Description = reader.ReadVariableString(TextEncoding);
+				URL = reader.ReadVariableString(Encoding.GetEncoding(28591));
+			}
+		}
 
-            var dataBytes = new byte[rawFrame.Payload.Length - 1];
-            Array.Copy(rawFrame.Payload, 1, dataBytes, 0, dataBytes.Length);
-
-            int increment;
-            switch (TextEncoding)
-            {
-                case TextEncodingType.Ansi:
-                    increment = 1;
-                    break;
-                case TextEncodingType.UTF16:
-                    increment = 2;
-                    break;
-                case TextEncodingType.UTF16_BE:
-                    increment = 2;
-                    break;
-                case TextEncodingType.UTF8:
-                    increment = 1;
-                    break;
-                default:
-                    throw new ID3TagException("Unknown TextEncoding format (" + (byte) TextEncoding + ".)");
-            }
-
-            var descrBytes = new List<byte>();
-            var urlBytes = new List<byte>();
-            var urlPos = 0;
-
-            //
-            //  Determine the description bytes first
-            //
-            for (var i = 0; i < dataBytes.Length; i += increment)
-            {
-                var isTerminatedSymbol = Converter.DetermineTerminateSymbol(dataBytes, i, increment);
-                if (isTerminatedSymbol)
-                {
-                    urlPos = i + increment;
-                    break;
-                }
-
-                var values = new byte[increment];
-                Array.Copy(dataBytes, i, values, 0, increment);
-                descrBytes.AddRange(values);
-            }
-
-            //
-            //  Get the URL bytes
-            //
-            for (var j = urlPos; j < dataBytes.Length; j++)
-            {
-                urlBytes.Add(dataBytes[j]);
-            }
-
-            var descrChars = Converter.Extract(TextEncoding, codePage, descrBytes.ToArray());
-            Description = new string(descrChars);
-
-            var urlChars = Converter.Extract(TextEncodingType.Ansi, 28591, urlBytes.ToArray(), false);
-            URL = new string(urlChars);
-        }
-
-        /// <summary>
-        /// Overwrite ToString
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            var builder = new StringBuilder("UserDefindedURLLinkFrame : ");
-
-            builder.AppendFormat("Encoding : {0} ", TextEncoding);
-            builder.AppendFormat("Description : {0} ", Description);
-            builder.AppendFormat("URL : {0}", URL);
-
-            return builder.ToString();
-        }
-    }
+		/// <summary>
+		/// Overwrite ToString
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return String.Format(
+				"User-Definded URL : Encoding = {0}, Description = {1}, URL : {2} ", TextEncoding, Description, URL);
+		}
+	}
 }

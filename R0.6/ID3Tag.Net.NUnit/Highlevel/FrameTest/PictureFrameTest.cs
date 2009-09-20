@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel;
+﻿using System.Text;
+using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
@@ -21,17 +22,15 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConstructorTest()
         {
-            const TextEncodingType encoding = TextEncodingType.Ansi;
-			const int codePage = 28591;
+            var encoding = Encoding.Default;
             const string mime = "ABCD";
             const string description = "EFGH";
             const PictureType pictureType = PictureType.Other;
             var pictureData = new byte[] {0x20, 0x21, 0x22, 0x23};
 
-            var frame = new PictureFrame(encoding, codePage, mime, description, pictureType, pictureData);
+            var frame = new PictureFrame(encoding, mime, description, pictureType, pictureData);
 
-            Assert.AreEqual(frame.TextEncoding, encoding);
-			Assert.AreEqual(codePage, frame.CodePage);
+            Assert.AreEqual(frame.TextEncoding.CodePage, encoding.CodePage);
             Assert.AreEqual(frame.MimeType, mime);
             Assert.AreEqual(frame.Description, description);
             Assert.AreEqual(frame.PictureCoding, pictureType);
@@ -41,13 +40,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertISO8859()
         {
-            const TextEncodingType encoding = TextEncodingType.Ansi;
+            var encoding = Encoding.Default;
             const string mimeType = "ABCD";
             const PictureType pictureType = PictureType.CoverFront;
             const string description = "EFGH";
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
-            var pictureFrame = new PictureFrame(encoding, 0, mimeType, description, pictureType, data);
+            var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
             var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
@@ -62,13 +61,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertUTF16()
         {
-            const TextEncodingType encoding = TextEncodingType.UTF16;
+            var encoding = Encoding.Unicode;
             const string mimeType = "ABCD";
             const PictureType pictureType = PictureType.CoverFront;
             const string description = "EFGH";
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
-            var pictureFrame = new PictureFrame(encoding, 0, mimeType, description, pictureType, data);
+            var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
             var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
@@ -84,13 +83,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertUTF16BE()
         {
-            const TextEncodingType encoding = TextEncodingType.UTF16_BE;
+            var encoding = new UnicodeEncoding(true, false);
             const string mimeType = "ABCD";
             const PictureType pictureType = PictureType.CoverFront;
             const string description = "EFGH";
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
-            var pictureFrame = new PictureFrame(encoding, 0, mimeType, description, pictureType, data);
+            var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
             var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
@@ -106,13 +105,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertUTF8()
         {
-            const TextEncodingType encoding = TextEncodingType.UTF8;
+            var encoding = new UTF8Encoding();
             const string mimeType = "ABCD";
             const PictureType pictureType = PictureType.CoverFront;
             const string description = "EFGH";
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
-            var pictureFrame = new PictureFrame(encoding, 0, mimeType, description, pictureType, data);
+            var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
             var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
@@ -148,7 +147,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(frame.TextEncoding.CodePage, 1201);
             Assert.AreEqual(frame.MimeType, "ABCD");
             Assert.AreEqual(frame.PictureCoding, PictureType.CoverFront);
             Assert.AreEqual(frame.Description, "EFGH");
@@ -179,7 +178,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.UTF16);
+            Assert.AreEqual(frame.TextEncoding, Encoding.Unicode);
             Assert.AreEqual(frame.MimeType, "ABCD");
             Assert.AreEqual(frame.PictureCoding, PictureType.CoverFront);
             Assert.AreEqual(frame.Description, "EFGH");
@@ -209,7 +208,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.Ansi);
+            Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.Default.CodePage);
             Assert.AreEqual(frame.MimeType, "ABCD");
             Assert.AreEqual(frame.PictureCoding, PictureType.CoverFront);
             Assert.AreEqual(frame.Description, "EFGH");
@@ -240,7 +239,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.UTF16_BE);
+            Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(frame.MimeType, "ABCD");
             Assert.AreEqual(frame.PictureCoding, PictureType.CoverFront);
             Assert.AreEqual(frame.Description, "EFGH");
@@ -270,7 +269,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
-            Assert.AreEqual(frame.TextEncoding, TextEncodingType.UTF8);
+            Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.UTF8.CodePage);
             Assert.AreEqual(frame.MimeType, "ABCD");
             Assert.AreEqual(frame.PictureCoding, PictureType.CoverFront);
             Assert.AreEqual(frame.Description, "EFGH");

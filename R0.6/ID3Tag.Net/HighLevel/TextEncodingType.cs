@@ -3,23 +3,23 @@
     /// <summary>
     /// Defines the Text Encoding.
     /// </summary>
-    public enum TextEncodingType
+    public enum TextEncodingType : byte
     {
         /// <summary>
-        /// ISO-8859-1 coding.
+        /// ISO-8859-1 encoding.
         /// </summary>
         Ansi = 0,
         /// <summary>
-        /// Unicode UTF16 coding.
+        /// Unicode UTF-16 encoding (little endian is default).
         /// </summary>
-        UTF16 = 1,
+        Unicode = 1,
         /// <summary>
-        /// Unicode UTF16 Big Endian coding.
+        /// Unicode UTF-16 big endian encoding.
         /// </summary>
-        UTF16_BE = 2,
+        BigEndianUnicode = 2,
         /// <summary>
-        /// Unicode UTF8 coding.
+        /// Unicode UTF-8 encoding.
         /// </summary>
-        UTF8 = 3
+        Utf8 = 3
     }
 }

@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel;
+﻿using System.Text;
+using ID3Tag.HighLevel;
 
 namespace ID3TagUtility
 {
@@ -6,7 +7,7 @@ namespace ID3TagUtility
     {
         public TagVersion Version { get; set; }
 
-        public TextEncodingType EncodingType { get; set; }
+        public Encoding TextEncoding { get; set; }
         public string Album { get; set; }
         public string Artist { get; set; }
         public string Year { get; set; }

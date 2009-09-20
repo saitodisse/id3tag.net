@@ -71,12 +71,15 @@
     <Compile Include="Lowlevel\FramesTestV3.cs" />
     <Compile Include="Lowlevel\FramesTestV4.cs" />
     <Compile Include="Lowlevel\HeaderTest.cs" />
+    <Compile Include="Highlevel\FrameDataReaderTest.cs" />
+    <Compile Include="Highlevel\FrameDataWriterTest.cs" />
     <Compile Include="Lowlevel\TagDetectionTest.cs" />
     <Compile Include="Lowlevel\ValidatorTest.cs" />
     <Compile Include="Lowlevel\WriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lowlevel\ReaderTestV3.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="VersionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ID3Tag.Net\ID3Tag.Net.csproj">

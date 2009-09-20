@@ -1,4 +1,5 @@
-﻿using ID3Tag.HighLevel;
+﻿using System.Text;
+using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
 
@@ -29,7 +30,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             tagContainer.Tag.SetCrc32(crc);
 
             var titleFrame = new TextFrame();
-            titleFrame.TextEncoding = TextEncodingType.UTF16;
+            titleFrame.TextEncoding = Encoding.Unicode;
             titleFrame.Descriptor.ID = "TIT2";
             titleFrame.Content = "ABCD";
 
@@ -56,7 +57,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             tagContainer.Tag.SetHeaderFlags(false, false, false);
 
             var titleFrame = new TextFrame();
-            titleFrame.TextEncoding = TextEncodingType.UTF16;
+            titleFrame.TextEncoding = Encoding.Unicode;
             titleFrame.Descriptor.ID = "TIT2";
             titleFrame.Content = "ABCD";
 

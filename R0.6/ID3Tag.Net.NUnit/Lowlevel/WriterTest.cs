@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
@@ -89,7 +90,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var titleFrame = new TextFrame
                                  {
                                      Descriptor = {ID = "TIT2"},
-                                     TextEncoding = TextEncodingType.UTF16,
+                                     TextEncoding = Encoding.Unicode,
                                      Content = "Title1"
                                  };
 
@@ -118,7 +119,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var titleFrame = new TextFrame
                                  {
                                      Descriptor = {ID = "TIT2"},
-                                     TextEncoding = TextEncodingType.UTF16,
+                                     TextEncoding = Encoding.Unicode,
                                      Content = "Title1"
                                  };
 

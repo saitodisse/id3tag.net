@@ -40,7 +40,7 @@
         /// <summary>
         /// AudioEncryption Frame.
         /// </summary>
-        AudoEncryption,
+        AudioEncryption,
         /// <summary>
         /// Picture Frame
         /// </summary>

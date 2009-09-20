@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace ID3Tag.HighLevel
 {
@@ -13,12 +10,6 @@ namespace ID3Tag.HighLevel
 		/// <summary>
 		/// The text encoding
 		/// </summary>
-		public TextEncodingType TextEncoding { get; set; }
-
-		/// <summary>
-		/// Gets or sets the default code page for <see cref="TextEncodingType.Ansi" />.
-		/// </summary>
-		/// <value>The code page.</value>
-		public int CodePage { get; set; }
+		public Encoding TextEncoding { get; set; }
 	}
 }

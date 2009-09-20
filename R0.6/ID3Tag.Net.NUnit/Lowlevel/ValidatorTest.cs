@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
 using NUnit.Framework;
@@ -64,12 +65,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.Ansi, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.Ansi, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Default);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.Ansi,
-				0,
+				Encoding.Default,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -99,12 +99,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF16, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Unicode);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Unicode);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -135,12 +134,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.Ansi, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.Ansi, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Default);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16_BE,
-				0,
+				Encoding.BigEndianUnicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -171,12 +169,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.Ansi, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.Ansi, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Default);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF8,
-				0,
+				Encoding.UTF8,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -207,12 +204,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF16_BE, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.BigEndianUnicode);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Unicode);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -243,12 +239,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.UTF8, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.UTF8);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Unicode);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -279,12 +274,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF16_BE, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.BigEndianUnicode);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -315,12 +309,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.UTF8, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.UTF8);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -351,12 +344,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.Ansi, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF16_BE, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.BigEndianUnicode);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,
@@ -387,12 +379,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 			tagContainer.Tag.SetExtendedHeader(0, false);
 			tagContainer.Tag.SetHeaderFlags(false, false, false);
 
-			var textFrame = new TextFrame("TALB", "My Albun", TextEncodingType.Ansi, 0);
-			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", TextEncodingType.Ansi, 0);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", TextEncodingType.UTF8, 0);
+			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
+			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
+			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.UTF8);
 			var pictureFrame = new PictureFrame(
-				TextEncodingType.UTF16,
-				0,
+				Encoding.Unicode,
 				"image/jpeg",
 				"la",
 				PictureType.Other,

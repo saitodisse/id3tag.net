@@ -182,7 +182,7 @@ namespace ID3Tag.HighLevel
         /// <returns>the concrecte type.</returns>
         public static AudioEncryptionFrame ConvertToAudioEncryptionFrame(IFrame frame)
         {
-            if (frame.Type != FrameType.AudoEncryption)
+            if (frame.Type != FrameType.AudioEncryption)
             {
                 throw new ID3TagException("Frame Type does not mathch");
             }

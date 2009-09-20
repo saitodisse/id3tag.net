@@ -79,7 +79,7 @@ namespace ID3Tag
 
         #region Helper
 
-        private int[] GetBits(byte[] data)
+        private static int[] GetBits(byte[] data)
         {
             var bits = new List<int>();
 

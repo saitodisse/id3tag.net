@@ -1,5 +1,6 @@
 ﻿using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
+using ID3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
@@ -180,5 +181,19 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Flag.Encryption, false, "Encryption failed.");
             Assert.AreEqual(rawFrame.Flag.GroupingIdentify, true, "Grouping Identify failed.");
         }
+
+		[Test]
+		public void ImportTest()
+		{
+			var payload = new byte[] { 0x30, 0x31, 0x32, 0x33 };
+			var flags = new FrameFlags();
+			var rawFrame = new RawFrameV3("ABCD", flags, payload);
+
+			var frame = new UnknownFrame();
+			frame.Import(rawFrame, 0);
+
+			Assert.AreEqual("ABCD", frame.Descriptor.ID);
+			Assert.That(frame.Content, Is.EquivalentTo(payload));
+		}
     }
 }

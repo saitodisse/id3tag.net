@@ -54,17 +54,6 @@ namespace ID3Tag
             return curValue;
         }
 
-        internal static string GetFrameID(byte[] frameID)
-        {
-            var sb = new StringBuilder();
-            sb.Append(Convert.ToChar(frameID[0]));
-            sb.Append(Convert.ToChar(frameID[1]));
-            sb.Append(Convert.ToChar(frameID[2]));
-            sb.Append(Convert.ToChar(frameID[3]));
-
-            return sb.ToString();
-        }
-
         private static int CalculateByteValue(byte b, int index, int maxBit)
         {
             var curIndex = index;
@@ -125,6 +114,11 @@ namespace ID3Tag
 
         public static string BytesToString(byte[] bytes)
         {
+			if (bytes == null || bytes.Length == 0)
+			{
+				return null;
+			}
+
             var sb = new StringBuilder();
 
             foreach (var byteValue in bytes)

@@ -8,6 +8,9 @@ namespace ID3Tag.HighLevel
     /// </summary>
     public abstract class Frame : IFrame
     {
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Frame"/> class.
+		/// </summary>
         internal Frame()
         {
             Descriptor = new FrameDescriptor();
@@ -40,10 +43,10 @@ namespace ID3Tag.HighLevel
 
         #endregion
 
-        /// <summary>
-        /// Import the header flags from a raw frame.
-        /// </summary>
-        /// <param name="rawFrame"></param>
+		/// <summary>
+		/// Import the header flags from a raw frame.
+		/// </summary>
+		/// <param name="rawFrame">The raw frame.</param>
         protected void ImportRawFrameHeader(RawFrame rawFrame)
         {
             Descriptor.ID = rawFrame.ID;

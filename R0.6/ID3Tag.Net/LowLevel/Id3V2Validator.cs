@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using ID3Tag.HighLevel;
 
 namespace ID3Tag.LowLevel
@@ -59,11 +60,9 @@ namespace ID3Tag.LowLevel
 
                 return valid;
             }
-            else
-            {
-                FailureDescription = "The ID3 header version does not match!";
-                return false;
-            }
+
+			FailureDescription = "The ID3 header version does not match!";
+            return false;
         }
 
         private static bool ValidatePictureFrame(IFrame frame)
@@ -98,20 +97,11 @@ namespace ID3Tag.LowLevel
             return ok;
         }
 
-        private static bool ValidateTextEncoding(TextEncodingType type)
+        private static bool ValidateTextEncoding(Encoding encoding)
         {
-            bool result;
-            if (type == TextEncodingType.Ansi || type == TextEncodingType.UTF16)
-            {
-                result = true;
-            }
-            else
-            {
-                // UTF_BE and UTF8 is not supported in ID3v2.3!
-                result = false;
-            }
-
-            return result;
+			// ID3 v2.3 only supports single-byte ANSI encoding or unicode
+			// UTF16 BE (12001) and UTF8 (65001) are not supported
+        	return !(encoding.CodePage == 65001 || encoding.CodePage == 1201);
         }
     }
 }

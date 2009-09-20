@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using ID3Tag.LowLevel;
 
@@ -70,7 +69,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// </summary>
         public override FrameType Type
         {
-            get { return FrameType.AudoEncryption; }
+            get { return FrameType.AudioEncryption; }
         }
 
         /*
@@ -88,26 +87,18 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override RawFrame Convert(TagVersion version)
         {
             var flag = Descriptor.GetFlags();
-			var ownerBytes = Converter.GetContentBytes(TextEncodingType.Ansi, 28591, Owner);
-            var startBytes = BitConverter.GetBytes(PreviewStart);
-            var lengthBytes = BitConverter.GetBytes(PreviewLength);
 
-            Array.Reverse(startBytes);
-            Array.Reverse(lengthBytes);
+			byte[] payload;
+			using (var writer = new FrameDataWriter())
+			{
+				writer.WriteString(Owner, Encoding.GetEncoding(28591), true);
+				writer.WriteUInt16(PreviewStart);
+				writer.WriteUInt16(PreviewLength);
+				writer.WriteBytes(Encryption);
+				payload = writer.ToArray();
+			}
 
-            var data = new List<byte>();
-            data.AddRange(ownerBytes);
-            data.Add(0);
-            data.AddRange(startBytes);
-            data.AddRange(lengthBytes);
-            data.AddRange(Encryption);
-
-            var dataBytes = data.ToArray();
-            var payload = new byte[dataBytes.Length];
-            Array.Copy(dataBytes, 0, payload, 0, dataBytes.Length);
-
-            var rawFrame = RawFrame.CreateFrame("AENC", flag, payload, version);
-            return rawFrame;
+            return RawFrame.CreateFrame("AENC", flag, payload, version);
         }
 
 		/// <summary>
@@ -118,43 +109,14 @@ namespace ID3Tag.HighLevel.ID3Frame
         public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
-            var payloadBytes = rawFrame.Payload;
 
-            // Read the text bytes.
-            var textBytes = new List<byte>();
-            int curPos;
-            for (curPos = 0; curPos < payloadBytes.Length; curPos++)
-            {
-                var curByte = payloadBytes[curPos];
-                if (curByte == 0x00)
-                {
-                    // Termination found. Abort.
-                    break;
-                }
-
-                textBytes.Add(payloadBytes[curPos]);
-            }
-
-            curPos++;
-
-			var chars = Converter.Extract(TextEncodingType.Ansi, 28591, textBytes.ToArray());
-            Owner = new string(chars);
-
-            var startBytes = new byte[2];
-            var lengthBytes = new byte[2];
-
-            Array.Copy(payloadBytes, curPos, startBytes, 0, 2);
-            Array.Copy(payloadBytes, curPos + 2, lengthBytes, 0, 2);
-            Array.Reverse(startBytes);
-            Array.Reverse(lengthBytes);
-
-            PreviewStart = BitConverter.ToUInt16(startBytes, 0);
-            PreviewLength = BitConverter.ToUInt16(lengthBytes, 0);
-
-            var encryptionPos = curPos + 4;
-            var encryptionSize = payloadBytes.Length - encryptionPos;
-            Encryption = new byte[encryptionSize];
-            Array.Copy(payloadBytes, encryptionPos, Encryption, 0, Encryption.Length);
+			using (var reader = new FrameDataReader(rawFrame.Payload))
+			{
+				Owner = reader.ReadVariableString(Encoding.GetEncoding(28591));
+				PreviewStart = reader.ReadUInt16();
+				PreviewLength = reader.ReadUInt16();
+				Encryption = reader.ReadBytes();
+			}
         }
 
         /// <summary>
@@ -163,15 +125,13 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns></returns>
         public override string ToString()
         {
-            var stringBuilder = new StringBuilder();
-
-            var infoString = Utils.BytesToString(Encryption);
-
-            stringBuilder.Append("AudioEncryptionFrame : ");
-            stringBuilder.AppendFormat("Owner = {0} Preview Start = {1} Preview Length = {2} EncryptionInfo = {3}",
-                                       Owner, PreviewStart, PreviewLength, infoString);
-
-            return stringBuilder.ToString();
+        	return
+        		String.Format(
+        			"Audio Encryption : Owner = {0}, Preview Start = {1}, Preview Length = {2}, EncryptionInfo = {3}",
+        			Owner,
+        			PreviewStart,
+        			PreviewLength,
+        			Utils.BytesToString(Encryption));
         }
     }
 }
