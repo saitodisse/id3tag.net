@@ -17,8 +17,8 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// Creates a new UserDefindedTextFrame.
 		/// </summary>
 		public UserDefinedTextFrame()
+            : this(String.Empty,String.Empty,Encoding.ASCII)
 		{
-			Descriptor.ID = "TXXX";
 		}
 
 		/// <summary>

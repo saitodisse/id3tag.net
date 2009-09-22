@@ -34,6 +34,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <param name="data">the picture bytes</param>
 		public PictureFrame(Encoding encoding, string mimeType, string description, PictureType picture, byte[] data)
 		{
+		    Descriptor.ID = "APIC";
 			TextEncoding = encoding;
 			MimeType = mimeType;
 			Description = description;

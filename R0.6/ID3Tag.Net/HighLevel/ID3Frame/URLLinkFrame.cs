@@ -17,6 +17,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// Creates a new instance of UrlLinkFrame.
         /// </summary>
         public UrlLinkFrame()
+            : this("W???",String.Empty)
         {
         }
 

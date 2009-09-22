@@ -18,8 +18,8 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// Creates a new instance of MusicCdIdentifierFrame
 		/// </summary>
 		public MusicCdIdentifierFrame()
+            : this(new byte[0])
 		{
-			TOC = new byte[0];
 		}
 
 		/// <summary>

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="FileState.cs" />
     <Compile Include="HighLevel\EncodedTextFrame.cs" />
+    <Compile Include="HighLevel\FrameContainer.cs" />
     <Compile Include="HighLevel\Genre.cs" />
     <Compile Include="HighLevel\ID3Frame\InvolvedPeopleListFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PlayCounterFrame.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="HighLevel\ID3Frame\UniqueFileIdentifierFrame.cs" />
     <Compile Include="HighLevel\ID3V1Controller.cs" />
     <Compile Include="HighLevel\ID3V1Tag.cs" />
+    <Compile Include="HighLevel\IFrameContainer.cs" />
     <Compile Include="HighLevel\IID3V1Controller.cs" />
     <Compile Include="HighLevel\Frame.cs" />
     <Compile Include="HighLevel\FrameDescriptor.cs" />

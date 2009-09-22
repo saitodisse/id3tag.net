@@ -7,22 +7,22 @@ namespace ID3Tag.HighLevel
     {
         #region ITagController Members
 
-		/// <summary>
-		/// Decodes a low level tag into a high level.
-		/// </summary>
-		/// <param name="info">the low level tag.</param>
-		/// <returns>the high level tag representation.</returns>
+        /// <summary>
+        /// Decodes a low level tag into a high level.
+        /// </summary>
+        /// <param name="info">the low level tag.</param>
+        /// <returns>the high level tag representation.</returns>
         public TagContainer Decode(Id3TagInfo info)
-		{
-			return Decode(info, 0);
-		}
+        {
+            return Decode(info, 0);
+        }
 
-		/// <summary>
-		/// Decodes a low level tag into a high level.
-		/// </summary>
-		/// <param name="info">the low level tag.</param>
-		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding.</param>
-		/// <returns>the high level tag representation.</returns>
+        /// <summary>
+        /// Decodes a low level tag into a high level.
+        /// </summary>
+        /// <param name="info">the low level tag.</param>
+        /// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding.</param>
+        /// <returns>the high level tag representation.</returns>
         public TagContainer Decode(Id3TagInfo info, int codePage)
         {
             TagContainer container;
@@ -41,12 +41,13 @@ namespace ID3Tag.HighLevel
             //
             //  Import the frames
             //
+            IFrameContainer frameContainer = new FrameContainer();
             foreach (var rawFrame in info.Frames)
             {
                 //
                 //  Analyse the frame ID
                 //
-                var frame = AnalyseFrameId(rawFrame);
+                var frame = AnalyseFrameId(rawFrame, frameContainer);
                 if (frame != null)
                 {
                     frame.Import(rawFrame, codePage);
@@ -94,71 +95,43 @@ namespace ID3Tag.HighLevel
 
         #region Private Helper
 
-        private static IFrame AnalyseFrameId(RawFrame rawFrame)
+        private static IFrame AnalyseFrameId(RawFrame rawFrame, IFrameContainer container)
         {
-            IFrame frame;
-            if (rawFrame.ID[0] == 'T' || rawFrame.ID[0] == 'W')
+            var id = rawFrame.ID;
+            IFrame frame = null;
+
+            if (id[0] == 'T' && id[1] != 'X')
             {
-                switch (rawFrame.ID[0])
-                {
-                    case 'T':
-                        if (rawFrame.ID != "TXXX")
-                        {
-                            frame = new TextFrame();
-                        }
-                        else
-                        {
-                            frame = new UserDefinedTextFrame();
-                        }
-                        break;
-                    case 'W':
-                        if (rawFrame.ID != "WXXX")
-                        {
-                            frame = new UrlLinkFrame();
-                        }
-                        else
-                        {
-                            frame = new UserDefinedURLLinkFrame();
-                        }
-                        break;
-                    default:
-                        throw new ID3TagException("Unknown Text or URL frame!");
-                }
+                //
+                // Handle Textfames
+                //
+                frame = container.GetTextFrame();
             }
-            else
+
+            if (id[0] == 'W' && id[1] != 'X')
             {
-                // Other frames
-                switch (rawFrame.ID)
-                {
-                    case "AENC":
-                        frame = new AudioEncryptionFrame();
-                        break;
-                    case "PRIV":
-                        frame = new PrivateFrame();
-                        break;
-                    case "MCDI":
-                        frame = new MusicCdIdentifierFrame();
-                        break;
-                    case "COMM":
-                        frame = new CommentFrame();
-                        break;
-                    case "APIC":
-                        frame = new PictureFrame();
-                        break;
-                    case "PCNT":
-                        frame = new PlayCounterFrame();
-                        break;
-                    case "POPM":
-                        frame = new PopularimeterFrame();
-                        break;
-                    case "UFID":
-                        frame = new UniqueFileIdentifierFrame();
-                        break;
-                    default:
-                        frame = new UnknownFrame();
-                        break;
-                }
+                //
+                // Handle Web Frames
+                //
+                frame = container.GetUrlLinkFrame();
             }
+
+            if (container.Search(id))
+            {
+                //
+                //  Get the specific frame instance
+                //
+                frame = container.GetFrameInstance(id);
+            }
+
+            if (frame == null)
+            {
+                //
+                //  If all failed then create an Unknown frame instance
+                //
+                frame = new UnknownFrame();
+            }
+
             return frame;
         }
 

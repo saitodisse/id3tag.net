@@ -17,6 +17,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// Creates a new instance of CommentFrame.
 		/// </summary>
 		public CommentFrame()
+            : this("ENG","","",Encoding.ASCII)
 		{}
 
 		/// <summary>

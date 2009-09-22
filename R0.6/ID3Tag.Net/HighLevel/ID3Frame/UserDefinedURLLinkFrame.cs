@@ -16,6 +16,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// Creates a new UserDefinedURLLinkFrame
 		/// </summary>
 		public UserDefinedURLLinkFrame()
+            : this(String.Empty,String.Empty,Encoding.ASCII)
 		{}
 
 		/// <summary>

@@ -13,10 +13,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 	/// </summary>
 	public class TextFrame : EncodedTextFrame
 	{
-		/// <summary>
-		/// Creates a new TextFrame.
-		/// </summary>
-		public TextFrame()
+	    /// <summary>
+	    /// Creates a new TextFrame.
+	    /// </summary>
+	    public TextFrame()
+	        : this("T???", String.Empty, Encoding.ASCII)
 		{}
 
 		/// <summary>
