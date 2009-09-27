@@ -45,25 +45,25 @@ namespace ID3TagUtility
         {
             DialogResult = true;
 
-            switch(comboBoxEncoding.SelectedIndex)
+            switch (comboBoxEncoding.SelectedIndex)
             {
                 case 0:
                     Data.TextEncoding = Encoding.Default;
                     break;
                 case 1:
-					Data.TextEncoding = Encoding.Unicode;
+                    Data.TextEncoding = Encoding.Unicode;
                     break;
                 case 2:
-					Data.TextEncoding = Encoding.BigEndianUnicode;
+                    Data.TextEncoding = Encoding.BigEndianUnicode;
                     break;
                 case 3:
-					Data.TextEncoding = Encoding.UTF8;
+                    Data.TextEncoding = Encoding.UTF8;
                     break;
                 default:
                     //
                     //  Hmm.. invalid type. Throw exception in production code...
                     //
-					Data.TextEncoding = Encoding.Default;
+                    Data.TextEncoding = Encoding.Default;
                     break;
             }
 

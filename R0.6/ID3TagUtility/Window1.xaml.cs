@@ -144,7 +144,6 @@ namespace ID3TagUtility
             //
             labelFilename.Content = filename;
             labelTagVersion.Content = String.Format("ID3v2.{0}.{1}", tagDescriptor.MajorVersion, tagDescriptor.Revision);
-
         }
 
         private void ShowID3V23Tag(string filename, TagDescriptorV3 tagDescriptor)
