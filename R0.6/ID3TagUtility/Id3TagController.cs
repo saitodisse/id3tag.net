@@ -137,31 +137,31 @@ namespace ID3TagUtility
 
 		public TagContainer BuildTag(ID3V2TagData data)
 		{
-			TagContainer tagController;
-			if (data.Version == TagVersion.Id3V23)
-			{
-				var tagContainerV3 = new TagContainerV3();
-				// Configure the tag header.
-				tagContainerV3.Tag.SetHeaderFlags(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
+		    var container = Id3TagFactory.CreateId3Tag(data.Version);
+            if (data.Version == TagVersion.Id3V23)
+            {
+                //
+                //  Configure the ID3v2.3 header
+                //
+                var extendedHeaderV23 = container.GetId3V23Descriptor();
+                // Configure the tag header.
+                extendedHeaderV23.SetHeaderFlags(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
 
-				if (data.ExtendedHeader)
-				{
-					tagContainerV3.Tag.SetExtendedHeader(data.PaddingSize, data.CrCPresent);
-					tagContainerV3.Tag.SetCrc32(data.Crc);
-				}
+                if (data.ExtendedHeader)
+                {
+                    extendedHeaderV23.SetExtendedHeader(data.PaddingSize, data.CrCPresent);
+                    extendedHeaderV23.SetCrc32(data.Crc);
+                }
+            }
+            else
+            {
+                //
+                //  Configure the ID3v2.4 header
+                //
+                var extendedHeaderV24 = container.GetId3V24Descriptor();
+                extendedHeaderV24.SetHeaderFlags(false, false, false, true);
 
-				tagController = tagContainerV3;
-			}
-			else
-			{
-				var tagContainerV4 = new TagContainerV4();
-
-				tagContainerV4.Tag.SetHeaderFlags(false, false, false, true);
-
-				//TODO: Read the data from parameter!
-
-				tagController = tagContainerV4;
-			}
+            }
 
 			// OK. Build the frames.
 			var albumFrame = new TextFrame("TALB", data.Album, data.TextEncoding);
@@ -172,19 +172,19 @@ namespace ID3TagUtility
 			var comment = new CommentFrame("ENG", "Your Comment", data.Comment, data.TextEncoding);
 			var encoder = new TextFrame("TENC", data.Encoder, data.TextEncoding);
 
-			tagController.Add(albumFrame);
-			tagController.Add(artistFrame);
-			tagController.Add(yearFrame);
-			tagController.Add(titleFrame);
-			tagController.Add(textComment);
-			tagController.Add(comment);
-			tagController.Add(encoder);
+			container.Add(albumFrame);
+			container.Add(artistFrame);
+			container.Add(yearFrame);
+			container.Add(titleFrame);
+			container.Add(textComment);
+			container.Add(comment);
+			container.Add(encoder);
 
 			if (data.PictureFrameEnabled)
 			{
 				if (File.Exists(data.PictureFile))
 				{
-					WritePictureFrame(data, tagController);
+					WritePictureFrame(data, container);
 				}
 				else
 				{
@@ -192,7 +192,7 @@ namespace ID3TagUtility
 				}
 			}
 
-			return tagController;
+			return container;
 		}
 
 		public Id3V1Tag ReadId3V1Tag(string filename, int codePage)

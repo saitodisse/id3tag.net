@@ -34,5 +34,29 @@ namespace ID3Tag
         {
             return new Id3V1Controller();
         }
+
+        /// <summary>
+        /// Creates a new ID3 Tag representation. 
+        /// </summary>
+        /// <param name="version">the ID3 Tag version.</param>
+        /// <returns>the representation instance.</returns>
+        public static TagContainer CreateId3Tag(TagVersion version)
+        {
+            TagContainer container;
+
+            switch (version)
+            {
+                case TagVersion.Id3V23:
+                    container = new TagContainerV3();
+                    break;
+                case TagVersion.Id3V24:
+                    container = new TagContainerV4();
+                    break;
+                default:
+                    throw new ID3TagException("Invalid tag version!");
+            }
+
+            return container;
+        }
     }
 }

@@ -100,22 +100,6 @@ namespace ID3Tag.HighLevel
             var id = rawFrame.ID;
             IFrame frame = null;
 
-            if (id[0] == 'T' && id[1] != 'X')
-            {
-                //
-                // Handle Textfames
-                //
-                frame = container.GetTextFrame();
-            }
-
-            if (id[0] == 'W' && id[1] != 'X')
-            {
-                //
-                // Handle Web Frames
-                //
-                frame = container.GetUrlLinkFrame();
-            }
-
             if (container.Search(id))
             {
                 //
@@ -123,11 +107,29 @@ namespace ID3Tag.HighLevel
                 //
                 frame = container.GetFrameInstance(id);
             }
+            else
+            {
+                if (id[0] == 'T' && id[1] != 'X')
+                {
+                    //
+                    // Handle Textfames
+                    //
+                    frame = container.GetTextFrame();
+                }
+
+                if (id[0] == 'W' && id[1] != 'X')
+                {
+                    //
+                    // Handle Web Frames
+                    //
+                    frame = container.GetUrlLinkFrame();
+                }
+            }
 
             if (frame == null)
             {
                 //
-                //  If all failed then create an Unknown frame instance
+                //  If all is failed then create an Unknown frame instance
                 //
                 frame = new UnknownFrame();
             }
