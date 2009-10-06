@@ -279,5 +279,21 @@ namespace ID3Tag.HighLevel
 
             return ufid;
         }
+
+        public static UnsynchronisedLyricFrame ConvertToUnsynchronisedLycricsFrame(IFrame frame)
+        {
+            if (frame.Type != FrameType.UnsynchronisedLyric)
+            {
+                throw new ID3TagException("Frame Type does not mathch");
+            }
+
+            var uslt = frame as UnsynchronisedLyricFrame;
+            if (uslt == null)
+            {
+                throw new ID3TagException("Could not cast To UnsynchronisedLyricFrame!");
+            }
+
+            return uslt;
+        }
     }
 }

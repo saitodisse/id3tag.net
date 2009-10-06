@@ -60,6 +60,10 @@
         /// <summary>
         /// Involved People list
         /// </summary>
-        InvolvedPeopleList
+        InvolvedPeopleList,
+        /// <summary>
+        /// Unsnychronised Lyric
+        /// </summary>
+        UnsynchronisedLyric
     }
 }
