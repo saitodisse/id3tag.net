@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ID3TagUtility.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="ID3Tag Utility" Height="582" Width="824" Loaded="Window_Loaded">
+    Title="ID3Tag Utility" Height="588" Width="808" Loaded="Window_Loaded">
     <DockPanel>
         <Menu DockPanel.Dock="Top"  Name="menuFile" VerticalAlignment="Top">
             <MenuItem Header="File">
@@ -73,6 +73,14 @@
                         <Label Margin="122,148.08,136,0" Name="labelComment" Height="24" VerticalAlignment="Top">...</Label>
                         <Label Margin="120,186.08,197,0" Name="labelGenre" Height="27" VerticalAlignment="Top">...</Label>
                         <Label Margin="122,219.08,516,0" Name="labelTrackNr" Height="33" VerticalAlignment="Top">...</Label>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Unsync. Lyrics" Name="tabItemUSLT">
+                    <Grid>
+                        <Label Height="24" HorizontalAlignment="Left" Margin="10,12,0,0" Name="label13" VerticalAlignment="Top" Width="85.29">Descriptor :</Label>
+                        <Label Height="30" HorizontalAlignment="Left" Margin="10,42,0,0" Name="label14" VerticalAlignment="Top" Width="69">Lyrics :</Label>
+                        <TextBox Height="26" Margin="97,16,27,0" Name="textBoxLyricsDescriptor" VerticalAlignment="Top" IsEnabled="False"/>
+                        <TextBox Margin="16,67,30,15" Name="textBoxLyrics"  AcceptsReturn="True" AcceptsTab="True" IsEnabled="False"/>
                     </Grid>
                 </TabItem>
             </TabControl>

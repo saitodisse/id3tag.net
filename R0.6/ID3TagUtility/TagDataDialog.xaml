@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ID3TagUtility.TagDataDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Write new Tag..." Height="570" Width="882">
+    Title="Write new Tag..." Height="569" Width="787">
     <Grid Loaded="Grid_Loaded">
         <Button Height="33" HorizontalAlignment="Right" Margin="0,0,12,12" Name="buttonCancel" VerticalAlignment="Bottom" Width="77" Click="buttonCancel_Click">Cancel</Button>
         <Button Height="33" Margin="0,0,95,12" Name="buttonApply" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="77" Click="buttonApply_Click">Apply</Button>
@@ -54,6 +54,17 @@
                     <TextBox Margin="98,55,78,0" Name="textBoxPicture" Height="24" VerticalAlignment="Top" />
                     <Button HorizontalAlignment="Right" Margin="0,51.96,29,0" Name="buttonPicture" Width="43" Click="buttonPicture_Click" Height="28.04" VerticalAlignment="Top">...</Button>
                     <CheckBox Height="23" Margin="6,14,207,0" Name="checkBoxAddPicture" VerticalAlignment="Top">Add Picture Frame</CheckBox>
+                </Grid>
+            </TabItem>
+            <TabItem Name="tabLyrics" Header="Lycris">
+                <Grid>
+                    <Label Height="25" HorizontalAlignment="Left" Margin="16,52,0,0" Name="label9" VerticalAlignment="Top" Width="123">Content Descriptor :</Label>
+                    <Label Height="30" HorizontalAlignment="Left" Margin="16,83,0,0" Name="label11" VerticalAlignment="Top" Width="96">Lycris :</Label>
+                    <TextBox Height="23" Margin="145,54,16,0" Name="textBoxLycrisDescriptor" VerticalAlignment="Top" />
+                    <TextBox Margin="17,119,16,38" Name="textBoxLyrics" AcceptsReturn="True" AcceptsTab="True" />
+                    <CheckBox Height="19" HorizontalAlignment="Left" Margin="16,0,0,4" Name="checkBoxWriteLycris" VerticalAlignment="Bottom" Width="208">Write Lycrics</CheckBox>
+                    <Label Height="31" HorizontalAlignment="Left" Margin="17,15,0,0" Name="label12" VerticalAlignment="Top" Width="107">Language :</Label>
+                    <TextBox Height="28" Margin="145,20,16,0" Name="textBox1" VerticalAlignment="Top" Text="ENG" IsEnabled="False" />
                 </Grid>
             </TabItem>
         </TabControl>

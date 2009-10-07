@@ -99,6 +99,17 @@ namespace ID3TagUtility
                 Data.PaddingSize = Convert.ToInt32(textBoxPadding.Text);
             }
 
+            if (checkBoxWriteLycris.IsChecked == true)
+            {
+                Data.WriteLyricsFlag = true;
+                Data.LyricsDescriptor = textBoxLycrisDescriptor.Text;
+                Data.Lyrics = textBoxLyrics.Text;
+            }
+            else
+            {
+                Data.WriteLyricsFlag = false;
+            }
+
             Close();
         }
 

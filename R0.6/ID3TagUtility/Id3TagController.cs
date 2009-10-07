@@ -191,8 +191,15 @@ namespace ID3TagUtility
                 }
             }
 
+            if (data.WriteLyricsFlag)
+            {
+                WriteUnsychronisedLyrics(data.LyricsDescriptor, data.Lyrics,container);
+            }
+
             return container;
         }
+
+
 
         public Id3V1Tag ReadId3V1Tag(string filename, int codePage)
         {
@@ -286,6 +293,13 @@ namespace ID3TagUtility
 
                 container.Add(pictureFrame);
             }
+        }
+
+        private static void WriteUnsychronisedLyrics(string descriptor, string lyrics, TagContainer container)
+        {
+            var uslt = new UnsynchronisedLyricFrame("ENG",descriptor,lyrics,Encoding.ASCII);
+
+            container.Add(uslt);
         }
     }
 }

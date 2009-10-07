@@ -55,25 +55,27 @@ namespace ID3TagUtility
                             ShowID3V23Tag(filename, tagDescriptorV3);
                             ShowTagFrames(tagContainer);
 
-                            var frame = tagContainer.SearchFrame("APIC");
-                            if (frame != null)
-                            {
-                                var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
-                                ShowPicture(pictureFrame);
-                            }
+
                         }
                         else
                         {
                             var tagDescriptorV4 = tagContainer.GetId3V24Descriptor();
                             ShowID3V24Tag(filename, tagDescriptorV4);
                             ShowTagFrames(tagContainer);
+                       }
 
-                            var frame = tagContainer.SearchFrame("APIC");
-                            if (frame != null)
-                            {
-                                var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
-                                ShowPicture(pictureFrame);
-                            }
+                        var apicFrame = tagContainer.SearchFrame("APIC");
+                        if (apicFrame != null)
+                        {
+                            var pictureFrame = FrameUtils.ConvertToPictureFrame(apicFrame);
+                            ShowPicture(pictureFrame);
+                        }
+
+                        var usltFrame = tagContainer.SearchFrame("USLT");
+                        if (usltFrame != null)
+                        {
+                            var lyricsFrame = FrameUtils.ConvertToUnsynchronisedLycricsFrame(usltFrame);
+                            ShowLyrics(lyricsFrame);
                         }
                     }
                 }
@@ -94,6 +96,12 @@ namespace ID3TagUtility
                     labelTrackNr.Content = tag.TrackNr;
                 }
             }
+        }
+
+        private void ShowLyrics(UnsynchronisedLyricFrame lyricsFrame)
+        {
+            textBoxLyricsDescriptor.Text = lyricsFrame.ContentDescriptor;
+            textBoxLyrics.Text = lyricsFrame.Lyrics;
         }
 
         private void OnClose(object sender, RoutedEventArgs e)

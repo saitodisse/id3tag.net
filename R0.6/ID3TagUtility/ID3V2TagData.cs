@@ -33,5 +33,9 @@ namespace ID3TagUtility
         {
             get { return "ID3TagLib.Net"; }
         }
+
+        public bool WriteLyricsFlag { get; set; }
+        public string LyricsDescriptor { get; set; }
+        public string Lyrics { get; set; }
     }
 }
