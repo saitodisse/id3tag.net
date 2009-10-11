@@ -14,8 +14,7 @@ namespace ID3Tag.HighLevel
 		private byte[] _bytesBuffer;
 		private char[] _charsBuffer;
 		private const int _SIZE = 64;
-
-	    private bool _isDisposed = false;
+	    private bool _isDisposed;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FrameDataReader"/> class.
@@ -31,6 +30,10 @@ namespace ID3Tag.HighLevel
 			_stream = new MemoryStream(payload, 0, payload.Length, false, true);
 		}
 
+		/// <summary>
+		/// Releases unmanaged resources and performs other cleanup operations before the
+		/// <see cref="FrameDataReader"/> is reclaimed by garbage collection.
+		/// </summary>
         ~FrameDataReader()
         {
             Dispose(false);
@@ -54,13 +57,15 @@ namespace ID3Tag.HighLevel
         {
             if (!_isDisposed)
             {
-                if (disposing)
+                if (disposing && _stream != null)
                 {
                     _stream.Dispose();
                 }
-            }
 
-            _isDisposed = true;
+				_bytesBuffer = null;
+				_charsBuffer = null;
+				_isDisposed = true;
+			}
         }
 
 		#endregion

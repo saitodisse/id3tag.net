@@ -11,6 +11,7 @@ namespace ID3Tag.HighLevel
 	public sealed class FrameDataWriter : IDisposable
 	{
 		private readonly MemoryStream _stream;
+		private bool _isDisposed;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FrameDataWriter"/> class using specified capacity.
@@ -29,6 +30,15 @@ namespace ID3Tag.HighLevel
 			_stream = new MemoryStream(128);
 		}
 
+		/// <summary>
+		/// Releases unmanaged resources and performs other cleanup operations before the
+		/// <see cref="FrameDataWriter"/> is reclaimed by garbage collection.
+		/// </summary>
+		~FrameDataWriter()
+		{
+			Dispose(false);
+		}
+
 		#region IDisposable Members
 
 		/// <summary>
@@ -36,8 +46,26 @@ namespace ID3Tag.HighLevel
 		/// </summary>
 		public void Dispose()
 		{
-			_stream.Dispose();
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
+
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		private void Dispose(bool disposing)
+		{
+			if (!_isDisposed)
+			{
+				if (disposing && _stream != null)
+				{
+					_stream.Dispose();
+				}
+
+				_isDisposed = true;
+			}
+		}
+
 
 		#endregion
 
