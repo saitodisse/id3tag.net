@@ -118,7 +118,11 @@
     <Compile Include="Version.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="HighLevel\HighLevelClassesV1.cd" />
+    <None Include="HighLevel\HighLevelClassesV2.cd" />
+    <None Include="HighLevel\ID3Frame\FrameClasses.cd" />
     <None Include="ID3Tag.snk" />
+    <None Include="LowLevel\LowLevelClasses.cd" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="CustomDictionary.xml" />
