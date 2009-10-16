@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace ID3Tag.HighLevel
 {
-    internal class FrameContainer : IFrameContainer
+    internal class FrameContainer : IFrameCreationService
     {
         private readonly Dictionary<string, Type> m_Frames;
 

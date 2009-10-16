@@ -62,7 +62,7 @@
     <Compile Include="HighLevel\ID3Frame\UnsynchronisedLyricFrame.cs" />
     <Compile Include="HighLevel\ID3V1Controller.cs" />
     <Compile Include="HighLevel\ID3V1Tag.cs" />
-    <Compile Include="HighLevel\IFrameContainer.cs" />
+    <Compile Include="HighLevel\IFrameCreationService.cs" />
     <Compile Include="HighLevel\IID3V1Controller.cs" />
     <Compile Include="HighLevel\Frame.cs" />
     <Compile Include="HighLevel\FrameDescriptor.cs" />

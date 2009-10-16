@@ -11,7 +11,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 	/// followed by the actual string. There may be more than one "TXXX" frame in each tag, 
 	/// but only one with the same description.
 	/// </summary>
-	public class UserDefinedTextFrame : Frame
+	public class UserDefinedTextFrame : EncodedTextFrame
 	{
 		/// <summary>
 		/// Creates a new UserDefindedTextFrame.
@@ -34,11 +34,6 @@ namespace ID3Tag.HighLevel.ID3Frame
 			Value = value;
 			TextEncoding = encoding;
 		}
-
-		/// <summary>
-		/// The text encoding.
-		/// </summary>
-		public Encoding TextEncoding { get; set; }
 
 		/// <summary>
 		/// The description.

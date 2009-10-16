@@ -41,13 +41,13 @@ namespace ID3Tag.HighLevel
             //
             //  Import the frames
             //
-            IFrameContainer frameContainer = new FrameContainer();
+            IFrameCreationService creationService = new FrameContainer();
             foreach (var rawFrame in info.Frames)
             {
                 //
                 //  Analyse the frame ID
                 //
-                var frame = AnalyseFrameId(rawFrame, frameContainer);
+                var frame = AnalyseFrameId(rawFrame, creationService);
                 if (frame != null)
                 {
                     frame.Import(rawFrame, codePage);
@@ -95,17 +95,17 @@ namespace ID3Tag.HighLevel
 
         #region Private Helper
 
-        private static IFrame AnalyseFrameId(RawFrame rawFrame, IFrameContainer container)
+        private static IFrame AnalyseFrameId(RawFrame rawFrame, IFrameCreationService frameService)
         {
             var id = rawFrame.ID;
             IFrame frame = null;
 
-            if (container.Search(id))
+            if (frameService.Search(id))
             {
                 //
                 //  Get the specific frame instance
                 //
-                frame = container.GetFrameInstance(id);
+                frame = frameService.GetFrameInstance(id);
             }
             else
             {
@@ -114,7 +114,7 @@ namespace ID3Tag.HighLevel
                     //
                     // Handle Textfames
                     //
-                    frame = container.GetTextFrame();
+                    frame = frameService.GetTextFrame();
                 }
 
                 if (id[0] == 'W' && id[1] != 'X')
@@ -122,7 +122,7 @@ namespace ID3Tag.HighLevel
                     //
                     // Handle Web Frames
                     //
-                    frame = container.GetUrlLinkFrame();
+                    frame = frameService.GetUrlLinkFrame();
                 }
             }
 

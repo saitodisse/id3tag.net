@@ -907,6 +907,7 @@ namespace ID3Tag.LowLevel
             var size = Utils.CalculateExtendedHeaderSize(extendedHeaderSize);
             byte[] content;
 
+            ExtendedHeader extendedHeader;
             switch (tagInfo.MajorVersion)
             {
                 case 3:
@@ -915,9 +916,7 @@ namespace ID3Tag.LowLevel
                     //
                     content = new byte[size];
                     reader.Read(content, 0, size);
-
-                    var extendedHeader = ExtendedTagHeaderV3.Create(content);
-                    tagInfo.ExtendedHeader = extendedHeader;
+                    extendedHeader = ExtendedTagHeaderV3.Create(content);
                     break;
                 case 4:
                     //
@@ -928,13 +927,13 @@ namespace ID3Tag.LowLevel
 
                     content = new byte[size];
                     reader.Read(content, 0, size);
-
-                    var extendedHeaderv4 = ExtendedTagHeaderV4.Create(content);
-                    tagInfo.ExtendedHeader = extendedHeaderv4;
+                    extendedHeader = ExtendedTagHeaderV4.Create(content);
                     break;
                 default:
                     throw new ID3TagException("Unknown extended header found! ");
             }
+
+            tagInfo.ExtendedHeader = extendedHeader;
         }
 
         private static bool ReadContent(BinaryReader reader, Id3TagInfo tagInfo, List<byte> frameBytes)

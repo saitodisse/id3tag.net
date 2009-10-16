@@ -14,38 +14,13 @@ namespace ID3Tag.LowLevel
 
                 foreach (var frame in container)
                 {
-                    /*
-                     *  T___
-                     *  TXXX
-                     *  WXXX
-                     *  APIC
-                     * 
-                     *  fehlt noch:
-                     *  IPLS
-                     *  USLT
-                     *  SYLT
-                     *  COMM
-                     *  GEOB
-                     *  USER
-                     *  OWNE
-                     *  COMR
-                     *  
-                     */
-
-                    switch (frame.Type)
+                    //
+                    //  If the frame is a type of EncodedTextFrame then validate the coding
+                    //
+                    var textFrame = frame as EncodedTextFrame;
+                    if (textFrame != null)
                     {
-                        case FrameType.Text:
-                            valid = ValidateTextFrame(frame);
-                            break;
-                        case FrameType.UserDefinedText:
-                            valid = ValidateUserDefinedTextFrame(frame);
-                            break;
-                        case FrameType.UserDefindedURLLink:
-                            valid = ValidateUserDefinedLink(frame);
-                            break;
-                        case FrameType.Picture:
-                            valid = ValidatePictureFrame(frame);
-                            break;
+                        valid = ValidateTextEncoding(textFrame.TextEncoding);
                     }
 
                     if (!valid)
@@ -53,7 +28,7 @@ namespace ID3Tag.LowLevel
                         //
                         //  Abort. Invalid frame found!
                         //
-                        FailureDescription = String.Format("Frame {0} is not valid! (must be 3.0)", frame.Descriptor.ID);
+                        FailureDescription = String.Format("Frame {0} uses an invalid text coding.", frame.Descriptor.ID);
                         break;
                     }
                 }
@@ -63,38 +38,6 @@ namespace ID3Tag.LowLevel
 
 			FailureDescription = "The ID3 header version does not match!";
             return false;
-        }
-
-        private static bool ValidatePictureFrame(IFrame frame)
-        {
-            var pictureFrame = FrameUtils.ConvertToPictureFrame(frame);
-
-            var ok = ValidateTextEncoding(pictureFrame.TextEncoding);
-            return ok;
-        }
-
-        private static bool ValidateUserDefinedLink(IFrame frame)
-        {
-            var urlLinkFrame = FrameUtils.ConvertToUserDefinedURLLinkFrame(frame);
-
-            var ok = ValidateTextEncoding(urlLinkFrame.TextEncoding);
-            return ok;
-        }
-
-        private static bool ValidateUserDefinedTextFrame(IFrame frame)
-        {
-            var textFrame = FrameUtils.ConvertToUserDefinedText(frame);
-
-            var ok = ValidateTextEncoding(textFrame.TextEncoding);
-            return ok;
-        }
-
-        private static bool ValidateTextFrame(IFrame frame)
-        {
-            var textFrame = FrameUtils.ConvertToText(frame);
-
-            var ok = ValidateTextEncoding(textFrame.TextEncoding);
-            return ok;
         }
 
         private static bool ValidateTextEncoding(Encoding encoding)

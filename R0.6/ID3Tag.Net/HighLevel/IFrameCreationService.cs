@@ -3,7 +3,7 @@
     /// <summary>
     /// Encapsulates the ID3 Frames
     /// </summary>
-    internal interface IFrameContainer
+    internal interface IFrameCreationService
     {
         /// <summary>
         /// Determines whether the frame ID is available.
