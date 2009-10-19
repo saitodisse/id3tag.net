@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ID3Tag.HighLevel.Id3V1Controller" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAgAAAAAAAEAAAhAAgAAAAAAAAAAAAAAECAAA=</HashCode>
+      <FileName>HighLevel\ID3V1Controller.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ID3Tag.HighLevel.Id3V1Tag">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAAAAEAABAIAAAAQAIgAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>HighLevel\ID3V1Tag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ID3Tag.HighLevel.IId3V1Controller">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>HighLevel\IID3V1Controller.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

@@ -1,0 +1,18 @@
+﻿1. TXXX [ OK ]
+
+2. URLLink Frame ( Wxxx ohne WXXX ) [ ]
+
+URL in ISO-88591
+
+3. WXXX [ ]
+
+Encoding : $XX
+Description : <Data> $00 / $00 $00
+URL : <Data>
+
+4. Involved People List ( IPLS ) [ ]
+
+Encoding : $XX
+<Person1> $00/$00 $00 <Person2> $00 / $00 $00 ... <Person n> $00 / $00 $00
+
+4.5 - 4.28 siehe Spec

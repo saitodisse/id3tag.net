@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>crc</Word>
+      <Word>popularimeter</Word>
+      <Word>unsynchronisation</Word>
+    </Recognized>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>CRC</Acronym>
+      <Acronym>ID</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>
