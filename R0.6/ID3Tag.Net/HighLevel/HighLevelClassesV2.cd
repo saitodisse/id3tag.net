@@ -112,11 +112,11 @@
       <FileName>HighLevel\ITagController.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="ID3Tag.HighLevel.IFrameContainer" Collapsed="true">
+  <Interface Name="ID3Tag.HighLevel.IFrameCreationService" Collapsed="true">
     <Position X="9.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAAAAgAAAAAAgAAAAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>HighLevel\IFrameContainer.cs</FileName>
+      <FileName>HighLevel\IFrameCreationService.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="ID3Tag.HighLevel.TagVersion" Collapsed="true">

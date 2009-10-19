@@ -5,7 +5,6 @@ using System.Windows;
 using ID3Tag;
 using ID3Tag.HighLevel;
 using ID3Tag.HighLevel.ID3Frame;
-using ID3Tag.LowLevel;
 
 namespace ID3TagUtility
 {
@@ -18,25 +17,11 @@ namespace ID3TagUtility
         /// <returns>the tag.</returns>
         public TagContainer ReadTag(string filename)
         {
-            var file = new FileInfo(filename);
-
-            //
-            //  Create the controller from the factory.
-            //
-            IIoController ioController = Id3TagFactory.CreateIoController();
-            ITagController tagController = Id3TagFactory.CreateTagController();
-
             TagContainer tag = null;
-            try
+
+			try
             {
-                //
-                // Read the raw tag ...
-                //
-                Id3TagInfo tagInfo = ioController.Read(file);
-                //
-                //  ... and decode the frames.
-                //
-                tag = tagController.Decode(tagInfo);
+				tag = Id3TagManager.ReadV2Tag(filename);
             }
             catch (ID3IOException ioException)
             {
@@ -67,16 +52,9 @@ namespace ID3TagUtility
         /// <remarks>the old tags will be removed.</remarks>
         public void WriteTag(TagContainer tagContainer, string sourceFile, string targetFile)
         {
-            FileStream inputStream = null;
-            FileStream outputStream = null;
             try
             {
-                IIoController ioController = Id3TagFactory.CreateIoController();
-
-                // Write the tag.
-                inputStream = File.Open(sourceFile, FileMode.Open);
-                outputStream = File.OpenWrite(targetFile);
-                ioController.Write(tagContainer, inputStream, outputStream);
+				Id3TagManager.WriteV2Tag(sourceFile, targetFile, tagContainer);
             }
             catch (ID3IOException ioException)
             {
@@ -90,34 +68,15 @@ namespace ID3TagUtility
             {
                 MessageBox.Show("Unknown exception caught : " + ex.Message);
             }
-            finally
-            {
-                if (inputStream != null)
-                {
-                    inputStream.Close();
-                    inputStream.Dispose();
-                }
-
-                if (outputStream != null)
-                {
-                    outputStream.Close();
-                    outputStream.Dispose();
-                }
-            }
         }
 
         public FileState ReadTagStatus(string filename)
         {
-            //
-            //  Create the controller from the factory.
-            //
-
-            var file = new FileInfo(filename);
-            IIoController ioController = Id3TagFactory.CreateIoController();
             FileState state = null;
-            try
+
+			try
             {
-                state = ioController.DetermineTagStatus(file);
+            	state = Id3TagManager.GetTagsStatus(filename);
             }
             catch (ID3IOException ioException)
             {
@@ -207,10 +166,7 @@ namespace ID3TagUtility
 
             try
             {
-                var file = new FileInfo(filename);
-                IId3V1Controller id3Converter = Id3TagFactory.CreateId3V1Controller();
-
-                container = id3Converter.Read(file, codePage);
+            	container = Id3TagManager.ReadV1Tag(filename, codePage);
             }
             catch (ID3IOException ioException)
             {
@@ -228,19 +184,11 @@ namespace ID3TagUtility
             return container;
         }
 
-        public void WriteId3V1Tag(Id3V1Tag tag, string sourceFile, string targetFile, int codePage)
+        public void WriteId3V1Tag(Id3V1Tag tag, string sourceFile, string targetFile)
         {
-            FileStream inputStream = null;
-            FileStream outputStream = null;
             try
             {
-                IId3V1Controller id3V1Controller = Id3TagFactory.CreateId3V1Controller();
-
-                // Write the tag.
-                inputStream = File.Open(sourceFile, FileMode.Open);
-                outputStream = File.OpenWrite(targetFile);
-
-                id3V1Controller.Write(tag, inputStream, outputStream, codePage);
+				Id3TagManager.WriteV1Tag(sourceFile, targetFile, tag);
             }
             catch (ID3IOException ioException)
             {
@@ -253,20 +201,6 @@ namespace ID3TagUtility
             catch (Exception ex)
             {
                 MessageBox.Show("Unknown exception caught : " + ex.Message);
-            }
-            finally
-            {
-                if (inputStream != null)
-                {
-                    inputStream.Close();
-                    inputStream.Dispose();
-                }
-
-                if (outputStream != null)
-                {
-                    outputStream.Close();
-                    outputStream.Dispose();
-                }
             }
         }
 

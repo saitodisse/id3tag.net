@@ -244,7 +244,7 @@ namespace ID3TagUtility
                     return;
                 }
 
-                m_Controller.WriteId3V1Tag(data, sourceFile, targetFile, 0);
+                m_Controller.WriteId3V1Tag(data, sourceFile, targetFile);
             }
         }
 

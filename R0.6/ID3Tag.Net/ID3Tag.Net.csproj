@@ -92,6 +92,7 @@
     <Compile Include="HighLevel\ID3Frame\UserDefinedTextFrame.cs" />
     <Compile Include="ID3HeaderNotFoundException.cs" />
     <Compile Include="ID3IOException.cs" />
+    <Compile Include="Id3TagManager.cs" />
     <Compile Include="InvalidID3StructureException.cs" />
     <Compile Include="InvalidTagFormatException.cs" />
     <Compile Include="LowLevel\ExtendedHeader.cs" />
