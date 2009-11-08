@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D10F733-7DB0-4CDB-8950-2F124661E4E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ID3Tag</RootNamespace>
+    <AssemblyName>ID3Tag.Net</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ID3Tag.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ID3Tag.Net.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileState.cs" />
+    <Compile Include="HighLevel\EncodedTextFrame.cs" />
+    <Compile Include="HighLevel\FrameContainer.cs" />
+    <Compile Include="HighLevel\Genre.cs" />
+    <Compile Include="HighLevel\ID3Frame\InvolvedPeopleListFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\PlayCounterFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\PopularimeterFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\UniqueFileIdentifierFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\UnsynchronisedLyricFrame.cs" />
+    <Compile Include="HighLevel\ID3V1Controller.cs" />
+    <Compile Include="HighLevel\ID3V1Tag.cs" />
+    <Compile Include="HighLevel\IFrameCreationService.cs" />
+    <Compile Include="HighLevel\IID3V1Controller.cs" />
+    <Compile Include="HighLevel\Frame.cs" />
+    <Compile Include="HighLevel\FrameDescriptor.cs" />
+    <Compile Include="HighLevel\FrameType.cs" />
+    <Compile Include="HighLevel\FrameUtils.cs" />
+    <Compile Include="HighLevel\ID3Frame\AudioEncryptionFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\CommentFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\MusicCdIdentifierFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\PictureFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\PrivateFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\URLLinkFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\UserDefinedURLLinkFrame.cs" />
+    <Compile Include="HighLevel\PictureType.cs" />
+    <Compile Include="HighLevel\TagContainerV3.cs" />
+    <Compile Include="HighLevel\TagContainerV4.cs" />
+    <Compile Include="HighLevel\TagDescriptorV3.cs" />
+    <Compile Include="HighLevel\TagDescriptorV4.cs" />
+    <Compile Include="HighLevel\TagVersion.cs" />
+    <Compile Include="HighLevel\TextEncodingType.cs" />
+    <Compile Include="HighLevel\ID3Frame\UnknownFrame.cs" />
+    <Compile Include="HighLevel\IFrame.cs" />
+    <Compile Include="HighLevel\ITagController.cs" />
+    <Compile Include="HighLevel\TagContainer.cs" />
+    <Compile Include="HighLevel\TagController.cs" />
+    <Compile Include="HighLevel\TagDescriptor.cs" />
+    <Compile Include="HighLevel\ID3Frame\TextFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\UserDefinedTextFrame.cs" />
+    <Compile Include="ID3HeaderNotFoundException.cs" />
+    <Compile Include="ID3IOException.cs" />
+    <Compile Include="Id3TagManager.cs" />
+    <Compile Include="InvalidID3StructureException.cs" />
+    <Compile Include="InvalidTagFormatException.cs" />
+    <Compile Include="LowLevel\ExtendedHeader.cs" />
+    <Compile Include="LowLevel\ExtendedHeaderType.cs" />
+    <Compile Include="LowLevel\ExtendedTagHeaderV3.cs" />
+    <Compile Include="ID3TagFactory.cs" />
+    <Compile Include="LowLevel\ExtendedTagHeaderV4.cs" />
+    <Compile Include="LowLevel\FrameFlags.cs" />
+    <Compile Include="LowLevel\Id3V24Validator.cs" />
+    <Compile Include="LowLevel\Id3V2Validator.cs" />
+    <Compile Include="LowLevel\IIOController.cs" />
+    <Compile Include="LowLevel\IOController.cs" />
+    <Compile Include="HighLevel\FrameDataReader.cs" />
+    <Compile Include="HighLevel\FrameDataWriter.cs" />
+    <Compile Include="LowLevel\RawFrameV3.cs" />
+    <Compile Include="LowLevel\RawFrameV4.cs" />
+    <Compile Include="LowLevel\Validator.cs" />
+    <Compile Include="Utils\Crc32.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="LowLevel\RawFrame.cs" />
+    <Compile Include="ID3TagException.cs" />
+    <Compile Include="LowLevel\ID3TagInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Version.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HighLevel\HighLevelClassesV1.cd" />
+    <None Include="HighLevel\HighLevelClassesV2.cd" />
+    <None Include="HighLevel\ID3Frame\FrameClasses.cd" />
+    <None Include="ID3Tag.snk" />
+    <None Include="LowLevel\LowLevelClasses.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+    <Content Include="HighLevel\Todo.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

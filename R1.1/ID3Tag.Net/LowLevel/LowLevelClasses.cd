@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ID3Tag.LowLevel.RawFrame">
+    <Position X="3.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAQAACAAAAAAAEAJAAQAAAAAAA=</HashCode>
+      <FileName>LowLevel\RawFrame.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Flag" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.RawFrameV3" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>LowLevel\RawFrameV3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.RawFrameV4" Collapsed="true">
+    <Position X="5.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>LowLevel\RawFrameV4.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.ExtendedHeader">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAQAgAAAAAABAA=</HashCode>
+      <FileName>LowLevel\ExtendedHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.ExtendedTagHeaderV3">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAEAQAAAAAAAAAAA=</HashCode>
+      <FileName>LowLevel\ExtendedTagHeaderV3.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="HeaderType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.ExtendedTagHeaderV4">
+    <Position X="5.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAQAACACAAAAAA=</HashCode>
+      <FileName>LowLevel\ExtendedTagHeaderV4.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="HeaderType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.FrameFlags">
+    <Position X="8" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAAAACAACAAAAAAAAAIAAAAAAAAAAAAIAAAQAgA=</HashCode>
+      <FileName>LowLevel\FrameFlags.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.Id3TagInfo">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAgAAAAAAAEAAAEAgAAgAAAAAACAAAAE=</HashCode>
+      <FileName>LowLevel\ID3TagInfo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ExtendedHeader" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Frames" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.Id3V24Validator" Collapsed="true">
+    <Position X="4.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LowLevel\Id3V24Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.Id3V2Validator" Collapsed="true">
+    <Position X="2.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAQAECIA=</HashCode>
+      <FileName>LowLevel\Id3V2Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.LowLevel.IoController" Collapsed="true">
+    <Position X="0.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABICBQAAAAAAAAAAAAAAgAEAkEAAAQAAEkAFEAII=</HashCode>
+      <FileName>LowLevel\IOController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ID3Tag.LowLevel.Validator">
+    <Position X="3.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LowLevel\Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ID3Tag.LowLevel.IIoController">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEEAAA=</HashCode>
+      <FileName>LowLevel\IIOController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ID3Tag.LowLevel.ExtendedHeaderType" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LowLevel\ExtendedHeaderType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

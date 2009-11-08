@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ID3Tag.HighLevel.FrameDataReader" Collapsed="true">
+    <Position X="9.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAEAAAAAKAAAAggUAAAAACAIAAAAEAAAEARAQBAABA=</HashCode>
+      <FileName>HighLevel\FrameDataReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ID3Tag.HighLevel.FrameDataWriter" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAASAAAAAABgAAAACAQAAAAAAgIAAAAABAABQ=</HashCode>
+      <FileName>HighLevel\FrameDataWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ID3Tag.HighLevel.FrameDescriptor">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAEAIAAAACAAiAAEAAAAAAIAAAAAAAAAAAAIAAAQAgA=</HashCode>
+      <FileName>HighLevel\FrameDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagContainer">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABCUCAAIBIQAAAAAAAAEAAAAAABQIAA=</HashCode>
+      <FileName>HighLevel\TagContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TagVersion" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="m_Frames" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagContainerV3" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HighLevel\TagContainerV3.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Tag" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagContainerV4" Collapsed="true">
+    <Position X="2.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HighLevel\TagContainerV4.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Tag" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagController" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAEAAABABAAAAAAAAAAAAAAAAAAIAAAAQAAAEAA=</HashCode>
+      <FileName>HighLevel\TagController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagDescriptor">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAACAAEQAAAAAAAAEAAIAACAAAgAAAAAAA=</HashCode>
+      <FileName>HighLevel\TagDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagDescriptorV3">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAABAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HighLevel\TagDescriptorV3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.HighLevel.TagDescriptorV4">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hABAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACACAAAAAA=</HashCode>
+      <FileName>HighLevel\TagDescriptorV4.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ID3Tag.HighLevel.FrameContainer" Collapsed="true">
+    <Position X="9.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAIAAAAAAAAgACAIAAhAAAAAEAAAAAAAAgAAA=</HashCode>
+      <FileName>HighLevel\FrameContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ID3Tag.HighLevel.IFrame">
+    <Position X="2.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAIIAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>HighLevel\IFrame.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+      <Property Name="Descriptor" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="ID3Tag.HighLevel.ITagController">
+    <Position X="9.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>HighLevel\ITagController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3Tag.HighLevel.IFrameCreationService" Collapsed="true">
+    <Position X="9.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAgAAAAAAgAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>HighLevel\IFrameCreationService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ID3Tag.HighLevel.TagVersion" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HighLevel\TagVersion.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ID3Tag.HighLevel.TextEncodingType" Collapsed="true">
+    <Position X="9.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAACAAAEAAAAEA=</HashCode>
+      <FileName>HighLevel\TextEncodingType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ID3Tag.HighLevel.FrameType" Collapsed="true">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAgAAEEAAAAAAAAAEAQAAAEIAAAAgAAAAgCgAEABA=</HashCode>
+      <FileName>HighLevel\FrameType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
