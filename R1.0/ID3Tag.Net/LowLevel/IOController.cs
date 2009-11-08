@@ -22,7 +22,7 @@ namespace ID3Tag.LowLevel
             Id3TagInfo info;
             try
             {
-                fs = File.Open(file.FullName, FileMode.Open);
+                fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
 
                 info = Read(fs);
             }
@@ -307,7 +307,7 @@ namespace ID3Tag.LowLevel
             FileState state;
             try
             {
-                fs = File.Open(file.FullName, FileMode.Open);
+                fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
                 state = DetermineTagStatus(fs);
             }
             catch (ID3TagException)
