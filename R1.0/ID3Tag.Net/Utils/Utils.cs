@@ -44,14 +44,23 @@ namespace ID3Tag
 
         internal static long CalculateFrameHeaderSize(byte[] size)
         {
-            int curValue = 0;
+            uint headersize = 0;
 
-            curValue += CalculateByteValue(size[3], 0, 8);
-            curValue += CalculateByteValue(size[2], 8, 8);
-            curValue += CalculateByteValue(size[1], 16, 8);
-            curValue += CalculateByteValue(size[0], 24, 8);
+            for (int i = 0; i < 4; i++)
+            {
+            headersize <<= 7;
+            headersize += (uint) size[i] & 0x7F;
+            }
 
-            return curValue;
+            return (int)headersize;
+
+            // Old Code:
+            //int curValue = 0;
+
+            //curValue += CalculateByteValue(size[3], 0, 8);
+            //curValue += CalculateByteValue(size[2], 8, 8);
+            //curValue += CalculateByteValue(size[1], 16, 8);
+            //curValue += CalculateByteValue(size[0], 24, 8);
         }
 
         private static int CalculateByteValue(byte b, int index, int maxBit)
