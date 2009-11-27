@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Lowlevel
+namespace Id3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
     public class FramesTestV3 : Test
@@ -10,7 +10,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [SetUp]
         public void Setup()
         {
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -33,9 +33,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.Compression);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.Compression);
         }
 
         [Test]
@@ -56,9 +56,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.Encryption);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.Encryption);
         }
 
         [Test]
@@ -79,9 +79,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.FileAlterPreservation);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.FileAlterPreservation);
         }
 
         [Test]
@@ -102,8 +102,8 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
         }
 
         [Test]
@@ -128,23 +128,23 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 2);
             // frame 1
-            Assert.AreEqual(frame1.ID, "TALB");
-            Assert.AreEqual(frame1.Payload.Length, 4);
-            Assert.IsFalse(frame1.Flag.Compression);
-            Assert.IsFalse(frame1.Flag.Encryption);
-            Assert.IsFalse(frame1.Flag.FileAlterPreservation);
-            Assert.IsFalse(frame1.Flag.GroupingIdentify);
-            Assert.IsFalse(frame1.Flag.ReadOnly);
-            Assert.IsFalse(frame1.Flag.TagAlterPreservation);
+            Assert.AreEqual(frame1.Id, "TALB");
+            Assert.AreEqual(frame1.Payload.Count, 4);
+            Assert.IsFalse(frame1.Options.Compression);
+            Assert.IsFalse(frame1.Options.Encryption);
+            Assert.IsFalse(frame1.Options.FileAlterPreservation);
+            Assert.IsFalse(frame1.Options.GroupingIdentify);
+            Assert.IsFalse(frame1.Options.ReadOnly);
+            Assert.IsFalse(frame1.Options.TagAlterPreservation);
             // frame 2
-            Assert.AreEqual(frame2.ID, "TIT2");
-            Assert.AreEqual(frame2.Payload.Length, 4);
-            Assert.IsTrue(frame2.Flag.Compression);
-            Assert.IsTrue(frame2.Flag.Encryption);
-            Assert.IsTrue(frame2.Flag.FileAlterPreservation);
-            Assert.IsTrue(frame2.Flag.GroupingIdentify);
-            Assert.IsTrue(frame2.Flag.ReadOnly);
-            Assert.IsTrue(frame2.Flag.TagAlterPreservation);
+            Assert.AreEqual(frame2.Id, "TIT2");
+            Assert.AreEqual(frame2.Payload.Count, 4);
+            Assert.IsTrue(frame2.Options.Compression);
+            Assert.IsTrue(frame2.Options.Encryption);
+            Assert.IsTrue(frame2.Options.FileAlterPreservation);
+            Assert.IsTrue(frame2.Options.GroupingIdentify);
+            Assert.IsTrue(frame2.Options.ReadOnly);
+            Assert.IsTrue(frame2.Options.TagAlterPreservation);
         }
 
         [Test]
@@ -165,9 +165,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.GroupingIdentify);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.GroupingIdentify);
         }
 
         [Test]
@@ -195,9 +195,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.GroupingIdentify);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.GroupingIdentify);
         }
 
         [Test]
@@ -219,9 +219,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.GroupingIdentify);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.GroupingIdentify);
         }
 
         [Test]
@@ -242,9 +242,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.ReadOnly);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.ReadOnly);
         }
 
         [Test]
@@ -265,9 +265,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
             var frame = m_TagInfo.Frames[0];
-            Assert.AreEqual(frame.ID, "1234");
-            Assert.AreEqual(frame.Payload.Length, 11);
-            Assert.IsTrue(frame.Flag.TagAlterPreservation);
+            Assert.AreEqual(frame.Id, "1234");
+            Assert.AreEqual(frame.Payload.Count, 11);
+            Assert.IsTrue(frame.Options.TagAlterPreservation);
         }
     }
 }

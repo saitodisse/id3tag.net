@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
     /// <summary>
     /// This frame is intended for URL links concerning the audiofile in a similar way to 
@@ -26,23 +28,25 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// </summary>
         /// <param name="id">the frame ID.</param>
         /// <param name="url">the url.</param>
-        public UrlLinkFrame(string id, string url)
+		[SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "1#", Justification = "URL validation rules do not apply.")]
+		public UrlLinkFrame(string id, string url)
         {
-            Descriptor.ID = id;
-            URL = url;
+            Descriptor.Id = id;
+            Url = url;
         }
 
         /// <summary>
         /// The URL.
         /// </summary>
-        public string URL { get; set; }
+		[SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "URL validation rules do not apply.")]
+		public string Url { get; set; }
 
         /// <summary>
         /// The frame Type.
         /// </summary>
         public override FrameType Type
         {
-            get { return FrameType.URLLink; }
+            get { return FrameType.UrlLink; }
         }
 
 		/// <summary>
@@ -52,16 +56,16 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>the RawFrame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag = Descriptor.GetFlags();
+            var flag = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
 			{
-				writer.WriteString(URL, Encoding.ASCII);
+				writer.WriteString(Url, Encoding.ASCII);
 				payload = writer.ToArray();
 			}
 
-            return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+            return RawFrame.CreateFrame(Descriptor.Id, flag, payload, version);
         }
 
 		/// <summary>
@@ -75,7 +79,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
 			using (var reader = new FrameDataReader(rawFrame.Payload))
 			{
-				URL = reader.ReadVariableString(Encoding.ASCII);
+				Url = reader.ReadVariableString(Encoding.ASCII);
 			}
         }
 
@@ -85,7 +89,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("URL : URL = {0}", URL);
+			return String.Format(CultureInfo.InvariantCulture, "URL : URL = {0}", Url);
         }
     }
 }

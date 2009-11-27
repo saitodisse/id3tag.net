@@ -1,17 +1,34 @@
-﻿namespace ID3Tag.LowLevel
+﻿using System.Collections.Generic;
+
+namespace Id3Tag.LowLevel
 {
+	/// <summary>
+	/// Contains version 2.3 specifics of <see cref="RawFrame"/>
+	/// </summary>
     public sealed class RawFrameV3 : RawFrame
     {
-        public RawFrameV3(string id, byte[] flags, byte[] payload)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RawFrameV3"/> class.
+		/// </summary>
+		/// <param name="id">The id.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="payload">The payload.</param>
+		public RawFrameV3(string id, byte[] options, IList<byte> payload)
             : base(id, payload)
         {
-            DecodeFlags(flags);
+            DecodeFlags(options);
         }
 
-        public RawFrameV3(string id, FrameFlags flags, byte[] payload)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RawFrameV3"/> class.
+		/// </summary>
+		/// <param name="id">The id.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="payload">The payload.</param>
+		public RawFrameV3(string id, FrameOptions options, IList<byte> payload)
             : base(id, payload)
         {
-            Flag = flags;
+            Options = options;
         }
 
         internal override byte[] EncodeFlags()
@@ -19,32 +36,32 @@
             var flagsByte = new byte[2];
 
             // Decode the flags
-            if (Flag.TagAlterPreservation)
+            if (Options.TagAlterPreservation)
             {
                 flagsByte[0] |= 0x80;
             }
 
-            if (Flag.FileAlterPreservation)
+            if (Options.FileAlterPreservation)
             {
                 flagsByte[0] |= 0x40;
             }
 
-            if (Flag.ReadOnly)
+            if (Options.ReadOnly)
             {
                 flagsByte[0] |= 0x20;
             }
 
-            if (Flag.Compression)
+            if (Options.Compression)
             {
                 flagsByte[1] |= 0x80;
             }
 
-            if (Flag.Encryption)
+            if (Options.Encryption)
             {
                 flagsByte[1] |= 0x40;
             }
 
-            if (Flag.GroupingIdentify)
+            if (Options.GroupingIdentify)
             {
                 flagsByte[1] |= 0x20;
             }
@@ -54,13 +71,13 @@
 
         private void DecodeFlags(byte[] flags)
         {
-            Flag = new FrameFlags();
-            Flag.TagAlterPreservation = (flags[0] & 0x80) == 0x80;
-            Flag.FileAlterPreservation = (flags[0] & 0x40) == 0x40;
-            Flag.ReadOnly = (flags[0] & 0x20) == 0x20;
-            Flag.Compression = (flags[1] & 0x80) == 0x80;
-            Flag.Encryption = (flags[1] & 0x40) == 0x40;
-            Flag.GroupingIdentify = (flags[1] & 0x20) == 0x20;
+            Options = new FrameOptions();
+            Options.TagAlterPreservation = (flags[0] & 0x80) == 0x80;
+            Options.FileAlterPreservation = (flags[0] & 0x40) == 0x40;
+            Options.ReadOnly = (flags[0] & 0x20) == 0x20;
+            Options.Compression = (flags[1] & 0x80) == 0x80;
+            Options.Encryption = (flags[1] & 0x40) == 0x40;
+            Options.GroupingIdentify = (flags[1] & 0x20) == 0x20;
         }
     }
 }

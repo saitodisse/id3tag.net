@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Lowlevel
+namespace Id3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
     public class ExtendedHeaderV2_4Test : Test
@@ -10,7 +10,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         [SetUp]
         public void Setup()
         {
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion

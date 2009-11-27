@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// This frame contains a picture directly related to the audio file. Image format is the MIME type and 
@@ -32,14 +35,14 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <param name="description">the description</param>
 		/// <param name="picture">the picture type</param>
 		/// <param name="data">the picture bytes</param>
-		public PictureFrame(Encoding encoding, string mimeType, string description, PictureType picture, byte[] data)
+		public PictureFrame(Encoding encoding, string mimeType, string description, PictureType picture, IList<byte> data)
 		{
-		    Descriptor.ID = "APIC";
+		    Descriptor.Id = "APIC";
 			TextEncoding = encoding;
 			MimeType = mimeType;
 			Description = description;
 			PictureCoding = picture;
-			PictureData = data;
+			PictureData = new ReadOnlyCollection<byte>(data);
 		}
 
 		/// <summary>
@@ -60,7 +63,16 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <summary>
 		/// The Picture bytes.
 		/// </summary>
-		public byte[] PictureData { get; set; }
+		public ReadOnlyCollection<byte> PictureData { get; private set; }
+
+		/// <summary>
+		/// Sets the picture from binary data.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public void SetPictureData(IList<byte> value)
+		{
+			PictureData = new ReadOnlyCollection<byte>(value);
+		}
 
 		/// <summary>
 		/// Defines the frame type.
@@ -76,7 +88,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>the raw frame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flag = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -90,7 +102,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				payload = writer.ToArray();
 			}
 
-			return RawFrame.CreateFrame("APIC", flag, payload, version);
+			return RawFrame.CreateFrame("APIC", options, payload, version);
 		}
 
 		/*
@@ -111,9 +123,9 @@ namespace ID3Tag.HighLevel.ID3Frame
 		{
 			ImportRawFrameHeader(rawFrame);
 
-			if (rawFrame.Payload.Length == 0)
+			if (rawFrame.Payload.Count == 0)
 			{
-				throw new ID3TagException("Frame has no payload.");
+				throw new Id3TagException("Frame has no payload.");
 			}
 
 			using (var reader = new FrameDataReader(rawFrame.Payload))
@@ -123,7 +135,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				PictureCoding = (PictureType)reader.ReadByte();
 				TextEncoding = reader.ReadEncoding(encodingByte, codePage);
 				Description = reader.ReadVariableString(TextEncoding);
-				PictureData = reader.ReadBytes();
+				SetPictureData(reader.ReadBytes());
 			}
 		}
 
@@ -135,6 +147,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		{
 			return
 				String.Format(
+					CultureInfo.InvariantCulture, 
 					"Picture : Encoding = {0}, MIME = {1}, Type = {2}, Description = {3}, Data = {4}",
 					TextEncoding.EncodingName,
 					MimeType,

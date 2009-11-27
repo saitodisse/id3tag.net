@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.HighLevel
+﻿namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Represents the ID3V2 major version.

@@ -1,4 +1,7 @@
-﻿namespace ID3Tag.LowLevel
+﻿using System;
+using System.Collections.ObjectModel;
+
+namespace Id3Tag.LowLevel
 {
     /// <summary>
     /// Defines the basic subset of an Extended Header.
@@ -18,7 +21,7 @@
         /// <summary>
         /// The CRC32 bytes
         /// </summary>
-        public byte[] Crc32 { get; internal set; }
+        public ReadOnlyCollection<Byte> Crc32 { get; internal set; }
 
         /// <summary>
         /// Convert the header to ID3V2.3
@@ -32,13 +35,13 @@
 
                 if (extendedHeader == null)
                 {
-                    throw new ID3TagException("Cannot convert header to ID3V2.3");
+                    throw new Id3TagException("Cannot convert header to ID3V2.3");
                 }
 
                 return extendedHeader;
             }
 
-            throw new ID3TagException("Cannot convert header to ID3V2.3");
+            throw new Id3TagException("Cannot convert header to ID3V2.3");
         }
 
         /// <summary>
@@ -53,13 +56,13 @@
 
                 if (extendedHeader == null)
                 {
-                    throw new ID3TagException("Cannot convert header to ID3V2.4");
+                    throw new Id3TagException("Cannot convert header to ID3V2.4");
                 }
 
                 return extendedHeader;
             }
 
-            throw new ID3TagException("Cannot convert header to ID3V2.4");
+            throw new Id3TagException("Cannot convert header to ID3V2.4");
         }
     }
 }

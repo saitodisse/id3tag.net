@@ -1,6 +1,6 @@
-﻿using ID3Tag.LowLevel;
+﻿using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// This class implements the IFrame interface and provides infrastructure code for the
@@ -49,18 +49,18 @@ namespace ID3Tag.HighLevel
 		/// <param name="rawFrame">The raw frame.</param>
         protected void ImportRawFrameHeader(RawFrame rawFrame)
         {
-            Descriptor.ID = rawFrame.ID;
-            Descriptor.TagAlterPreservation = rawFrame.Flag.TagAlterPreservation;
-            Descriptor.FileAlterPreservation = rawFrame.Flag.FileAlterPreservation;
-            Descriptor.ReadOnly = rawFrame.Flag.ReadOnly;
-            Descriptor.Compression = rawFrame.Flag.Compression;
-            Descriptor.Encryption = rawFrame.Flag.Encryption;
-            Descriptor.GroupingIdentify = rawFrame.Flag.GroupingIdentify;
+            Descriptor.Id = rawFrame.Id;
+            Descriptor.TagAlterPreservation = rawFrame.Options.TagAlterPreservation;
+            Descriptor.FileAlterPreservation = rawFrame.Options.FileAlterPreservation;
+            Descriptor.ReadOnly = rawFrame.Options.ReadOnly;
+            Descriptor.Compression = rawFrame.Options.Compression;
+            Descriptor.Encryption = rawFrame.Options.Encryption;
+            Descriptor.GroupingIdentify = rawFrame.Options.GroupingIdentify;
             //
             // ID3v2.4 only
             //
-            Descriptor.Unsynchronisation = rawFrame.Flag.Unsynchronisation;
-            Descriptor.DataLengthIndicator = rawFrame.Flag.DataLengthIndicator;
+            Descriptor.Unsynchronisation = rawFrame.Options.Unsynchronisation;
+            Descriptor.DataLengthIndicator = rawFrame.Options.DataLengthIndicator;
         }
     }
 }

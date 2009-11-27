@@ -8,8 +8,8 @@
     <ProjectGuid>{B1EC1569-3446-4F79-8F03-D4ED7B79B273}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ID3TagUtility</RootNamespace>
-    <AssemblyName>ID3TagUtility</AssemblyName>
+    <RootNamespace>Id3TagUtility</RootNamespace>
+    <AssemblyName>Id3TagUtility</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -117,9 +117,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ID3Tag.Net\ID3Tag.Net.csproj">
+    <ProjectReference Include="..\ID3Tag.Net\Id3Tag.Net.csproj">
       <Project>{8D10F733-7DB0-4CDB-8950-2F124661E4E8}</Project>
-      <Name>ID3Tag.Net</Name>
+      <Name>Id3Tag.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

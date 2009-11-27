@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// This frame is intended for one-string text information concerning the 
@@ -29,7 +30,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <param name="encoding">the text encoding.</param>
 		public UserDefinedTextFrame(string description, string value, Encoding encoding)
 		{
-			Descriptor.ID = "TXXX";
+			Descriptor.Id = "TXXX";
 			Description = description;
 			Value = value;
 			TextEncoding = encoding;
@@ -59,7 +60,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>a raw frame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flag = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -71,7 +72,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				payload = writer.ToArray();
 			}
 			
-			return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+			return RawFrame.CreateFrame(Descriptor.Id, options, payload, version);
 		}
 
 		/// <summary>
@@ -106,6 +107,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override string ToString()
 		{
 			return String.Format(
+				CultureInfo.InvariantCulture, 
 				"User-Defined Text : Encoding = {0}, Description = {1}, Value = {2}",
 				TextEncoding.EncodingName,
 				Description,

@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.HighLevel
+﻿namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Represents the ID3V1 Tag block.
@@ -16,8 +16,8 @@
             Year = string.Empty;
             Comment = string.Empty;
             GenreIdentifier = 0;
-            TrackNr = string.Empty;
-            IsID3V1_1Compliant = false;
+            TrackNumber = string.Empty;
+            IsId3V1Dot1Compliant = false;
         }
 
         /// <summary>
@@ -71,11 +71,11 @@
         /// <summary>
         /// The Track Nr.
         /// </summary>
-        public string TrackNr { get; set; }
+        public string TrackNumber { get; set; }
 
         /// <summary>
         /// True if ID3V1.1 is supported otherwise false
         /// </summary>
-        public bool IsID3V1_1Compliant { get; set; }
+        public bool IsId3V1Dot1Compliant { get; set; }
     }
 }

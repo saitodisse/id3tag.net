@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// This frame is used to contain information from a software producer that its program uses 
@@ -27,11 +30,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// </summary>
 		/// <param name="owner">the owner.</param>
 		/// <param name="data">the data.</param>
-		public PrivateFrame(string owner, byte[] data)
+		public PrivateFrame(string owner, IList<byte> data)
 		{
-			Descriptor.ID = "PRIV";
+			Descriptor.Id = "PRIV";
 			Owner = owner;
-			Data = data;
+			Data = new ReadOnlyCollection<byte>(data);
 		}
 
 		/// <summary>
@@ -42,7 +45,16 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <summary>
 		/// The data.
 		/// </summary>
-		public byte[] Data { get; set; }
+		public ReadOnlyCollection<byte> Data { get; private set; }
+
+		/// <summary>
+		/// Sets the data from binary array.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		public void SetData(IList<byte> data)
+		{
+			Data = new ReadOnlyCollection<byte>(data);
+		}
 
 		/// <summary>
 		/// The frame type.
@@ -58,7 +70,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>the raw frame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flag = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -68,7 +80,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				payload = writer.ToArray();
 			}
 
-			return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+			return RawFrame.CreateFrame(Descriptor.Id, options, payload, version);
 		}
 
 		/// <summary>
@@ -87,7 +99,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 			using (var reader = new FrameDataReader(rawFrame.Payload))
 			{
 				Owner = reader.ReadVariableString(Encoding.GetEncoding(28591));
-				Data = reader.ReadBytes();
+				SetData(reader.ReadBytes());
 			}
 		}
 
@@ -99,7 +111,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// </returns>
 		public override string ToString()
 		{
-			return String.Format("Private : Owner = {0}, Data = {1}", Owner, Utils.BytesToString(Data));
+			return String.Format(CultureInfo.InvariantCulture, "Private : Owner = {0}, Data = {1}", Owner, Utils.BytesToString(Data));
 		}
 	}
 }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
     /// <summary>
     /// This frame indicates if the actual audio stream is encrypted, and by whom. Since standardisation 
@@ -35,13 +38,13 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <param name="previewStart">the preview start.</param>
         /// <param name="previewLength">the preview length.</param>
         /// <param name="encryption">the encryption bytes</param>
-        public AudioEncryptionFrame(string owner, ushort previewStart, ushort previewLength, byte[] encryption)
+        public AudioEncryptionFrame(string owner, ushort previewStart, ushort previewLength, IList<byte> encryption)
         {
-            Descriptor.ID = "AENC";
+            Descriptor.Id = "AENC";
             Owner = owner;
             PreviewStart = previewStart;
             PreviewLength = previewLength;
-            Encryption = encryption;
+            Encryption = new ReadOnlyCollection<byte>(encryption);
         }
 
         /// <summary>
@@ -62,7 +65,16 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <summary>
         /// The encryption data.
         /// </summary>
-        public byte[] Encryption { get; set; }
+		public ReadOnlyCollection<byte> Encryption { get; private set; }
+
+		/// <summary>
+		/// Sets the encryption from bytes data.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public void SetEncryption(IList<byte> value)
+		{
+			Encryption = new ReadOnlyCollection<byte>(value);
+		}
 
         /// <summary>
         /// The frame type.
@@ -86,7 +98,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag = Descriptor.GetFlags();
+            var flag = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -115,7 +127,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				Owner = reader.ReadVariableString(Encoding.GetEncoding(28591));
 				PreviewStart = reader.ReadUInt16();
 				PreviewLength = reader.ReadUInt16();
-				Encryption = reader.ReadBytes();
+				SetEncryption(reader.ReadBytes());
 			}
         }
 
@@ -127,6 +139,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         {
         	return
         		String.Format(
+					CultureInfo.InvariantCulture, 
         			"Audio Encryption : Owner = {0}, Preview Start = {1}, Preview Length = {2}, EncryptionInfo = {3}",
         			Owner,
         			PreviewStart,

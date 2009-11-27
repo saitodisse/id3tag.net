@@ -1,9 +1,9 @@
 ﻿using System;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class UniqueFileIdentifierTest : Test
@@ -14,7 +14,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -23,7 +23,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void ConstructorTest1()
         {
             var frame = new UniqueFileIdentifierFrame();
-            Assert.AreEqual(frame.Descriptor.ID, "UFID");
+            Assert.AreEqual(frame.Descriptor.Id, "UFID");
             Assert.IsNotNull(frame.Identifier);
             Assert.IsEmpty(frame.Owner);
             Assert.AreEqual(frame.Type, FrameType.UniqueFileIdentifier);
@@ -34,7 +34,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var bytes = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14};
             var frame = new UniqueFileIdentifierFrame("owner", bytes);
-            Assert.AreEqual(frame.Descriptor.ID, "UFID");
+            Assert.AreEqual(frame.Descriptor.Id, "UFID");
             Assert.AreEqual(frame.Owner, "owner");
             Assert.IsTrue(ComparePayload(frame.Identifier, bytes));
             Assert.AreEqual(frame.Type, FrameType.UniqueFileIdentifier);
@@ -48,7 +48,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = new UniqueFileIdentifierFrame(owner, identifier);
 
             var rawFrame = frame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "UFID");
+            Assert.AreEqual(rawFrame.Id, "UFID");
 
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x31, 0x32, 0x33, 0x34, 0x00, 0x10, 0x11, 0x12};
@@ -64,7 +64,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var frame = new UniqueFileIdentifierFrame(owner, identifier);
 
             var rawFrame = frame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "UFID");
+            Assert.AreEqual(rawFrame.Id, "UFID");
 
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x10, 0x11, 0x12};
@@ -88,9 +88,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var frame = tagContainer[0];
-            var ufid = FrameUtils.ConvertToUniqueIdentifierFrame(frame);
+            var ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
 
-            Assert.AreEqual(ufid.Descriptor.ID, "UFID");
+            Assert.AreEqual(ufid.Descriptor.Id, "UFID");
             Assert.AreEqual(ufid.Owner, "1234");
 
             var refBytes = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14};
@@ -113,9 +113,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var frame = tagContainer[0];
-            var ufid = FrameUtils.ConvertToUniqueIdentifierFrame(frame);
+            var ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
 
-            Assert.AreEqual(ufid.Descriptor.ID, "UFID");
+            Assert.AreEqual(ufid.Descriptor.Id, "UFID");
             Assert.AreEqual(ufid.Owner, "");
 
             var refBytes = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14};
@@ -138,9 +138,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var frame = tagContainer[0];
-            var ufid = FrameUtils.ConvertToUniqueIdentifierFrame(frame);
+            var ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
 
-            Assert.AreEqual(ufid.Descriptor.ID, "UFID");
+            Assert.AreEqual(ufid.Descriptor.Id, "UFID");
             Assert.AreEqual(ufid.Owner, "1234");
 
             var refBytes = new byte[0];

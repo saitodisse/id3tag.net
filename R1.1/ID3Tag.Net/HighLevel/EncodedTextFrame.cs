@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
 	/// <summary>
 	/// Base class for all frames that contain encoded text

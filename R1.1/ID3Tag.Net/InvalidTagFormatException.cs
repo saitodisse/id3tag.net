@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ID3Tag
+namespace Id3Tag
 {
 	/// <summary>
 	/// This exception is thrown if the tag format is invalid.
 	/// </summary>
 	[Serializable]
-	public class InvalidTagFormatException : ID3TagException
+	public class InvalidTagFormatException : Id3TagException
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InvalidTagFormatException"/> class.

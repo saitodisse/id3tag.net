@@ -1,7 +1,7 @@
-﻿using ID3Tag.HighLevel;
-using ID3Tag.LowLevel;
+﻿using Id3Tag.HighLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag
+namespace Id3Tag
 {
     /// <summary>
     /// Factory for the ID3 tag controller.
@@ -12,7 +12,7 @@ namespace ID3Tag
         /// Creates a new I/O controller.
         /// </summary>
         /// <returns>a new I/O controller.</returns>
-        public static IIoController CreateIoController()
+        public static IIOController CreateIOController()
         {
             return new IoController();
         }
@@ -53,10 +53,19 @@ namespace ID3Tag
                     container = new TagContainerV4();
                     break;
                 default:
-                    throw new ID3TagException("Invalid tag version!");
+                    throw new Id3TagException("Invalid tag version!");
             }
 
             return container;
         }
+
+		/// <summary>
+		/// Creates new instance of <see cref="Id3TagManager"/>.
+		/// </summary>
+		/// <returns>New instance of new instance of <see cref="Id3TagManager"/>.</returns>
+		public static Id3TagManager CreateId3TagManager()
+		{
+			return new Id3TagManager();
+		}
     }
 }

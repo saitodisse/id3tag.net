@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
 using System.Windows;
-using ID3Tag.HighLevel;
+using Id3Tag.HighLevel;
 using Microsoft.Win32;
 
-namespace ID3TagUtility
+namespace Id3TagUtility
 {
     /// <summary>
     /// Interaction logic for TagDataDialog.xaml

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class UnsynchronisedLycricsFrameTest : Test
@@ -17,7 +17,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -26,7 +26,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void CreateTest1()
         {
             var frame = new UnsynchronisedLyricFrame();
-            Assert.AreEqual(frame.Descriptor.ID,"USLT");
+            Assert.AreEqual(frame.Descriptor.Id,"USLT");
             Assert.AreEqual(frame.Language,"ENG");
             Assert.AreEqual(frame.ContentDescriptor,"");
             Assert.AreEqual(frame.Lyrics,"");
@@ -42,7 +42,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             const string language = "language";
 
             var frame = new UnsynchronisedLyricFrame(language, descriptor, lyrics, Encoding.ASCII);
-            Assert.AreEqual(frame.Descriptor.ID, "USLT");
+            Assert.AreEqual(frame.Descriptor.Id, "USLT");
             Assert.AreEqual(frame.Language, language);
             Assert.AreEqual(frame.ContentDescriptor, descriptor);
             Assert.AreEqual(frame.Lyrics, lyrics);
@@ -66,9 +66,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var uslt = FrameUtils.ConvertToUnsynchronisedLycricsFrame(tagContainer[0]);
+            var uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
 
-            Assert.AreEqual(uslt.Descriptor.ID, "USLT");
+            Assert.AreEqual(uslt.Descriptor.Id, "USLT");
             Assert.AreEqual(uslt.Language, "ABC");
             Assert.AreEqual(uslt.ContentDescriptor, "DEF");
             Assert.AreEqual(uslt.Lyrics, "");
@@ -90,9 +90,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var uslt = FrameUtils.ConvertToUnsynchronisedLycricsFrame(tagContainer[0]);
+            var uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
 
-            Assert.AreEqual(uslt.Descriptor.ID, "USLT");
+            Assert.AreEqual(uslt.Descriptor.Id, "USLT");
             Assert.AreEqual(uslt.Language, "ABC");
             Assert.AreEqual(uslt.ContentDescriptor, "");
             Assert.AreEqual(uslt.Lyrics, "DEF");
@@ -115,9 +115,9 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var uslt = FrameUtils.ConvertToUnsynchronisedLycricsFrame(tagContainer[0]);
+            var uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
 
-            Assert.AreEqual(uslt.Descriptor.ID, "USLT");
+            Assert.AreEqual(uslt.Descriptor.Id, "USLT");
             Assert.AreEqual(uslt.Language,"ABC");
             Assert.AreEqual(uslt.ContentDescriptor,"DEF");
             Assert.AreEqual(uslt.Lyrics,"GHI");
@@ -125,7 +125,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var rawFrame = uslt.Convert(TagVersion.Id3V23);
 
 
-            Assert.AreEqual(rawFrame.ID,"USLT");
+            Assert.AreEqual(rawFrame.Id,"USLT");
             ComparePayload(rawFrame.Payload, frames);
         }
 

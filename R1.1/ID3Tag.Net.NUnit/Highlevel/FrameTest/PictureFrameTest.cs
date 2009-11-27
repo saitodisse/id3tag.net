@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class PictureFrameTest : Test
@@ -14,7 +14,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
+            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, 1201);
@@ -175,7 +175,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
+            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding, Encoding.Unicode);
@@ -205,7 +205,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
+            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.Default.CodePage);
@@ -236,7 +236,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
+            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
@@ -266,7 +266,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtils.ConvertToPictureFrame(tagContainer[0]);
+            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.UTF8.CodePage);

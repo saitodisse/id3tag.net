@@ -5,12 +5,13 @@
       <Word>crc</Word>
       <Word>popularimeter</Word>
       <Word>unsynchronisation</Word>
+      <Word>unsynchronised</Word>
+      <Word>coloured</Word>
     </Recognized>
   </Words>
   <Acronyms>
     <CasingExceptions>
-      <Acronym>CRC</Acronym>
-      <Acronym>ID</Acronym>
+      <!-->Acronym></Acronym-->
     </CasingExceptions>
   </Acronyms>
 </Dictionary>

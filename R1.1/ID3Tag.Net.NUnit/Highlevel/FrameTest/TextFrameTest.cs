@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class TextFrameTest : Test
@@ -14,7 +14,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -24,7 +24,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var textFrame = new TextFrame("TALB", "ABCD", Encoding.Unicode);
 
-            Assert.AreEqual(textFrame.Descriptor.ID, "TALB");
+            Assert.AreEqual(textFrame.Descriptor.Id, "TALB");
             Assert.AreEqual(textFrame.Content, "ABCD");
             Assert.AreEqual(textFrame.TextEncoding, Encoding.Unicode);
         }
@@ -36,14 +36,14 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                 {
                                     TextEncoding = Encoding.Default,
                                     Content = "ABCD",
-                                    Descriptor = {ID = "TALB"}
+                                    Descriptor = {Id = "TALB"}
                                 };
 
             var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "TALB");
+            Assert.AreEqual(rawFrame.Id, "TALB");
             Assert.AreEqual(rawFrame.Payload[0], 0); // ISO_8859 coding
-            Assert.AreEqual(rawFrame.Payload.Length, 5);
+            Assert.AreEqual(rawFrame.Payload.Count, 5);
         }
 
         [Test]
@@ -53,16 +53,16 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                 {
                                     TextEncoding = Encoding.Unicode,
                                     Content = "ABCD",
-                                    Descriptor = {ID = "TALB"}
+                                    Descriptor = {Id = "TALB"}
                                 };
 
             var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "TALB");
+            Assert.AreEqual(rawFrame.Id, "TALB");
             Assert.AreEqual(rawFrame.Payload[0], 1); // UTF 16
             Assert.AreEqual(rawFrame.Payload[1], 0xFF); // BOM 1
             Assert.AreEqual(rawFrame.Payload[2], 0xFE); // BOM 2
-            Assert.AreEqual(rawFrame.Payload.Length, 11);
+            Assert.AreEqual(rawFrame.Payload.Count, 11);
         }
 
         [Test]
@@ -72,12 +72,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                 {
 									TextEncoding = new UnicodeEncoding(true, false),
                                     Content = "ABCD",
-                                    Descriptor = {ID = "TALB"}
+                                    Descriptor = {Id = "TALB"}
                                 };
 
             var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "TALB");
+            Assert.AreEqual(rawFrame.Id, "TALB");
 
             var refBytes = new byte[]
                                {
@@ -94,12 +94,12 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                 {
                                     TextEncoding = new UTF8Encoding(),
                                     Content = "ABCD",
-                                    Descriptor = {ID = "TALB"}
+                                    Descriptor = {Id = "TALB"}
                                 };
 
             var rawFrame = textFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "TALB");
+            Assert.AreEqual(rawFrame.Id, "TALB");
 
             var refBytes = new byte[]
                                {
@@ -134,15 +134,15 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var f1 = tagContainer[0];
             var f2 = tagContainer[1];
-            var text1 = FrameUtils.ConvertToText(f1);
-            var text2 = FrameUtils.ConvertToText(f2);
+            var text1 = FrameUtilities.ConvertToText(f1);
+            var text2 = FrameUtilities.ConvertToText(f2);
 
-            Assert.AreEqual(text1.Descriptor.ID, "TALB");
+            Assert.AreEqual(text1.Descriptor.Id, "TALB");
             Assert.AreEqual(text1.Type, FrameType.Text);
             Assert.AreEqual(text1.TextEncoding, Encoding.Default);
             Assert.AreEqual(text1.Content, "ABCD");
 
-            Assert.AreEqual(text2.Descriptor.ID, "TIT2");
+            Assert.AreEqual(text2.Descriptor.Id, "TIT2");
             Assert.AreEqual(text2.Type, FrameType.Text);
             Assert.AreEqual(text2.TextEncoding, Encoding.Default);
             Assert.AreEqual(text2.Content, "EFGH");
@@ -174,15 +174,15 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var f1 = tagContainer[0];
             var f2 = tagContainer[1];
-            var text1 = FrameUtils.ConvertToText(f1);
-            var text2 = FrameUtils.ConvertToText(f2);
+            var text1 = FrameUtilities.ConvertToText(f1);
+            var text2 = FrameUtilities.ConvertToText(f2);
 
-            Assert.AreEqual(text1.Descriptor.ID, "TALB");
+            Assert.AreEqual(text1.Descriptor.Id, "TALB");
             Assert.AreEqual(text1.Type, FrameType.Text);
             Assert.AreEqual(text1.TextEncoding, Encoding.Unicode);
             Assert.AreEqual(text1.Content, "ABCD");
 
-            Assert.AreEqual(text2.Descriptor.ID, "TIT2");
+            Assert.AreEqual(text2.Descriptor.Id, "TIT2");
             Assert.AreEqual(text2.Type, FrameType.Text);
             Assert.AreEqual(text2.TextEncoding, Encoding.Unicode);
             Assert.AreEqual(text2.Content, "EFGH");
@@ -208,7 +208,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var textFrame = FrameUtils.ConvertToText(tagContainer[0]);
+            var textFrame = FrameUtilities.ConvertToText(tagContainer[0]);
             Assert.AreEqual(textFrame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(textFrame.Content, "test.mp3");
         }
@@ -233,7 +233,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var textFrame = FrameUtils.ConvertToText(tagContainer[0]);
+            var textFrame = FrameUtilities.ConvertToText(tagContainer[0]);
 			Assert.AreEqual(textFrame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
             Assert.AreEqual(textFrame.Content, "test.mp3");
         }
@@ -258,7 +258,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var textFrame = FrameUtils.ConvertToText(tagContainer[0]);
+            var textFrame = FrameUtilities.ConvertToText(tagContainer[0]);
             Assert.AreEqual(textFrame.TextEncoding, Encoding.Unicode);
             Assert.AreEqual(textFrame.Content, "test.mp3");
         }
@@ -282,7 +282,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var textFrame = FrameUtils.ConvertToText(tagContainer[0]);
+            var textFrame = FrameUtilities.ConvertToText(tagContainer[0]);
             Assert.AreEqual(textFrame.TextEncoding.CodePage, Encoding.UTF8.CodePage);
             Assert.AreEqual(textFrame.Content, "test.mp3");
         }

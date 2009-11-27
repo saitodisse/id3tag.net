@@ -1,21 +1,21 @@
 ﻿using System;
 using System.IO;
-using ID3Tag.HighLevel;
-using ID3Tag.LowLevel;
+using Id3Tag.HighLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag
+namespace Id3Tag
 {
 	/// <summary>
 	/// Provides simple interface to ID3 Tag V1 and V2 functionality
 	/// </summary>
-	public static class Id3TagManager
+	public class Id3TagManager : IId3TagManager
 	{
 		/// <summary>
 		/// Reads ID3 v1 tag from the the specified file path.
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>ID3 v1 Tag</returns>
-		public static Id3V1Tag ReadV1Tag(string path)
+		public Id3V1Tag ReadV1Tag(string path)
 		{
 			return ReadV1Tag(path, 0);
 		}
@@ -26,7 +26,7 @@ namespace ID3Tag
 		/// <param name="path">The path.</param>
 		/// <param name="codePage">Code page of the tag text.</param>
 		/// <returns>ID3 v1 Tag</returns>
-		public static Id3V1Tag ReadV1Tag(string path, int codePage)
+		public Id3V1Tag ReadV1Tag(string path, int codePage)
 		{
 			#region Params Check
 
@@ -52,7 +52,7 @@ namespace ID3Tag
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <param name="tag">The tag.</param>
-		public static void WriteV1Tag(string path, Id3V1Tag tag)
+		public void WriteV1Tag(string path, Id3V1Tag tag)
 		{
 			WriteV1Tag(path, tag, 0);
 		}
@@ -63,7 +63,7 @@ namespace ID3Tag
 		/// <param name="path">The path.</param>
 		/// <param name="tag">The tag.</param>
 		/// <param name="codePage">The code page.</param>
-		public static void WriteV1Tag(string path, Id3V1Tag tag, int codePage)
+		public void WriteV1Tag(string path, Id3V1Tag tag, int codePage)
 		{
 			#region Params Check
 
@@ -94,7 +94,7 @@ namespace ID3Tag
 		/// <param name="sourcePath">The path.</param>
 		/// <param name="targetPath">The target sourcePath.</param>
 		/// <param name="tag">The tag.</param>
-		public static void WriteV1Tag(string sourcePath, string targetPath, Id3V1Tag tag)
+		public void WriteV1Tag(string sourcePath, string targetPath, Id3V1Tag tag)
 		{
 			WriteV1Tag(sourcePath, targetPath, tag, 0);
 		}
@@ -106,7 +106,7 @@ namespace ID3Tag
 		/// <param name="targetPath">The target sourcePath.</param>
 		/// <param name="tag">The tag.</param>
 		/// <param name="codePage">The code page for tag text.</param>
-		public static void WriteV1Tag(string sourcePath, string targetPath, Id3V1Tag tag, int codePage)
+		public void WriteV1Tag(string sourcePath, string targetPath, Id3V1Tag tag, int codePage)
 		{
 			#region Params Check
 
@@ -146,7 +146,7 @@ namespace ID3Tag
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>ID3 v2 Tag</returns>
-		public static TagContainer ReadV2Tag(string path)
+		public TagContainer ReadV2Tag(string path)
 		{
 			return ReadV2Tag(path, 0);
 		}
@@ -157,7 +157,7 @@ namespace ID3Tag
 		/// <param name="path">The path.</param>
 		/// <param name="codePage">The default code page for non-unicode encoded text.</param>
 		/// <returns>ID3 v2 Tag</returns>
-		public static TagContainer ReadV2Tag(string path, int codePage)
+		public TagContainer ReadV2Tag(string path, int codePage)
 		{
 			#region Params Check
 
@@ -174,7 +174,7 @@ namespace ID3Tag
 			#endregion
 
 			var file = new FileInfo(path);
-			IIoController ioController = Id3TagFactory.CreateIoController();
+			IIOController ioController = Id3TagFactory.CreateIOController();
 			ITagController tagController = Id3TagFactory.CreateTagController();
 			Id3TagInfo tagData = ioController.Read(file);
 			return tagController.Decode(tagData, codePage);
@@ -185,7 +185,7 @@ namespace ID3Tag
 		/// </summary>
 		/// <param name="path">The file path.</param>
 		/// <param name="tag">The tag to save.</param>
-		public static void WriteV2Tag(string path, TagContainer tag)
+		public void WriteV2Tag(string path, TagContainer tag)
 		{
 			#region Params Check
 
@@ -206,7 +206,7 @@ namespace ID3Tag
 
 			#endregion
 
-			IIoController controller = Id3TagFactory.CreateIoController();
+			IIOController controller = Id3TagFactory.CreateIOController();
 			WriteTag(path, (input, output) => controller.Write(tag, input, output));
 		}
 
@@ -216,7 +216,7 @@ namespace ID3Tag
 		/// <param name="sourcePath">The source file path.</param>
 		/// <param name="targetPath">The target file path.</param>
 		/// <param name="tag">The tag data.</param>
-		public static void WriteV2Tag(string sourcePath, string targetPath, TagContainer tag)
+		public void WriteV2Tag(string sourcePath, string targetPath, TagContainer tag)
 		{
 			#region Params Check
 
@@ -247,7 +247,7 @@ namespace ID3Tag
 
 			#endregion
 
-			IIoController controller = Id3TagFactory.CreateIoController();
+			IIOController controller = Id3TagFactory.CreateIOController();
 			WriteTag(sourcePath, targetPath, (input, output) => controller.Write(tag, input, output));
 		}
 
@@ -257,7 +257,7 @@ namespace ID3Tag
 		/// </summary>
 		/// <param name="path">The path to file.</param>
 		/// <returns>Status of the tags in the file</returns>
-		public static FileState GetTagsStatus(string path)
+		public FileState GetTagsStatus(string path)
 		{
 			#region Params Check
 
@@ -274,7 +274,7 @@ namespace ID3Tag
 			#endregion
 
 			var file = new FileInfo(path);
-			IIoController ioController = Id3TagFactory.CreateIoController();
+			IIOController ioController = Id3TagFactory.CreateIOController();
 			return ioController.DetermineTagStatus(file);
 		}
 

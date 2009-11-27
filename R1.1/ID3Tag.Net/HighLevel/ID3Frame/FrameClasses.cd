@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ID3Tag.HighLevel.Frame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Frame" Collapsed="true">
     <Position X="5.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAIIAAAAAAAAAACAAAAQAAAAAAAAA=</HashCode>
@@ -8,112 +8,112 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ID3Tag.HighLevel.EncodedTextFrame">
+  <Class Name="Id3Tag.HighLevel.EncodedTextFrame">
     <Position X="1.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>HighLevel\EncodedTextFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.AudioEncryptionFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.AudioEncryptionFrame" Collapsed="true">
     <Position X="4.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAEIIAAAAAAAAgAAAAAAQAAAAAAAwA=</HashCode>
       <FileName>HighLevel\ID3Frame\AudioEncryptionFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.UserDefinedURLLinkFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.UserDefinedURLLinkFrame" Collapsed="true">
     <Position X="2.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAAEIIAAAAAAACAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\UserDefinedURLLinkFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.CommentFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.CommentFrame" Collapsed="true">
     <Position X="0.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAEIIAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\CommentFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.MusicCdIdentifierFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.MusicCdIdentifierFrame" Collapsed="true">
     <Position X="4.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAEIIAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\MusicCdIdentifierFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.PictureFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.PictureFrame" Collapsed="true">
     <Position X="2.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAgAAQUIIAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\PictureFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.PlayCounterFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.PlayCounterFrame" Collapsed="true">
     <Position X="4.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEIIAAAAAAAQAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\PlayCounterFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.PopularimeterFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.PopularimeterFrame" Collapsed="true">
     <Position X="6.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEIIAAAAAAAAAAAAEgAQAAAAAEAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\PopularimeterFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.PrivateFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.PrivateFrame" Collapsed="true">
     <Position X="6.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAEIIAAAAAAAAAAABAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\PrivateFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.TextFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.TextFrame" Collapsed="true">
     <Position X="0.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAEIIAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\TextFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.UniqueFileIdentifierFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.UniqueFileIdentifierFrame" Collapsed="true">
     <Position X="6.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAEIIAAAAAAAAAAAAAAAQAAQAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\UniqueFileIdentifierFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.UnknownFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.UnknownFrame" Collapsed="true">
     <Position X="6.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAEIIAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\UnknownFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.UrlLinkFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.UrlLinkFrame" Collapsed="true">
     <Position X="6.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEIIAAAAAAACAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\URLLinkFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.UserDefinedTextFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.UserDefinedTextFrame" Collapsed="true">
     <Position X="4.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAoAAAEIIAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\UserDefinedTextFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ID3Tag.HighLevel.ID3Frame.UnsynchronisedLyricFrame" Collapsed="true">
+  <Class Name="Id3Tag.HighLevel.Id3Frame.UnsynchronisedLyricFrame" Collapsed="true">
     <Position X="0.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAEIIAAAAAAAAAAAAAAIQAAAAAAAAA=</HashCode>
       <FileName>HighLevel\ID3Frame\UnsynchronisedLyricFrame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="ID3Tag.HighLevel.IFrame">
+  <Interface Name="Id3Tag.HighLevel.IFrame">
     <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAIIAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>

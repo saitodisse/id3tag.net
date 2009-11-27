@@ -1,17 +1,34 @@
-﻿namespace ID3Tag.LowLevel
+﻿using System.Collections.Generic;
+
+namespace Id3Tag.LowLevel
 {
+	/// <summary>
+	/// Contains Version 2.4 specifics of <see cref="RawFrame"/>
+	/// </summary>
     public sealed class RawFrameV4 : RawFrame
     {
-        public RawFrameV4(string id, byte[] flags, byte[] payload)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RawFrameV4"/> class.
+		/// </summary>
+		/// <param name="id">The id.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="payload">The payload.</param>
+		public RawFrameV4(string id, byte[] options, IList<byte> payload)
             : base(id, payload)
         {
-            DecodeFlags(flags);
+            DecodeFlags(options);
         }
 
-        public RawFrameV4(string id, FrameFlags flags, byte[] payload)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RawFrameV4"/> class.
+		/// </summary>
+		/// <param name="id">The id.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="payload">The payload.</param>
+		public RawFrameV4(string id, FrameOptions options, IList<byte> payload)
             : base(id, payload)
         {
-            Flag = flags;
+            Options = options;
         }
 
         /*
@@ -28,27 +45,27 @@
          *      p = Data Length Indicator
          */
 
-        private void DecodeFlags(byte[] flags)
+        private void DecodeFlags(byte[] options)
         {
-            Flag = new FrameFlags();
+            Options = new FrameOptions();
 
-            var isTagAlterPreservation = (flags[0] & 0x40) == 0x40;
-            var isFileAlterPreservation = (flags[0] & 0x20) == 0x20;
-            var isReadOnly = (flags[0] & 0x10) == 0x10;
-            var isGroupingIdentity = (flags[1] & 0x40) == 0x40;
-            var isCompression = (flags[1] & 0x08) == 0x08;
-            var isEncryption = (flags[1] & 0x04) == 0x04;
-            var isUnsync = (flags[1] & 0x02) == 0x02;
-            var isDataLengthIndicator = (flags[1] & 0x01) == 0x01;
+            var isTagAlterPreservation = (options[0] & 0x40) == 0x40;
+            var isFileAlterPreservation = (options[0] & 0x20) == 0x20;
+            var isReadOnly = (options[0] & 0x10) == 0x10;
+            var isGroupingIdentity = (options[1] & 0x40) == 0x40;
+            var isCompression = (options[1] & 0x08) == 0x08;
+            var isEncryption = (options[1] & 0x04) == 0x04;
+            var isUnsync = (options[1] & 0x02) == 0x02;
+            var isDataLengthIndicator = (options[1] & 0x01) == 0x01;
 
-            Flag.TagAlterPreservation = isTagAlterPreservation;
-            Flag.FileAlterPreservation = isFileAlterPreservation;
-            Flag.ReadOnly = isReadOnly;
-            Flag.GroupingIdentify = isGroupingIdentity;
-            Flag.Compression = isCompression;
-            Flag.Encryption = isEncryption;
-            Flag.Unsynchronisation = isUnsync;
-            Flag.DataLengthIndicator = isDataLengthIndicator;
+            Options.TagAlterPreservation = isTagAlterPreservation;
+            Options.FileAlterPreservation = isFileAlterPreservation;
+            Options.ReadOnly = isReadOnly;
+            Options.GroupingIdentify = isGroupingIdentity;
+            Options.Compression = isCompression;
+            Options.Encryption = isEncryption;
+            Options.Unsynchronisation = isUnsync;
+            Options.DataLengthIndicator = isDataLengthIndicator;
         }
 
         internal override byte[] EncodeFlags()
@@ -56,42 +73,42 @@
             var flagsByte = new byte[2];
 
             // Decode the flags
-            if (Flag.TagAlterPreservation)
+            if (Options.TagAlterPreservation)
             {
                 flagsByte[0] |= 0x40;
             }
 
-            if (Flag.FileAlterPreservation)
+            if (Options.FileAlterPreservation)
             {
                 flagsByte[0] |= 0x20;
             }
 
-            if (Flag.ReadOnly)
+            if (Options.ReadOnly)
             {
                 flagsByte[0] |= 0x10;
             }
 
-            if (Flag.GroupingIdentify)
+            if (Options.GroupingIdentify)
             {
                 flagsByte[1] |= 0x40;
             }
 
-            if (Flag.Compression)
+            if (Options.Compression)
             {
                 flagsByte[1] |= 0x08;
             }
 
-            if (Flag.Encryption)
+            if (Options.Encryption)
             {
                 flagsByte[1] |= 0x04;
             }
 
-            if (Flag.Unsynchronisation)
+            if (Options.Unsynchronisation)
             {
                 flagsByte[1] |= 0x02;
             }
 
-            if (Flag.DataLengthIndicator)
+            if (Options.DataLengthIndicator)
             {
                 flagsByte[1] |= 0x01;
             }

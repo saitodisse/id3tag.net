@@ -1,4 +1,4 @@
-﻿<Window x:Class="ID3TagUtility.ID3V1Dialog"
+﻿<Window x:Class="Id3TagUtility.ID3V1Dialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="ID3V1Dialog" Height="469" Width="582">

@@ -1,43 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
 	/// <summary>
 	/// Reads data from the Raw Frame Payload.
 	/// </summary>
 	public sealed class FrameDataReader : IDisposable
 	{
+		private const int _SIZE = 64;
 		private readonly MemoryStream _stream;
 		private byte[] _bytesBuffer;
 		private char[] _charsBuffer;
-		private const int _SIZE = 64;
-	    private bool _isDisposed;
+		private bool _isDisposed;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FrameDataReader"/> class.
 		/// </summary>
 		/// <param name="payload">The payload.</param>
-		public FrameDataReader(byte[] payload)
+		public FrameDataReader(ICollection<byte> payload)
 		{
 			if (payload == null)
 			{
 				throw new ArgumentNullException("payload");
 			}
 
-			_stream = new MemoryStream(payload, 0, payload.Length, false, true);
+			var payload2 = new byte[payload.Count];
+			payload.CopyTo(payload2, 0);
+
+			_stream = new MemoryStream(payload2, 0, payload2.Length, false, true);
 		}
 
 		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="FrameDataReader"/> is reclaimed by garbage collection.
+		/// Gets or sets the position in the stream.
 		/// </summary>
-        ~FrameDataReader()
-        {
-            Dispose(false);
-        }
+		/// <value>The position.</value>
+		public long Position
+		{
+			get { return _stream.Position; }
+			set { _stream.Position = value; }
+		}
+
+		#region Private Methods
+
+		/// <summary>
+		/// Reads UTF-16 encoding from the stream.
+		/// </summary>
+		/// <returns>Encoding</returns>
+		private Encoding CreateUnicodeFromBom()
+		{
+			// The standard requires BOM for Unicode (and only for Unicode)
+
+			if (_stream.Length > _stream.Position + 1)
+			{
+				//  Read Byte Order Mask (BOM) for details (http://www.unicode.org/faq/utf_bom.html#BOM)
+				var bom1 = (byte)_stream.ReadByte();
+				var bom2 = (byte)_stream.ReadByte();
+
+				if (bom1 == 0xFE && bom2 == 0xFF)
+				{
+					return new UnicodeEncoding(true, true);
+				}
+
+				if (bom1 == 0xFF && bom2 == 0xFE)
+				{
+					return new UnicodeEncoding(false, true);
+				}
+			}
+
+			throw new InvalidId3StructureException("Unocode encoded text does not start with the byte order mark (BOM).");
+		}
+
+		/// <summary>
+		/// Laizy init buffer of bytes
+		/// </summary>
+		/// <returns></returns>
+		private byte[] GetBytesBuffer()
+		{
+			if (_bytesBuffer == null)
+			{
+				_bytesBuffer = new byte[_SIZE];
+			}
+			return _bytesBuffer;
+		}
+
+		/// <summary>
+		/// Laizy init buffer of chars
+		/// </summary>
+		private char[] GetCharsBuffer()
+		{
+			if (_charsBuffer == null)
+			{
+				_charsBuffer = new char[_SIZE];
+			}
+			return _charsBuffer;
+		}
+
+		#endregion
 
 		#region IDisposable Members
 
@@ -47,28 +109,37 @@ namespace ID3Tag.HighLevel
 		public void Dispose()
 		{
 			Dispose(true);
-            GC.SuppressFinalize(this);
+			GC.SuppressFinalize(this);
 		}
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        private void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing && _stream != null)
-                {
-                    _stream.Dispose();
-                }
+		#endregion
+
+		/// <summary>
+		/// Releases unmanaged resources and performs other cleanup operations before the
+		/// <see cref="FrameDataReader"/> is reclaimed by garbage collection.
+		/// </summary>
+		~FrameDataReader()
+		{
+			Dispose(false);
+		}
+
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		private void Dispose(bool disposing)
+		{
+			if (!_isDisposed)
+			{
+				if (disposing && _stream != null)
+				{
+					_stream.Dispose();
+				}
 
 				_bytesBuffer = null;
 				_charsBuffer = null;
 				_isDisposed = true;
 			}
-        }
-
-		#endregion
+		}
 
 		/// <summary>
 		/// Discovers and reads encoding type from the stream using current stream index as starting position of the encoded text.
@@ -79,11 +150,11 @@ namespace ID3Tag.HighLevel
 		/// <param name="encodingTypeValue">The encoding byte.</param>
 		/// <param name="codePage">The default code page for ASCI encodings.</param>
 		/// <returns></returns>
-		public Encoding ReadEncoding(byte encodingTypeValue, int codePage)
+		public Encoding ReadEncoding(int encodingTypeValue, int codePage)
 		{
 			if (!Enum.IsDefined(typeof(TextEncodingType), encodingTypeValue))
 			{
-				throw new ID3TagException("Text encoding type value of {0:x2} is not supported.");
+				throw new Id3TagException("Text encoding type value of {0:x2} is not supported.");
 			}
 
 			switch ((TextEncodingType)encodingTypeValue)
@@ -135,24 +206,24 @@ namespace ID3Tag.HighLevel
 			// Encoding.GetString() method.
 
 			var text = new List<char>(_SIZE);
-			var bytes = GetBytesBuffer();
-			var chars = GetCharsBuffer();
-			var decoder = encoding.GetDecoder();
-			var encoder = encoding.GetEncoder();
-			var isTerminated = false;
+			byte[] bytes = GetBytesBuffer();
+			char[] chars = GetCharsBuffer();
+			Decoder decoder = encoding.GetDecoder();
+			Encoder encoder = encoding.GetEncoder();
+			bool isTerminated = false;
 
 			decoder.Reset();
 			while (!isTerminated)
 			{
-				var byteCount = _stream.Read(bytes, 0, _SIZE);
-				var charCount = encoding.GetChars(bytes, 0, byteCount, chars, 0);
+				int byteCount = _stream.Read(bytes, 0, _SIZE);
+				int charCount = encoding.GetChars(bytes, 0, byteCount, chars, 0);
 
 				for (int i = 0; i < charCount; i++)
 				{
-					var c = chars[i];
+					char c = chars[i];
 					if (c == Char.MinValue)
 					{
-						var offset = encoder.GetByteCount(chars, 0, i + 1, true) - byteCount;
+						int offset = encoder.GetByteCount(chars, 0, i + 1, true) - byteCount;
 						_stream.Seek(offset, SeekOrigin.Current);
 						isTerminated = true;
 						break;
@@ -180,7 +251,7 @@ namespace ID3Tag.HighLevel
 
 			if (value < 0)
 			{
-				throw new ID3TagException(
+				throw new Id3TagException(
 					"An error has occured during data reading from the Raw Frame data. End of stream has been reached.");
 			}
 
@@ -198,8 +269,9 @@ namespace ID3Tag.HighLevel
 			int len = _stream.Read(bytes, 0, count);
 			if (len != count)
 			{
-				throw new ID3TagException(
+				throw new Id3TagException(
 					String.Format(
+						CultureInfo.InvariantCulture,
 						"An error has occured during data reading from the Raw Frame data. Expected number of bytes: {0}. Actual number of bytes: {1}.",
 						count,
 						len));
@@ -259,72 +331,5 @@ namespace ID3Tag.HighLevel
 			Array.Reverse(bytes, 0, len);
 			return BitConverter.ToUInt64(bytes, 0);
 		}
-
-		/// <summary>
-		/// Gets or sets the position in the stream.
-		/// </summary>
-		/// <value>The position.</value>
-		public long Position
-		{
-			get { return _stream.Position; }
-			set { _stream.Position = value; }
-		}
-
-		#region Private Methods
-
-		/// <summary>
-		/// Reads UTF-16 encoding from the stream.
-		/// </summary>
-		/// <returns>Encoding</returns>
-		private Encoding CreateUnicodeFromBom()
-		{
-			// The standard requires BOM for Unicode (and only for Unicode)
-
-			if (_stream.Length > _stream.Position + 1)
-			{
-				//  Read Byte Order Mask (BOM) for details (http://www.unicode.org/faq/utf_bom.html#BOM)
-				var bom1 = (byte)_stream.ReadByte();
-				var bom2 = (byte)_stream.ReadByte();
-
-				if (bom1 == 0xFE && bom2 == 0xFF)
-				{
-					return new UnicodeEncoding(true, true);
-				}
-
-				if (bom1 == 0xFF && bom2 == 0xFE) 
-				{
-					return new UnicodeEncoding(false, true);
-				}
-			}
-
-			throw new InvalidID3StructureException("Unocode encoded text does not start with the byte order mark (BOM).");
-		}
-
-		/// <summary>
-		/// Laizy init buffer of bytes
-		/// </summary>
-		/// <returns></returns>
-		private byte[] GetBytesBuffer()
-		{
-			if (_bytesBuffer == null)
-			{
-				_bytesBuffer = new byte[_SIZE];
-			}
-			return _bytesBuffer;
-		}
-
-		/// <summary>
-		/// Laizy init buffer of chars
-		/// </summary>
-		private char[] GetCharsBuffer()
-		{
-			if (_charsBuffer == null)
-			{
-				_charsBuffer = new char[_SIZE];
-			}
-			return _charsBuffer;
-		}
-
-		#endregion
 	}
 }

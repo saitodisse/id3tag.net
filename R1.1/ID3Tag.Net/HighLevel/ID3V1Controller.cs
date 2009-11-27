@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
 	internal class Id3V1Controller : IId3V1Controller
 	{
@@ -19,12 +19,12 @@ namespace ID3Tag.HighLevel
 		{
 			if (!inputStream.CanSeek)
 			{
-				throw new ID3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+				throw new Id3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
 			}
 
 			if (inputStream.Length < 128)
 			{
-				throw new ID3IOException("Cannot read ID3v1 tag because the stream is too short");
+				throw new Id3IOException("Cannot read ID3v1 tag because the stream is too short");
 			}
 
 			//
@@ -37,7 +37,7 @@ namespace ID3Tag.HighLevel
 			bool isValidTag = CheckID(tagBytes);
 			if (!isValidTag)
 			{
-				throw new ID3HeaderNotFoundException("TAG header not found");
+				throw new Id3HeaderNotFoundException("TAG header not found");
 			}
 
 			Id3V1Tag v1Tag = ExtractTag(tagBytes, codePage);
@@ -85,13 +85,13 @@ namespace ID3Tag.HighLevel
 				fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
 				info = Read(fs, codePage);
 			}
-			catch (ID3TagException)
+			catch (Id3TagException)
 			{
 				throw;
 			}
 			catch (Exception ex)
 			{
-				throw new ID3TagException("Unknown Exception during reading.", ex);
+				throw new Id3TagException("Unknown Exception during reading.", ex);
 			}
 			finally
 			{
@@ -144,12 +144,12 @@ namespace ID3Tag.HighLevel
 
 			if (!input.CanSeek)
 			{
-				throw new ID3TagException("Cannot write ID3V1 tag because the source does not support seek.");
+				throw new Id3TagException("Cannot write ID3V1 tag because the source does not support seek.");
 			}
 
 			if (!output.CanWrite)
 			{
-				throw new ID3TagException("Cannot write ID3V1 tag because the output does not support writing.");
+				throw new Id3TagException("Cannot write ID3V1 tag because the output does not support writing.");
 			}
 
 			try
@@ -170,7 +170,7 @@ namespace ID3Tag.HighLevel
 			}
 			catch (Exception ex)
 			{
-				throw new ID3IOException("Cannot write ID3v1 tag", ex);
+				throw new Id3IOException("Cannot write ID3v1 tag", ex);
 			}
 		}
 
@@ -188,10 +188,10 @@ namespace ID3Tag.HighLevel
 				input.Seek(-128, SeekOrigin.End);
 				input.Read(tagBytes, 0, 128);
 
-				bool id3TagFound = CheckID(tagBytes);
-				if (id3TagFound)
+				bool Id3TagFound = CheckID(tagBytes);
+				if (Id3TagFound)
 				{
-					// Ignore the ID3Tag from the source
+					// Ignore the Id3Tag from the source
 					audioBytesCount = input.Length - 128;
 				}
 				else
@@ -227,12 +227,12 @@ namespace ID3Tag.HighLevel
 			Array.Copy(year, 0, tagBytes, 93, 4);
 
 			byte[] commentBytes;
-			if (tag.IsID3V1_1Compliant)
+			if (tag.IsId3V1Dot1Compliant)
 			{
 				commentBytes = GetField(tag.Comment, 28, codePage);
 				Array.Copy(commentBytes, 0, tagBytes, 97, 28);
 
-				string trackNr = tag.TrackNr;
+				string trackNr = tag.TrackNumber;
 				tagBytes[125] = 0x00;
 				tagBytes[126] = Convert.ToByte(trackNr, CultureInfo.InvariantCulture);
 			}
@@ -336,8 +336,8 @@ namespace ID3Tag.HighLevel
 			            		Year = year,
 			            		Comment = comment,
 			            		GenreIdentifier = genreByte,
-			            		IsID3V1_1Compliant = id3v1_1Support,
-			            		TrackNr = trackNr
+			            		IsId3V1Dot1Compliant = id3v1_1Support,
+			            		TrackNumber = trackNr
 			            	};
 
 			return id3v1;

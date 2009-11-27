@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
-using ID3Tag;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 
-namespace ID3TagUtility
+namespace Id3TagUtility
 {
     public class Id3TagController
     {
@@ -21,19 +22,19 @@ namespace ID3TagUtility
 
 			try
             {
-				tag = Id3TagManager.ReadV2Tag(filename);
+				tag = Id3TagFactory.CreateId3TagManager().ReadV2Tag(filename);
             }
-            catch (ID3IOException ioException)
+            catch (Id3IOException ioException)
             {
                 MessageBox.Show("IO Exception caught : " + ioException.Message);
             }
-            catch (ID3HeaderNotFoundException headerNotFoundException)
+            catch (Id3HeaderNotFoundException headerNotFoundException)
             {
                 MessageBox.Show("ID3 header not found : " + headerNotFoundException.Message);
             }
-            catch (ID3TagException tagException)
+            catch (Id3TagException tagException)
             {
-                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+                MessageBox.Show("Id3TagException caught : " + tagException.Message);
             }
             catch (Exception ex)
             {
@@ -54,15 +55,15 @@ namespace ID3TagUtility
         {
             try
             {
-				Id3TagManager.WriteV2Tag(sourceFile, targetFile, tagContainer);
+				Id3TagFactory.CreateId3TagManager().WriteV2Tag(sourceFile, targetFile, tagContainer);
             }
-            catch (ID3IOException ioException)
+            catch (Id3IOException ioException)
             {
                 MessageBox.Show("IO Exception caught : " + ioException.Message);
             }
-            catch (ID3TagException tagException)
+            catch (Id3TagException tagException)
             {
-                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+                MessageBox.Show("Id3TagException caught : " + tagException.Message);
             }
             catch (Exception ex)
             {
@@ -76,15 +77,15 @@ namespace ID3TagUtility
 
 			try
             {
-            	state = Id3TagManager.GetTagsStatus(filename);
+				state = Id3TagFactory.CreateId3TagManager().GetTagsStatus(filename);
             }
-            catch (ID3IOException ioException)
+            catch (Id3IOException ioException)
             {
                 MessageBox.Show("IO Exception caught : " + ioException.Message);
             }
-            catch (ID3TagException tagException)
+            catch (Id3TagException tagException)
             {
-                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+                MessageBox.Show("Id3TagException caught : " + tagException.Message);
             }
             catch (Exception ex)
             {
@@ -104,7 +105,7 @@ namespace ID3TagUtility
                 //
                 var extendedHeaderV23 = container.GetId3V23Descriptor();
                 // Configure the tag header.
-                extendedHeaderV23.SetHeaderFlags(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
+                extendedHeaderV23.SetHeaderOptions(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
 
                 if (data.ExtendedHeader)
                 {
@@ -118,7 +119,7 @@ namespace ID3TagUtility
                 //  Configure the ID3v2.4 header
                 //
                 var extendedHeaderV24 = container.GetId3V24Descriptor();
-                extendedHeaderV24.SetHeaderFlags(false, false, false, true);
+                extendedHeaderV24.SetHeaderOptions(false, false, false, true);
             }
 
             // OK. Build the frames.
@@ -166,15 +167,15 @@ namespace ID3TagUtility
 
             try
             {
-            	container = Id3TagManager.ReadV1Tag(filename, codePage);
+				container = Id3TagFactory.CreateId3TagManager().ReadV1Tag(filename, codePage);
             }
-            catch (ID3IOException ioException)
+            catch (Id3IOException ioException)
             {
                 MessageBox.Show("IO Exception caught : " + ioException.Message);
             }
-            catch (ID3TagException tagException)
+            catch (Id3TagException tagException)
             {
-                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+                MessageBox.Show("Id3TagException caught : " + tagException.Message);
             }
             catch (Exception ex)
             {
@@ -188,15 +189,15 @@ namespace ID3TagUtility
         {
             try
             {
-				Id3TagManager.WriteV1Tag(sourceFile, targetFile, tag);
+				Id3TagFactory.CreateId3TagManager().WriteV1Tag(sourceFile, targetFile, tag);
             }
-            catch (ID3IOException ioException)
+            catch (Id3IOException ioException)
             {
                 MessageBox.Show("IO Exception caught : " + ioException.Message);
             }
-            catch (ID3TagException tagException)
+            catch (Id3TagException tagException)
             {
-                MessageBox.Show("ID3TagException caught : " + tagException.Message);
+                MessageBox.Show("Id3TagException caught : " + tagException.Message);
             }
             catch (Exception ex)
             {
@@ -204,7 +205,7 @@ namespace ID3TagUtility
             }
         }
 
-        private static void WritePictureFrame(ID3V2TagData data, TagContainer container)
+        private static void WritePictureFrame(ID3V2TagData data, ICollection<IFrame> container)
         {
             using (FileStream stream = File.Open(data.PictureFile, FileMode.Open))
             {
@@ -229,7 +230,7 @@ namespace ID3TagUtility
             }
         }
 
-        private static void WriteUnsychronisedLyrics(string descriptor, string lyrics, TagContainer container)
+        private static void WriteUnsychronisedLyrics(string descriptor, string lyrics, ICollection<IFrame> container)
         {
             var uslt = new UnsynchronisedLyricFrame("ENG",descriptor,lyrics,Encoding.ASCII);
 

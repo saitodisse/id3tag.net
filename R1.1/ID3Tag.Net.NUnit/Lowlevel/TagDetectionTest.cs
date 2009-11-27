@@ -2,7 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Lowlevel
+namespace Id3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
     public class TagDetectionTest
@@ -19,7 +19,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         }
 
         [Test]
-        [ExpectedException(typeof (ID3IOException))]
+        [ExpectedException(typeof (Id3IOException))]
         public void DetectNothing()
         {
             var audioStream = new List<byte>();
@@ -30,7 +30,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
             using (var stream = new MemoryStream(bytes))
             {
-                var ioController = Id3TagFactory.CreateIoController();
+                var ioController = Id3TagFactory.CreateIOController();
                 ioController.DetermineTagStatus(stream);
             }
         }
@@ -49,7 +49,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
             using (var stream = new MemoryStream(bytes))
             {
-                var ioController = Id3TagFactory.CreateIoController();
+                var ioController = Id3TagFactory.CreateIOController();
                 var states = ioController.DetermineTagStatus(stream);
 
                 Assert.IsTrue(states.Id3V1TagFound);
@@ -72,7 +72,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
             using (var stream = new MemoryStream(bytes))
             {
-                var ioController = Id3TagFactory.CreateIoController();
+                var ioController = Id3TagFactory.CreateIOController();
                 var states = ioController.DetermineTagStatus(stream);
 
                 Assert.IsTrue(states.Id3V1TagFound);
@@ -93,7 +93,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
             using (var stream = new MemoryStream(bytes))
             {
-                var ioController = Id3TagFactory.CreateIoController();
+                var ioController = Id3TagFactory.CreateIOController();
                 var states = ioController.DetermineTagStatus(stream);
 
                 Assert.IsFalse(states.Id3V1TagFound);

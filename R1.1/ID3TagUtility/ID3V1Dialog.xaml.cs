@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using ID3Tag.HighLevel;
+using Id3Tag.HighLevel;
 using Microsoft.Win32;
 
-namespace ID3TagUtility
+namespace Id3TagUtility
 {
     /// <summary>
     /// Interaction logic for ID3V1Dialog.xaml
@@ -22,20 +22,20 @@ namespace ID3TagUtility
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            var genres = Genre.Instance.GetGenres();
+            var genres = Genre.Instance.AllGenres;
             comboBoxGenre.ItemsSource = genres;
             comboBoxGenre.SelectedIndex = 0;
         }
 
         private void buttonApply_Click(object sender, RoutedEventArgs e)
         {
-            TagData.IsID3V1_1Compliant = true;
+            TagData.IsId3V1Dot1Compliant = true;
             TagData.Title = textBoxTitle.Text;
             TagData.Album = textBoxAlbum.Text;
             TagData.Artist = textBoxArtist.Text;
             TagData.Comment = textBoxComment.Text;
             TagData.Year = textBoxYear.Text;
-            TagData.TrackNr = textBoxTrackNr.Text;
+            TagData.TrackNumber = textBoxTrackNr.Text;
             TagData.GenreIdentifier = comboBoxGenre.SelectedIndex;
 
             SourceFile = textBoxSourceFile.Text;

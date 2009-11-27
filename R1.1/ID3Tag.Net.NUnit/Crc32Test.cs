@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.Net.NUnit
+﻿namespace Id3Tag.Net.NUnit
 {
     /*
      *  Debugging...

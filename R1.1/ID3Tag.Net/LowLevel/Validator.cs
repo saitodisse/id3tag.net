@@ -1,6 +1,6 @@
-﻿using ID3Tag.HighLevel;
+﻿using Id3Tag.HighLevel;
 
-namespace ID3Tag.LowLevel
+namespace Id3Tag.LowLevel
 {
     internal abstract class Validator
     {

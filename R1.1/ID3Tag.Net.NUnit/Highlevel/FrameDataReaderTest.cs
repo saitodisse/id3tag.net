@@ -1,8 +1,8 @@
 using System.Text;
-using ID3Tag.HighLevel;
+using Id3Tag.HighLevel;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel
+namespace Id3Tag.Net.NUnit.Highlevel
 {
 	[TestFixture]
 	public class FrameDataReaderTest

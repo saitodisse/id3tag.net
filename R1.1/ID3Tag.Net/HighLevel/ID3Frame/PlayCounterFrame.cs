@@ -1,7 +1,8 @@
 ﻿using System;
-using ID3Tag.LowLevel;
+using System.Globalization;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
     /// <summary>
     /// This is simply a counter of the number of times a file has been played. The value is 
@@ -26,7 +27,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <param name="playCounter">the play counter</param>
         public PlayCounterFrame(ulong playCounter)
         {
-            Descriptor.ID = "PCNT";
+            Descriptor.Id = "PCNT";
             Counter = playCounter;
         }
 
@@ -49,7 +50,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag = Descriptor.GetFlags();
+            var flag = Descriptor.Options;
 
         	byte[] payload;
 
@@ -59,7 +60,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				payload = writer.ToArray();
 			}
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+            var rawFrame = RawFrame.CreateFrame(Descriptor.Id, flag, payload, version);
             return rawFrame;
         }
 
@@ -90,7 +91,7 @@ namespace ID3Tag.HighLevel.ID3Frame
         /// <returns>the ToString representation</returns>
         public override string ToString()
         {
-            return String.Format("Play Counter : Value = {0}", Counter);
+			return String.Format(CultureInfo.InvariantCulture, "Play Counter : Value = {0}", Counter);
         }
     }
 }

@@ -1,12 +1,12 @@
 using System.IO;
-using ID3Tag.HighLevel;
+using Id3Tag.HighLevel;
 
-namespace ID3Tag.LowLevel
+namespace Id3Tag.LowLevel
 {
     /// <summary>
     /// Represents a low level tag controller.
     /// </summary>
-    public interface IIoController
+    public interface IIOController
     {
         /// <summary>
         /// Read the tag from file.
@@ -31,17 +31,17 @@ namespace ID3Tag.LowLevel
         void Write(TagContainer tagContainer, Stream input, Stream output);
 
         /// <summary>
-        /// Determine the ID3Tag status.
+        /// Determine the Id3Tag status.
         /// </summary>
         /// <param name="audioStream">the audio stream.</param>
-        /// <returns>the ID3Tag state</returns>
+        /// <returns>the Id3Tag state</returns>
         FileState DetermineTagStatus(Stream audioStream);
 
         /// <summary>
-        /// Determine the ID3Tag status.
+        /// Determine the Id3Tag status.
         /// </summary>
         /// <param name="file">the file.</param>
-        /// <returns>the ID3Tag state</returns>
+        /// <returns>the Id3Tag state</returns>
         FileState DetermineTagStatus(FileInfo file);
     }
 }

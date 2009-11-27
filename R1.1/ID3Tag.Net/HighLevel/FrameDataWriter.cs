@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
-//using ID3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel
+//using Id3Tag.LowLevel;
+
+namespace Id3Tag.HighLevel
 {
 	/// <summary>
 	/// Writes data for the Raw Frame Payload
@@ -30,15 +33,6 @@ namespace ID3Tag.HighLevel
 			_stream = new MemoryStream(128);
 		}
 
-		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="FrameDataWriter"/> is reclaimed by garbage collection.
-		/// </summary>
-		~FrameDataWriter()
-		{
-			Dispose(false);
-		}
-
 		#region IDisposable Members
 
 		/// <summary>
@@ -48,6 +42,17 @@ namespace ID3Tag.HighLevel
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Releases unmanaged resources and performs other cleanup operations before the
+		/// <see cref="FrameDataWriter"/> is reclaimed by garbage collection.
+		/// </summary>
+		~FrameDataWriter()
+		{
+			Dispose(false);
 		}
 
 		/// <summary>
@@ -66,9 +71,6 @@ namespace ID3Tag.HighLevel
 			}
 		}
 
-
-		#endregion
-
 		/// <summary>
 		/// Writes the encoded text preamble (byte order mark [BOM]) to the stream.
 		/// Preamble is required for unicode strings only. BE Unicode and UTF8 should not have it.
@@ -83,7 +85,7 @@ namespace ID3Tag.HighLevel
 
 				if (bom.Length == 0)
 				{
-					throw new ID3TagException("Unicode encoding must provide byte order mark (BOM).");
+					throw new Id3TagException("Unicode encoding must provide byte order mark (BOM).");
 				}
 
 				_stream.Write(bom, 0, bom.Length);
@@ -206,6 +208,18 @@ namespace ID3Tag.HighLevel
 		}
 
 		/// <summary>
+		/// Writes the value to the stream.
+		/// </summary>
+		/// <param name="value">The data to write.</param>
+		public void WriteBytes(IList<byte> value)
+		{
+			foreach (var b in value)
+			{
+				_stream.WriteByte(b);
+			}
+		}
+
+		/// <summary>
 		/// Returns the stream contents as byte array, regardless of the current position.
 		/// </summary>
 		public byte[] ToArray()
@@ -245,7 +259,8 @@ namespace ID3Tag.HighLevel
 						}
 						else
 						{
-							throw new NotSupportedException(String.Format("{0} encoding is not supported.", encoding.EncodingName));
+							throw new NotSupportedException(
+								String.Format(CultureInfo.InvariantCulture, "{0} encoding is not supported.", encoding.EncodingName));
 						}
 						break;
 				}

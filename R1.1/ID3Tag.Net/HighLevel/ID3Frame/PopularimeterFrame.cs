@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// The purpose of this frame is to specify how good an audio file is. 
@@ -33,8 +34,8 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <param name="counter">The playcounter</param>
 		public PopularimeterFrame(string mail, byte rating, ulong counter)
 		{
-			Descriptor.ID = "POPM";
-			eMail = mail;
+			Descriptor.Id = "POPM";
+			Email = mail;
 			Rating = rating;
 			PlayCounter = counter;
 		}
@@ -53,7 +54,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <summary>
 		/// Identifies the source of the rating.
 		/// </summary>
-		public string eMail { get; set; }
+		public string Email { get; set; }
 
 		/// <summary>
 		/// Specifies how often the file has been played by the source  of the rating.
@@ -74,18 +75,18 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>a RawFrame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flag = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
 			{
-				writer.WriteString(eMail, Encoding.ASCII, true);
+				writer.WriteString(Email, Encoding.ASCII, true);
 				writer.WriteByte(Rating);
 				writer.WriteUInt64(PlayCounter);
 				payload = writer.ToArray();
 			}
 
-			RawFrame frame = RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+			RawFrame frame = RawFrame.CreateFrame(Descriptor.Id, options, payload, version);
 			return frame;
 		}
 
@@ -106,7 +107,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 
 			using (var reader = new FrameDataReader(rawFrame.Payload))
 			{
-				eMail = reader.ReadVariableString(Encoding.ASCII);
+				Email = reader.ReadVariableString(Encoding.ASCII);
 				Rating = reader.ReadByte();
 				PlayCounter = reader.ReadUInt64();
 			}
@@ -118,9 +119,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>the string.</returns>
 		public override string ToString()
 		{
-			return String.Format("Popularimeter : ID = {0}, Email = {1},  Rating = {2}, Playcounter = {3}",
-				Descriptor.ID,
-				eMail,
+			return String.Format(
+				CultureInfo.InvariantCulture, 
+				"Popularimeter : ID = {0}, Email = {1},  Rating = {2}, Playcounter = {3}",
+				Descriptor.Id,
+				Email,
 				Rating,
 				PlayCounter);
 		}

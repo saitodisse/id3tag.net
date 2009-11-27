@@ -1,8 +1,8 @@
-﻿using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+﻿using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class PopularitymeterFrameTest : Test
@@ -13,7 +13,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -25,7 +25,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "POPM");
+            Assert.AreEqual(rawFrame.Id, "POPM");
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0x00, 0x00, 0xFF};
 
@@ -39,7 +39,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "POPM");
+            Assert.AreEqual(rawFrame.Id, "POPM");
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0x00, 0xFF, 0xFF};
 
@@ -53,7 +53,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "POPM");
+            Assert.AreEqual(rawFrame.Id, "POPM");
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0xFF, 0xFF, 0xFF};
 
@@ -67,7 +67,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "POPM");
+            Assert.AreEqual(rawFrame.Id, "POPM");
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x7F, 0xFF, 0xFF, 0xFF};
 
@@ -79,8 +79,8 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame();
 
-            Assert.AreEqual(popFrame.Descriptor.ID, "POPM");
-            Assert.IsNotNull(popFrame.eMail);
+            Assert.AreEqual(popFrame.Descriptor.Id, "POPM");
+            Assert.IsNotNull(popFrame.Email);
             Assert.AreEqual(popFrame.PlayCounter, 0);
             Assert.AreEqual(popFrame.Rating, 0);
         }
@@ -94,8 +94,8 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var popFrame = new PopularimeterFrame(mail, rating, playCounter);
 
-            Assert.AreEqual(popFrame.Descriptor.ID, "POPM");
-            Assert.AreEqual(popFrame.eMail, mail);
+            Assert.AreEqual(popFrame.Descriptor.Id, "POPM");
+            Assert.AreEqual(popFrame.Email, mail);
             Assert.AreEqual(popFrame.PlayCounter, playCounter);
             Assert.AreEqual(popFrame.Rating, rating);
         }
@@ -107,7 +107,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
 
             var rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "POPM");
+            Assert.AreEqual(rawFrame.Id, "POPM");
             var payload = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x0F, 0x7F, 0xFF, 0xFF, 0xFF};
 
@@ -129,10 +129,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var pop = FrameUtils.ConvertToPopularimeterFrame(tagContainer[0]);
+            var pop = FrameUtilities.ConvertToPopularimeterFrame(tagContainer[0]);
 
-            Assert.AreEqual(pop.Descriptor.ID, "POPM");
-            Assert.AreEqual(pop.eMail, "ABC");
+            Assert.AreEqual(pop.Descriptor.Id, "POPM");
+            Assert.AreEqual(pop.Email, "ABC");
             Assert.AreEqual(pop.Rating, 15);
             Assert.AreEqual(pop.PlayCounter, 0xFF);
         }
@@ -152,10 +152,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var pop = FrameUtils.ConvertToPopularimeterFrame(tagContainer[0]);
+            var pop = FrameUtilities.ConvertToPopularimeterFrame(tagContainer[0]);
 
-            Assert.AreEqual(pop.Descriptor.ID, "POPM");
-            Assert.AreEqual(pop.eMail, "");
+            Assert.AreEqual(pop.Descriptor.Id, "POPM");
+            Assert.AreEqual(pop.Email, "");
             Assert.AreEqual(pop.Rating, 15);
             Assert.AreEqual(pop.PlayCounter, 0xFF);
         }

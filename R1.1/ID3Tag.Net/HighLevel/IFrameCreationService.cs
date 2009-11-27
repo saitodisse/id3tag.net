@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.HighLevel
+﻿namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Encapsulates the ID3 Frames

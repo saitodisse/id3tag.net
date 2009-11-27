@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     internal class FrameContainer : IFrameCreationService
     {
@@ -52,11 +52,11 @@ namespace ID3Tag.HighLevel
                     //  Frame implementation found!
                     //
                     var frame = CreateFrame(type);
-                    var id = frame.Descriptor.ID;
+                    var id = frame.Descriptor.Id;
 
                     if (!m_Frames.ContainsKey(id))
                     {
-                        m_Frames.Add(frame.Descriptor.ID, type);
+                        m_Frames.Add(frame.Descriptor.Id, type);
                     }
                 }
             }
@@ -73,7 +73,7 @@ namespace ID3Tag.HighLevel
             }
             catch (Exception ex)
             {
-                throw new ID3TagException("Cannot create frame : " + ex.Message, ex);
+                throw new Id3TagException("Cannot create frame : " + ex.Message, ex);
             }
 
             return frame;

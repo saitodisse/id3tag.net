@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ID3Tag.HighLevel;
+using Id3Tag.HighLevel;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel
+namespace Id3Tag.Net.NUnit.Highlevel
 {
     [TestFixture]
     public class Id3V1Test
     {
-        private static void CheckID3Tag(string value, char refChar, int count)
+        private static void CheckId3Tag(string value, char refChar, int count)
         {
             var refValue = new StringBuilder();
             for (int i = 0; i < count; i++)
@@ -18,23 +18,23 @@ namespace ID3Tag.Net.NUnit.Highlevel
                 refValue.Append(refChar);
             }
 
-            Assert.AreEqual(value, refValue.ToString(), "CheckID3Tag operation failed : " + value);
+            Assert.AreEqual(value, refValue.ToString(), "CheckId3Tag operation failed : " + value);
         }
 
-        private static void CheckID3Tag(Id3V1Tag tag1, Id3V1Tag tag2)
+        private static void CheckId3Tag(Id3V1Tag tag1, Id3V1Tag tag2)
         {
             Assert.AreEqual(tag1.Album, tag2.Album);
             Assert.AreEqual(tag1.Artist, tag2.Artist);
             Assert.AreEqual(tag1.Comment, tag2.Comment);
             Assert.AreEqual(tag1.Genre, tag2.Genre);
             Assert.AreEqual(tag1.GenreIdentifier, tag2.GenreIdentifier);
-            Assert.AreEqual(tag1.IsID3V1_1Compliant, tag2.IsID3V1_1Compliant);
+            Assert.AreEqual(tag1.IsId3V1Dot1Compliant, tag2.IsId3V1Dot1Compliant);
             Assert.AreEqual(tag1.Title, tag2.Title);
             Assert.AreEqual(tag1.Year, tag2.Year);
 
-            if (tag1.IsID3V1_1Compliant)
+            if (tag1.IsId3V1Dot1Compliant)
             {
-                Assert.AreEqual(tag1.TrackNr, tag2.TrackNr);
+                Assert.AreEqual(tag1.TrackNumber, tag2.TrackNumber);
             }
             else
             {
@@ -66,7 +66,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
             return sb.ToString();
         }
 
-        private static void WriteToStream(byte[] audioData, byte[] output, Id3V1Tag id3Tag)
+        private static void WriteToStream(byte[] audioData, byte[] output, Id3V1Tag Id3Tag)
         {
             MemoryStream inputSteam = null;
             MemoryStream outputStream = null;
@@ -76,7 +76,7 @@ namespace ID3Tag.Net.NUnit.Highlevel
                 outputStream = new MemoryStream(output, true);
 
                 var id3Controller = Id3TagFactory.CreateId3V1Controller();
-                id3Controller.Write(id3Tag, inputSteam, outputStream, 0);
+                id3Controller.Write(Id3Tag, inputSteam, outputStream, 0);
             }
             catch (Exception)
             {
@@ -108,8 +108,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
         }
 
         [Test]
-        [ExpectedException(typeof (ID3HeaderNotFoundException))]
-        public void DetectInvalidID3Tag1()
+        [ExpectedException(typeof (Id3HeaderNotFoundException))]
+        public void DetectInvalidId3Tag1()
         {
             var audioStream = new List<byte>();
 
@@ -130,8 +130,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
         }
 
         [Test]
-        [ExpectedException(typeof (ID3HeaderNotFoundException))]
-        public void DetectInvalidID3Tag2()
+        [ExpectedException(typeof (Id3HeaderNotFoundException))]
+        public void DetectInvalidId3Tag2()
         {
             var audioStream = new List<byte>();
 
@@ -153,8 +153,8 @@ namespace ID3Tag.Net.NUnit.Highlevel
         }
 
         [Test]
-        [ExpectedException(typeof (ID3HeaderNotFoundException))]
-        public void DetectInvalidID3Tag3()
+        [ExpectedException(typeof (Id3HeaderNotFoundException))]
+        public void DetectInvalidId3Tag3()
         {
             var audioStream = new List<byte>();
 
@@ -175,10 +175,10 @@ namespace ID3Tag.Net.NUnit.Highlevel
         }
 
         [Test]
-        [ExpectedException(typeof (ID3IOException))]
+        [ExpectedException(typeof (Id3IOException))]
         public void IgnoreTooShortStream()
         {
-            // The ID3Tag contains of 128 Bytes. This is not
+            // The Id3Tag contains of 128 Bytes. This is not
             // a valid tag. ( 127 bytes)
 
             var audioStream = new List<byte>();
@@ -208,14 +208,14 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var bytes = audioStream.ToArray();
 
             var tag = ReadFromStream(bytes);
-            CheckID3Tag(tag.Title, '1', 30);
-            CheckID3Tag(tag.Artist, '2', 30);
-            CheckID3Tag(tag.Album, '3', 30);
-            CheckID3Tag(tag.Year, '4', 4);
-            CheckID3Tag(tag.Comment, '5', 28);
+            CheckId3Tag(tag.Title, '1', 30);
+            CheckId3Tag(tag.Artist, '2', 30);
+            CheckId3Tag(tag.Album, '3', 30);
+            CheckId3Tag(tag.Year, '4', 4);
+            CheckId3Tag(tag.Comment, '5', 28);
 
-            Assert.IsTrue(tag.IsID3V1_1Compliant);
-            Assert.AreEqual(tag.TrackNr, "6");
+            Assert.IsTrue(tag.IsId3V1Dot1Compliant);
+            Assert.AreEqual(tag.TrackNumber, "6");
             Assert.IsNotEmpty(tag.Genre);
         }
 
@@ -237,14 +237,14 @@ namespace ID3Tag.Net.NUnit.Highlevel
 
             var tag = ReadFromStream(bytes);
 
-            CheckID3Tag(tag.Title, '1', 30);
-            CheckID3Tag(tag.Artist, '2', 30);
-            CheckID3Tag(tag.Album, '3', 30);
-            CheckID3Tag(tag.Year, '4', 4);
-            CheckID3Tag(tag.Comment, '5', 30);
+            CheckId3Tag(tag.Title, '1', 30);
+            CheckId3Tag(tag.Artist, '2', 30);
+            CheckId3Tag(tag.Album, '3', 30);
+            CheckId3Tag(tag.Year, '4', 4);
+            CheckId3Tag(tag.Comment, '5', 30);
 
-            Assert.IsFalse(tag.IsID3V1_1Compliant);
-            Assert.IsEmpty(tag.TrackNr);
+            Assert.IsFalse(tag.IsId3V1Dot1Compliant);
+            Assert.IsEmpty(tag.TrackNumber);
             Assert.IsNotEmpty(tag.Genre);
         }
 
@@ -263,18 +263,18 @@ namespace ID3Tag.Net.NUnit.Highlevel
             }
 
             // Create a new tag description.
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = "1",
                                   Artist = "2",
                                   Album = "3",
                                   Year = "4",
                                   Comment = "5",
-                                  IsID3V1_1Compliant = false,
+                                  IsId3V1Dot1Compliant = false,
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
+            WriteToStream(audioData, output, Id3Tag1);
 
             for (byte i = 0; i < 10; i++)
             {
@@ -297,18 +297,18 @@ namespace ID3Tag.Net.NUnit.Highlevel
             }
 
             // Create a new tag description.
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = "1",
                                   Artist = "2",
                                   Album = "3",
                                   Year = "4",
                                   Comment = "5",
-                                  IsID3V1_1Compliant = false,
+                                  IsId3V1Dot1Compliant = false,
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
+            WriteToStream(audioData, output, Id3Tag1);
 
             for (byte i = 0; i < 150; i++)
             {
@@ -322,22 +322,22 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
             var output = new byte[138];
 
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = "1",
                                   Artist = "2",
                                   Album = "3",
                                   Year = "4",
                                   Comment = "5",
-                                  IsID3V1_1Compliant = true,
-                                  TrackNr = "6",
+                                  IsId3V1Dot1Compliant = true,
+                                  TrackNumber = "6",
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
+            WriteToStream(audioData, output, Id3Tag1);
 
-            var id3Tag2 = ReadFromStream(output);
-            CheckID3Tag(id3Tag1, id3Tag2);
+            var Id3Tag2 = ReadFromStream(output);
+            CheckId3Tag(Id3Tag1, Id3Tag2);
         }
 
         [Test]
@@ -347,20 +347,20 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var output = new byte[138];
 
             // Create a byte array...
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = "1",
                                   Artist = "2",
                                   Album = "3",
                                   Year = "4",
                                   Comment = "5",
-                                  IsID3V1_1Compliant = false,
+                                  IsId3V1Dot1Compliant = false,
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
-            var id3Tag2 = ReadFromStream(output);
-            CheckID3Tag(id3Tag1, id3Tag2);
+            WriteToStream(audioData, output, Id3Tag1);
+            var Id3Tag2 = ReadFromStream(output);
+            CheckId3Tag(Id3Tag1, Id3Tag2);
         }
 
         [Test]
@@ -369,22 +369,22 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
             var output = new byte[138];
 
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = CreateFieldText(30, '1'),
                                   Artist = CreateFieldText(30, '2'),
                                   Album = CreateFieldText(30, '3'),
                                   Year = CreateFieldText(4, '4'),
                                   Comment = CreateFieldText(28, '5'),
-                                  IsID3V1_1Compliant = true,
-                                  TrackNr = "6",
+                                  IsId3V1Dot1Compliant = true,
+                                  TrackNumber = "6",
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
+            WriteToStream(audioData, output, Id3Tag1);
 
-            var id3Tag2 = ReadFromStream(output);
-            CheckID3Tag(id3Tag1, id3Tag2);
+            var Id3Tag2 = ReadFromStream(output);
+            CheckId3Tag(Id3Tag1, Id3Tag2);
         }
 
         [Test]
@@ -393,18 +393,18 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
             var output = new byte[138];
 
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = CreateFieldText(31, '1'),
                                   Artist = CreateFieldText(31, '2'),
                                   Album = CreateFieldText(31, '3'),
                                   Year = CreateFieldText(5, '4'),
                                   Comment = CreateFieldText(31, '5'),
-                                  IsID3V1_1Compliant = false,
+                                  IsId3V1Dot1Compliant = false,
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
+            WriteToStream(audioData, output, Id3Tag1);
 
             //
             //  The coding if the fiels is over the limit. The I/O Controller cuts the string.
@@ -416,12 +416,12 @@ namespace ID3Tag.Net.NUnit.Highlevel
                                     Album = CreateFieldText(30, '3'),
                                     Year = CreateFieldText(4, '4'),
                                     Comment = CreateFieldText(30, '5'),
-                                    IsID3V1_1Compliant = false,
+                                    IsId3V1Dot1Compliant = false,
                                     GenreIdentifier = 12
                                 };
 
-            var id3Tag2 = ReadFromStream(output);
-            CheckID3Tag(refId3Tag, id3Tag2);
+            var Id3Tag2 = ReadFromStream(output);
+            CheckId3Tag(refId3Tag, Id3Tag2);
         }
 
         [Test]
@@ -430,19 +430,19 @@ namespace ID3Tag.Net.NUnit.Highlevel
             var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
             var output = new byte[138];
 
-            var id3Tag1 = new Id3V1Tag
+            var Id3Tag1 = new Id3V1Tag
                               {
                                   Title = CreateFieldText(31, '1'),
                                   Artist = CreateFieldText(31, '2'),
                                   Album = CreateFieldText(31, '3'),
                                   Year = CreateFieldText(5, '4'),
                                   Comment = CreateFieldText(29, '5'),
-                                  IsID3V1_1Compliant = true,
-                                  TrackNr = "6",
+                                  IsId3V1Dot1Compliant = true,
+                                  TrackNumber = "6",
                                   GenreIdentifier = 12
                               };
 
-            WriteToStream(audioData, output, id3Tag1);
+            WriteToStream(audioData, output, Id3Tag1);
 
             //
             //  The coding if the fiels is over the limit. The I/O Controller cuts the string.
@@ -454,13 +454,13 @@ namespace ID3Tag.Net.NUnit.Highlevel
                                     Album = CreateFieldText(30, '3'),
                                     Year = CreateFieldText(4, '4'),
                                     Comment = CreateFieldText(28, '5'),
-                                    IsID3V1_1Compliant = true,
-                                    TrackNr = "6",
+                                    IsId3V1Dot1Compliant = true,
+                                    TrackNumber = "6",
                                     GenreIdentifier = 12
                                 };
 
-            var id3Tag2 = ReadFromStream(output);
-            CheckID3Tag(refId3Tag, id3Tag2);
+            var Id3Tag2 = ReadFromStream(output);
+            CheckId3Tag(refId3Tag, Id3Tag2);
         }
     }
 }

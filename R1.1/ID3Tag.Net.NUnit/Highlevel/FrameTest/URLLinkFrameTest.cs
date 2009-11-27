@@ -1,8 +1,8 @@
-﻿using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+﻿using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class URLLinkFrameTest : Test
@@ -13,7 +13,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -23,14 +23,14 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var urlLinkFrame = new UrlLinkFrame
                                    {
-                                       URL = "ABCD",
-                                       Descriptor = {ID = "W123"}
+                                       Url = "ABCD",
+                                       Descriptor = {Id = "W123"}
                                    };
 
             var rawFrame = urlLinkFrame.Convert(TagVersion.Id3V23);
 
-            Assert.AreEqual(rawFrame.ID, "W123");
-            Assert.AreEqual(rawFrame.Payload.Length, 4);
+            Assert.AreEqual(rawFrame.Id, "W123");
+            Assert.AreEqual(rawFrame.Payload.Count, 4);
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x44};
             Assert.IsTrue(ComparePayload(rawFrame.Payload, refBytes));
         }
@@ -40,8 +40,8 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var frame = new UrlLinkFrame("W123", "URL");
 
-            Assert.AreEqual(frame.Descriptor.ID, "W123");
-            Assert.AreEqual(frame.URL, "URL");
+            Assert.AreEqual(frame.Descriptor.Id, "W123");
+            Assert.AreEqual(frame.Url, "URL");
         }
 
         [Test]
@@ -65,10 +65,10 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
-            var text1 = FrameUtils.ConvertToURLLinkFrame(f1);
+            var text1 = FrameUtilities.ConvertToUrlLinkFrame(f1);
 
-            Assert.AreEqual(text1.Descriptor.ID, "W123");
-            Assert.AreEqual(text1.Type, FrameType.URLLink);
+            Assert.AreEqual(text1.Descriptor.Id, "W123");
+            Assert.AreEqual(text1.Type, FrameType.UrlLink);
         }
     }
 }

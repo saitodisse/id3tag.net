@@ -1,8 +1,8 @@
-﻿using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+﻿using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class MusicCDIdentifierTest : Test
@@ -13,7 +13,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -23,24 +23,24 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x44};
 
-            var idFrame = new MusicCdIdentifierFrame();
-            idFrame.TOC = refBytes;
-            idFrame.Descriptor.ID = "MCDI";
+            var idFrame = new MusicCDIdentifierFrame();
+            idFrame.SetToc(refBytes);
+            idFrame.Descriptor.Id = "MCDI";
 
             var rawFrame = idFrame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "MCDI");
+            Assert.AreEqual(rawFrame.Id, "MCDI");
             Assert.IsTrue(ComparePayload(rawFrame.Payload, refBytes));
         }
 
         [Test]
         public void CreateTest()
         {
-            var frame = new MusicCdIdentifierFrame(new byte[] {0xA0, 0xB0});
+            var frame = new MusicCDIdentifierFrame(new byte[] {0xA0, 0xB0});
 
-            Assert.AreEqual(frame.Descriptor.ID, "MCDI");
-            Assert.AreEqual(frame.TOC.Length, 2);
-            Assert.AreEqual(frame.TOC[0], 0xA0);
-            Assert.AreEqual(frame.TOC[1], 0xB0);
+            Assert.AreEqual(frame.Descriptor.Id, "MCDI");
+            Assert.AreEqual(frame.Toc.Count, 2);
+            Assert.AreEqual(frame.Toc[0], 0xA0);
+            Assert.AreEqual(frame.Toc[1], 0xB0);
         }
 
         [Test]
@@ -59,11 +59,11 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             var tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var musicIdFrame = FrameUtils.ConvertToMusicCDIdentifierFrame(tagContainer[0]);
-            Assert.AreEqual(musicIdFrame.Descriptor.ID, "MCDI");
+            var musicIdFrame = FrameUtilities.ConvertToMusicCDIdentifierFrame(tagContainer[0]);
+            Assert.AreEqual(musicIdFrame.Descriptor.Id, "MCDI");
 
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x44};
-            Assert.IsTrue(ComparePayload(musicIdFrame.TOC, refBytes));
+            Assert.IsTrue(ComparePayload(musicIdFrame.Toc, refBytes));
         }
     }
 }

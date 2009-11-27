@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ID3TagUtility
+namespace Id3TagUtility
 {
     /// <summary>
     /// Interaction logic for App.xaml

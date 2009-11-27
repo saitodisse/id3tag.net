@@ -1,4 +1,4 @@
-﻿<Window x:Class="ID3TagUtility.TagDataDialog"
+﻿<Window x:Class="Id3TagUtility.TagDataDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Write new Tag..." Height="569" Width="787">
@@ -24,7 +24,7 @@
                         <ComboBoxItem>ID3v2.3.0</ComboBoxItem>
                         <ComboBoxItem>ID3v2.4.0</ComboBoxItem>
                     </ComboBox>
-                    <Label Height="25" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label8" VerticalAlignment="Top" Width="127">ID3Tag Version :</Label>
+                    <Label Height="25" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label8" VerticalAlignment="Top" Width="127">Id3Tag Version :</Label>
                 </Grid>
             </TabItem>
             <TabItem Header="Text Frames" Name="tabItem1">

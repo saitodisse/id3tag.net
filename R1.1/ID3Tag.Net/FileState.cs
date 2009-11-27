@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Globalization;
 
-namespace ID3Tag
+namespace Id3Tag
 {
     /// <summary>
-    /// Represents the ID3Tag state of a file.
+    /// Represents the Id3Tag state of a file.
     /// </summary>
     public class FileState
     {
@@ -34,7 +35,7 @@ namespace ID3Tag
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("FileState : V1 Tag Found = {0}, V2 Tag Found = {1}", Id3V1TagFound, Id3V2TagFound);
+            return String.Format(CultureInfo.InvariantCulture, "FileState : V1 Tag Found = {0}, V2 Tag Found = {1}", Id3V1TagFound, Id3V2TagFound);
         }
     }
 }

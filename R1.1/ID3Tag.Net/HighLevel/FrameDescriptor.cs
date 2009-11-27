@@ -1,7 +1,8 @@
 ﻿using System;
-using ID3Tag.LowLevel;
+using System.Globalization;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Represents the ID3 Frame header.
@@ -13,7 +14,7 @@ namespace ID3Tag.HighLevel
         /// </summary>
         public FrameDescriptor()
         {
-            ID = "????";
+            Id = "????";
             TagAlterPreservation = false;
             FileAlterPreservation = false;
             ReadOnly = false;
@@ -27,7 +28,7 @@ namespace ID3Tag.HighLevel
         /// <summary>
         /// The frame ID.
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The Unsynchronisation flag ( ID3v2.4 only)
@@ -69,34 +70,37 @@ namespace ID3Tag.HighLevel
         /// </summary>
         public bool GroupingIdentify { get; set; }
 
-        /// <summary>
-        /// Gets the Flags
-        /// </summary>
-        /// <returns>The flags</returns>
-        public FrameFlags GetFlags()
-        {
-            var flags = new FrameFlags
-                            {
-                                Compression = Compression,
-                                DataLengthIndicator = DataLengthIndicator,
-                                Encryption = Encryption,
-                                FileAlterPreservation = FileAlterPreservation,
-                                GroupingIdentify = GroupingIdentify,
-                                ReadOnly = ReadOnly,
-                                TagAlterPreservation = TagAlterPreservation,
-                                Unsynchronisation = Unsynchronisation
-                            };
+    	/// <summary>
+    	/// Gets the Flags
+    	/// </summary>
+    	/// <returns>The flags</returns>
+    	public FrameOptions Options
+    	{
+    		get
+    		{
+    			var flags = new FrameOptions
+    			            	{
+    			            		Compression = Compression,
+    			            		DataLengthIndicator = DataLengthIndicator,
+    			            		Encryption = Encryption,
+    			            		FileAlterPreservation = FileAlterPreservation,
+    			            		GroupingIdentify = GroupingIdentify,
+    			            		ReadOnly = ReadOnly,
+    			            		TagAlterPreservation = TagAlterPreservation,
+    			            		Unsynchronisation = Unsynchronisation
+    			            	};
 
-            return flags;
-        }
+    			return flags;
+    		}
+    	}
 
-        /// <summary>
+    	/// <summary>
         /// Overwrites ToString.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("FrameDescriptor : ID = {0}", ID);
+			return String.Format(CultureInfo.InvariantCulture, "FrameDescriptor : ID = {0}", Id);
         }
     }
 }

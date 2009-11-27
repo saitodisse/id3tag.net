@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.HighLevel
+﻿namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Represents an TagDescriptor for ID3v2.3 spec.
@@ -35,7 +35,7 @@
         /// <param name="unsynchronisation">the unsynchronisation flag.</param>
         /// <param name="extendedHeader">the extended header flag.</param>
         /// <param name="experimentalIndicator">the experimental indicator flag.</param>
-        public void SetHeaderFlags(bool unsynchronisation, bool extendedHeader, bool experimentalIndicator)
+        public void SetHeaderOptions(bool unsynchronisation, bool extendedHeader, bool experimentalIndicator)
         {
             Unsynchronisation = unsynchronisation;
             ExtendedHeader = extendedHeader;

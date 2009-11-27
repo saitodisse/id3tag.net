@@ -1,4 +1,4 @@
-namespace ID3Tag.LowLevel
+namespace Id3Tag.LowLevel
 {
     /// <summary>
     /// Defines the Extended Header Type

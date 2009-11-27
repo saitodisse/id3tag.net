@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit
+namespace Id3Tag.Net.NUnit
 {
 	[TestFixture]
 	public class VersionTest
@@ -8,7 +8,7 @@ namespace ID3Tag.Net.NUnit
 		[Test]
 		public void GetReadableVersionTest()
 		{
-			var ver = Version.GetReadableVersion();
+			var ver = Version.ReadableVersion;
 			Assert.IsNotEmpty(ver);
 			Assert.IsTrue(ver.Contains("."));
 		}

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using ID3Tag.HighLevel;
-using ID3Tag.LowLevel;
+using Id3Tag.HighLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.Net.NUnit
+namespace Id3Tag.Net.NUnit
 {
     public abstract class Test
     {
         protected byte[] m_AudioData;
-        protected IIoController m_Controller;
+        protected IIOController m_Controller;
         protected ITagController m_TagController;
         protected Id3TagInfo m_TagInfo;
 
@@ -129,7 +130,7 @@ namespace ID3Tag.Net.NUnit
             return completeBytes;
         }
 
-        protected static bool ComparePayload(byte[] bytes, byte[] refBytes)
+		protected static bool ComparePayload(IList<byte> bytes, IList<byte> refBytes)
         {
             var ok = true;
 
@@ -138,13 +139,13 @@ namespace ID3Tag.Net.NUnit
                 return true;
             }
 
-            if (bytes.Length != refBytes.Length)
+            if (bytes.Count != refBytes.Count)
             {
                 ok = false;
             }
             else
             {
-                for (var i = 0; i < bytes.Length; i++)
+                for (var i = 0; i < bytes.Count; i++)
                 {
                     if (bytes[i] != refBytes[i])
                     {

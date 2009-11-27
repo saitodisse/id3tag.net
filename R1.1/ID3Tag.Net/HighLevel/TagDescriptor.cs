@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Represents the tag header.
@@ -14,7 +17,7 @@ namespace ID3Tag.HighLevel
         {
             MajorVersion = major;
             Revision = revision;
-            Crc = new byte[0];
+            Crc = new ReadOnlyCollection<byte>(new byte[0]);
         }
 
         /// <summary>
@@ -50,24 +53,24 @@ namespace ID3Tag.HighLevel
         /// <summary>
         /// The CRC data.
         /// </summary>
-        public byte[] Crc { get; protected set; }
+		public ReadOnlyCollection<Byte> Crc { get; private set; }
 
         /// <summary>
         /// Sets the calculated CRC32 values.
         /// </summary>
         /// <param name="crc">the crc Values in bytes (MSB!)</param>
-        public void SetCrc32(byte[] crc)
+        public void SetCrc32(IList<byte> crc)
         {
-            Crc = crc;
+            Crc = new ReadOnlyCollection<byte>(crc);
         }
 
-        /// <summary>
+		/// <summary>
         /// Overwrites ToString
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("TagDescriptor : Major = {0}, Revision = {1}", MajorVersion, Revision);
+			return String.Format(CultureInfo.InvariantCulture, "TagDescriptor : Major = {0}, Revision = {1}", MajorVersion, Revision);
         }
     }
 }

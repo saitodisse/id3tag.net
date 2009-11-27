@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// This frame is intended for URL links concerning the audiofile in a similar way to the 
@@ -10,26 +12,27 @@ namespace ID3Tag.HighLevel.ID3Frame
 	/// as a terminated string, followed by the actual URL. The URL is always encoded with ISO-8859-1. 
 	/// There may be more than one "WXXX" frame in each tag, but only one with the same description.
 	/// </summary>
-	public class UserDefinedURLLinkFrame : EncodedTextFrame
+	public class UserDefinedUrlLinkFrame : EncodedTextFrame
 	{
 		/// <summary>
-		/// Creates a new UserDefinedURLLinkFrame
+		/// Creates a new UserDefinedUrlLinkFrame
 		/// </summary>
-		public UserDefinedURLLinkFrame()
-            : this(String.Empty,String.Empty,Encoding.ASCII)
+		public UserDefinedUrlLinkFrame()
+			: this(String.Empty, String.Empty, Encoding.ASCII)
 		{}
 
 		/// <summary>
-		/// Creates a new UserDefinedURLLinkFrame
+		/// Creates a new UserDefinedUrlLinkFrame
 		/// </summary>
 		/// <param name="description">the Description</param>
 		/// <param name="url">The URL</param>
 		/// <param name="encoding">The text encoding type.</param>
-		public UserDefinedURLLinkFrame(string description, string url, Encoding encoding)
+		[SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "1#", Justification = "URL validation is not performed.")]
+		public UserDefinedUrlLinkFrame(string description, string url, Encoding encoding)
 		{
-			Descriptor.ID = "WXXX";
+			Descriptor.Id = "WXXX";
 			Description = description;
-			URL = url;
+			Url = url;
 			TextEncoding = encoding;
 		}
 
@@ -41,14 +44,15 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <summary>
 		/// The URL.
 		/// </summary>
-		public string URL { get; set; }
+		[SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "URL validation is not performed.")]
+		public string Url { get; set; }
 
 		/// <summary>
 		/// The frame type.
 		/// </summary>
 		public override FrameType Type
 		{
-			get { return FrameType.UserDefindedURLLink; }
+			get { return FrameType.UserDefinedUrlLink; }
 		}
 
 		/// <summary>
@@ -57,7 +61,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>the raw frame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flag = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -65,11 +69,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 				writer.WriteEncodingByte(TextEncoding);
 				writer.WritePreamble(TextEncoding);
 				writer.WriteString(Description, TextEncoding, true);
-				writer.WriteString(URL, Encoding.GetEncoding(28591));
+				writer.WriteString(Url, Encoding.GetEncoding(28591));
 				payload = writer.ToArray();
 			}
 
-			return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+			return RawFrame.CreateFrame(Descriptor.Id, options, payload, version);
 		}
 
 		/// <summary>
@@ -92,7 +96,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				byte encodingByte = reader.ReadByte();
 				TextEncoding = reader.ReadEncoding(encodingByte, codePage);
 				Description = reader.ReadVariableString(TextEncoding);
-				URL = reader.ReadVariableString(Encoding.GetEncoding(28591));
+				Url = reader.ReadVariableString(Encoding.GetEncoding(28591));
 			}
 		}
 
@@ -103,7 +107,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override string ToString()
 		{
 			return String.Format(
-				"User-Definded URL : Encoding = {0}, Description = {1}, URL : {2} ", TextEncoding, Description, URL);
+				CultureInfo.InvariantCulture,
+				"User-Definded URL : Encoding = {0}, Description = {1}, URL : {2} ",
+				TextEncoding,
+				Description,
+				Url);
 		}
 	}
 }

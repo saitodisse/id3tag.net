@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
+namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
 {
     [TestFixture]
     public class UserDefinedUrlLinkFrameTest : Test
@@ -14,7 +14,7 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
         }
 
         #endregion
@@ -22,28 +22,28 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConverterISO88591_Test()
         {
-            var frame = new UserDefinedURLLinkFrame();
+            var frame = new UserDefinedUrlLinkFrame();
 
             frame.Description = "ABCD";
             frame.TextEncoding = Encoding.Default;
-            frame.URL = "EFGH";
-            frame.Descriptor.ID = "WXXX";
+            frame.Url = "EFGH";
+            frame.Descriptor.Id = "WXXX";
 
             var refPayloadBytes = new byte[] {0x00, 0x41, 0x42, 0x43, 0x44, 0x00, 0x45, 0x46, 0x47, 0x48};
             var rawFrame = frame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "WXXX");
+            Assert.AreEqual(rawFrame.Id, "WXXX");
             Assert.AreEqual(rawFrame.Payload, refPayloadBytes);
         }
 
         [Test]
         public void ConverterUTF16_Test()
         {
-            var frame = new UserDefinedURLLinkFrame();
+            var frame = new UserDefinedUrlLinkFrame();
 
             frame.Description = "ABCD";
             frame.TextEncoding = Encoding.Unicode;
-            frame.URL = "EFGH";
-            frame.Descriptor.ID = "WXXX";
+            frame.Url = "EFGH";
+            frame.Descriptor.Id = "WXXX";
 
             var refPayloadBytes = new byte[]
                                       {
@@ -52,19 +52,19 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                           0x45, 0x46, 0x47, 0x48
                                       };
             var rawFrame = frame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "WXXX");
+            Assert.AreEqual(rawFrame.Id, "WXXX");
             Assert.AreEqual(rawFrame.Payload, refPayloadBytes);
         }
 
         [Test]
         public void ConverterUTF16BE_Test()
         {
-            var frame = new UserDefinedURLLinkFrame();
+            var frame = new UserDefinedUrlLinkFrame();
 
             frame.Description = "ABCD";
             frame.TextEncoding = Encoding.BigEndianUnicode;
-            frame.URL = "EFGH";
-            frame.Descriptor.ID = "WXXX";
+            frame.Url = "EFGH";
+            frame.Descriptor.Id = "WXXX";
 
             var refPayloadBytes = new byte[]
                                       {
@@ -73,19 +73,19 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                           0x45, 0x46, 0x47, 0x48
                                       };
             var rawFrame = frame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "WXXX");
+            Assert.AreEqual(rawFrame.Id, "WXXX");
             Assert.AreEqual(rawFrame.Payload, refPayloadBytes);
         }
 
         [Test]
         public void ConverterUTF8_Test()
         {
-            var frame = new UserDefinedURLLinkFrame();
+            var frame = new UserDefinedUrlLinkFrame();
 
             frame.Description = "ABCD";
             frame.TextEncoding = Encoding.UTF8;
-            frame.URL = "EFGH";
-            frame.Descriptor.ID = "WXXX";
+            frame.Url = "EFGH";
+            frame.Descriptor.Id = "WXXX";
 
             var refPayloadBytes = new byte[]
                                       {
@@ -94,18 +94,18 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
                                           0x45, 0x46, 0x47, 0x48
                                       };
             var rawFrame = frame.Convert(TagVersion.Id3V23);
-            Assert.AreEqual(rawFrame.ID, "WXXX");
+            Assert.AreEqual(rawFrame.Id, "WXXX");
             Assert.AreEqual(rawFrame.Payload, refPayloadBytes);
         }
 
         [Test]
         public void CreateTest()
         {
-            var frame = new UserDefinedURLLinkFrame("ABCD", "EFGH", Encoding.Unicode);
+            var frame = new UserDefinedUrlLinkFrame("ABCD", "EFGH", Encoding.Unicode);
 
-            Assert.AreEqual(frame.Descriptor.ID, "WXXX");
+            Assert.AreEqual(frame.Descriptor.Id, "WXXX");
             Assert.AreEqual(frame.Description, "ABCD");
-            Assert.AreEqual(frame.URL, "EFGH");
+            Assert.AreEqual(frame.Url, "EFGH");
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.Unicode.CodePage);
         }
 
@@ -132,13 +132,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
-            var text1 = FrameUtils.ConvertToUserDefinedURLLinkFrame(f1);
+            var text1 = FrameUtilities.ConvertToUserDefinedUrlLinkFrame(f1);
 
-            Assert.AreEqual(text1.Descriptor.ID, "WXXX");
+            Assert.AreEqual(text1.Descriptor.Id, "WXXX");
             Assert.AreEqual(text1.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
-            Assert.AreEqual(text1.Type, FrameType.UserDefindedURLLink);
+            Assert.AreEqual(text1.Type, FrameType.UserDefinedUrlLink);
             Assert.AreEqual(text1.Description, "ABCD");
-            Assert.AreEqual(text1.URL, "EFGH");
+            Assert.AreEqual(text1.Url, "EFGH");
         }
 
         [Test]
@@ -164,13 +164,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
-            var text1 = FrameUtils.ConvertToUserDefinedURLLinkFrame(f1);
+            var text1 = FrameUtilities.ConvertToUserDefinedUrlLinkFrame(f1);
 
-            Assert.AreEqual(text1.Descriptor.ID, "WXXX");
+            Assert.AreEqual(text1.Descriptor.Id, "WXXX");
             Assert.AreEqual(text1.TextEncoding.CodePage, Encoding.UTF8.CodePage);
-            Assert.AreEqual(text1.Type, FrameType.UserDefindedURLLink);
+            Assert.AreEqual(text1.Type, FrameType.UserDefinedUrlLink);
             Assert.AreEqual(text1.Description, "ABCD");
-            Assert.AreEqual(text1.URL, "EFGH");
+            Assert.AreEqual(text1.Url, "EFGH");
         }
 
         [Test]
@@ -194,13 +194,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
-            var text1 = FrameUtils.ConvertToUserDefinedURLLinkFrame(f1);
+            var text1 = FrameUtilities.ConvertToUserDefinedUrlLinkFrame(f1);
 
-            Assert.AreEqual(text1.Descriptor.ID, "WXXX");
+            Assert.AreEqual(text1.Descriptor.Id, "WXXX");
             Assert.AreEqual(text1.TextEncoding.CodePage, Encoding.Default.CodePage);
-            Assert.AreEqual(text1.Type, FrameType.UserDefindedURLLink);
+            Assert.AreEqual(text1.Type, FrameType.UserDefinedUrlLink);
             Assert.AreEqual(text1.Description, "ABCD");
-            Assert.AreEqual(text1.URL, "EFGH");
+            Assert.AreEqual(text1.Url, "EFGH");
         }
 
         [Test]
@@ -226,13 +226,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
-            var text1 = FrameUtils.ConvertToUserDefinedURLLinkFrame(f1);
+            var text1 = FrameUtilities.ConvertToUserDefinedUrlLinkFrame(f1);
 
-            Assert.AreEqual(text1.Descriptor.ID, "WXXX");
+            Assert.AreEqual(text1.Descriptor.Id, "WXXX");
             Assert.AreEqual(text1.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
-            Assert.AreEqual(text1.Type, FrameType.UserDefindedURLLink);
+            Assert.AreEqual(text1.Type, FrameType.UserDefinedUrlLink);
             Assert.AreEqual(text1.Description, "ABCD");
-            Assert.AreEqual(text1.URL, "EFGH");
+            Assert.AreEqual(text1.Url, "EFGH");
         }
 
         [Test]
@@ -258,13 +258,13 @@ namespace ID3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(tagContainer.Count, 1);
 
             var f1 = tagContainer[0];
-            var text1 = FrameUtils.ConvertToUserDefinedURLLinkFrame(f1);
+            var text1 = FrameUtilities.ConvertToUserDefinedUrlLinkFrame(f1);
 
-            Assert.AreEqual(text1.Descriptor.ID, "WXXX");
+            Assert.AreEqual(text1.Descriptor.Id, "WXXX");
             Assert.AreEqual(text1.TextEncoding.CodePage, Encoding.Unicode.CodePage);
-            Assert.AreEqual(text1.Type, FrameType.UserDefindedURLLink);
+            Assert.AreEqual(text1.Type, FrameType.UserDefinedUrlLink);
             Assert.AreEqual(text1.Description, "ABCD");
-            Assert.AreEqual(text1.URL, "EFGH");
+            Assert.AreEqual(text1.Url, "EFGH");
         }
     }
 }

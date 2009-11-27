@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
-namespace ID3Tag.LowLevel
+namespace Id3Tag.LowLevel
 {
     /// <summary>
     /// Represents the extended tag header of the ID3V2.3 tag.
@@ -27,7 +28,7 @@ namespace ID3Tag.LowLevel
 
         #region Create Extended Header
 
-        internal static ExtendedTagHeaderV3 Create(int paddingSize, bool crcDataPresent, byte[] crc)
+		internal static ExtendedTagHeaderV3 Create(int paddingSize, bool crcDataPresent, ReadOnlyCollection<byte> crc)
         {
             var extendedHeader = new ExtendedTagHeaderV3
                                      {
@@ -49,13 +50,13 @@ namespace ID3Tag.LowLevel
 
             var extendedHeader = new ExtendedTagHeaderV3();
             extendedHeader.CrcDataPresent = (flags[0] & 0x80) == 0x80;
-            extendedHeader.PaddingSize = Utils.CalculateExtendedHeaderPaddingSize(paddingBytes);
+			extendedHeader.PaddingSize = Utils.CalculateSize(paddingBytes);
 
             if (extendedHeader.CrcDataPresent)
             {
                 var crcBytes = new byte[4];
                 Array.Copy(content, 6, crcBytes, 0, 4);
-                extendedHeader.Crc32 = crcBytes;
+                extendedHeader.Crc32 = new ReadOnlyCollection<byte>(crcBytes);
             }
 
             return extendedHeader;

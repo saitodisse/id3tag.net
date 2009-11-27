@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Lowlevel
+namespace Id3Tag.Net.NUnit.Lowlevel
 {
     [TestFixture]
     public class WriterTest : Test
@@ -15,7 +15,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void Setup()
         {
             m_TagController = Id3TagFactory.CreateTagController();
-            m_Controller = Id3TagFactory.CreateIoController();
+            m_Controller = Id3TagFactory.CreateIOController();
 
             m_AudioData = new byte[0x10];
             FillData(m_AudioData);
@@ -38,9 +38,9 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
                 // Read the bytes again
                 tagStream.Position = 0;
-                var id3TagInfo = m_Controller.Read(tagStream);
+                var Id3TagInfo = m_Controller.Read(tagStream);
 
-                tagContainer2 = m_TagController.Decode(id3TagInfo);
+                tagContainer2 = m_TagController.Decode(Id3TagInfo);
             }
             finally
             {
@@ -83,13 +83,13 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             // Configure the tag
             //
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(true, true, true);
+            tagContainer1.Tag.SetHeaderOptions(true, true, true);
             tagContainer1.Tag.SetExtendedHeader(10, true);
             tagContainer1.Tag.SetCrc32(new byte[] {0x10, 0x20, 0x30, 0x40});
 
             var titleFrame = new TextFrame
                                  {
-                                     Descriptor = {ID = "TIT2"},
+                                     Descriptor = {Id = "TIT2"},
                                      TextEncoding = Encoding.Unicode,
                                      Content = "Title1"
                                  };
@@ -114,11 +114,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             // Configure the tag
             //
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(false, false, false);
+            tagContainer1.Tag.SetHeaderOptions(false, false, false);
 
             var titleFrame = new TextFrame
                                  {
-                                     Descriptor = {ID = "TIT2"},
+                                     Descriptor = {Id = "TIT2"},
                                      TextEncoding = Encoding.Unicode,
                                      Content = "Title1"
                                  };
@@ -140,7 +140,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void SynchronizedTest1()
         {
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+            tagContainer1.Tag.SetHeaderOptions(true, false, false);
 
             const long counter = 0xFF00FF12;
             var playCounter = new PlayCounterFrame(counter);
@@ -149,7 +149,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -157,7 +157,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void SynchronizedTest2()
         {
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+            tagContainer1.Tag.SetHeaderOptions(true, false, false);
 
             const long counter = 0xFFFFFF12;
             var playCounter = new PlayCounterFrame(counter);
@@ -166,7 +166,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -174,7 +174,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void SynchronizedTest3()
         {
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+            tagContainer1.Tag.SetHeaderOptions(true, false, false);
 
             const long counter = 0xFFE0;
             var playCounter = new PlayCounterFrame(counter);
@@ -183,7 +183,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -191,7 +191,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void SynchronizedTest4()
         {
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+            tagContainer1.Tag.SetHeaderOptions(true, false, false);
 
             const long counter = 0xFFE1;
             var playCounter = new PlayCounterFrame(counter);
@@ -200,7 +200,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -208,7 +208,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
         public void SynchronizedTest5()
         {
             var tagContainer1 = new TagContainerV3();
-            tagContainer1.Tag.SetHeaderFlags(true, false, false);
+            tagContainer1.Tag.SetHeaderOptions(true, false, false);
 
             const long counter = 0x12FF;
             var playCounter = new PlayCounterFrame(counter);
@@ -217,7 +217,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
             var tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtils.ConvertToPlayCounterFrame(tagContainer2[0]);
+            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
     }

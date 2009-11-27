@@ -1,6 +1,6 @@
-﻿using ID3Tag.LowLevel;
+﻿using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Represents a highlevel tag controller.

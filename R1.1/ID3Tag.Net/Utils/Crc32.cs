@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ID3Tag
+namespace Id3Tag
 {
     /// <summary>
     /// Creates and Verifies CRC32 values.
@@ -29,7 +29,7 @@ namespace ID3Tag
         /// </summary>
         /// <param name="data">the bytes.</param>
         /// <returns>the CRC32 value in MSB!</returns>
-        public byte[] Calculate(byte[] data)
+        public byte[] Calculate(IEnumerable<byte> data)
         {
             // http://de.wikipedia.org/wiki/CRC32
 
@@ -60,7 +60,7 @@ namespace ID3Tag
             return crcBytes;
         }
 
-        public bool Validate(byte[] data, byte[] crcBytes)
+		public bool Validate(IEnumerable<byte> data, IEnumerable<byte> crcBytes)
         {
             var bytes = new List<byte>();
 
@@ -79,7 +79,7 @@ namespace ID3Tag
 
         #region Helper
 
-        private static int[] GetBits(byte[] data)
+        private static int[] GetBits(IEnumerable<byte> data)
         {
             var bits = new List<int>();
 

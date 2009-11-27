@@ -1,7 +1,10 @@
 ﻿using System;
-using ID3Tag.LowLevel;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// Represents a frame that cannot be identified by the reader.
@@ -13,13 +16,22 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// </summary>
 		public UnknownFrame()
 		{
-			Content = new byte[0];
+			Content = new ReadOnlyCollection<byte>(new byte[0]);
 		}
 
 		/// <summary>
 		/// The payload.
 		/// </summary>
-		public byte[] Content { get; set; }
+		public ReadOnlyCollection<byte> Content { get; private set; }
+
+		/// <summary>
+		/// Sets the content from binary data.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public void SetContent(IList<byte> value)
+		{
+			Content = new ReadOnlyCollection<byte>(value);
+		}
 
 		/// <summary>
 		/// The frame type.
@@ -35,8 +47,8 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>a RawFrame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flags = Descriptor.GetFlags();
-			return RawFrame.CreateFrame(Descriptor.ID, flags, Content, version);
+			FrameOptions options = Descriptor.Options;
+			return RawFrame.CreateFrame(Descriptor.Id, options, Content, version);
 		}
 
 		/// <summary>
@@ -58,7 +70,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// </returns>
 		public override string ToString()
 		{
-			return String.Format("Unknown : ID = {0}, Content = {1}", Descriptor.ID, Utils.BytesToString(Content));
+			return String.Format(
+				CultureInfo.InvariantCulture,
+				"Unknown : ID = {0}, Content = {1}",
+				Descriptor.Id,
+				Utils.BytesToString(Content));
 		}
 	}
 }

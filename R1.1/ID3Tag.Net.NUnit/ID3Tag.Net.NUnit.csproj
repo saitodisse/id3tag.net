@@ -8,10 +8,12 @@
     <ProjectGuid>{874EBA6A-CECD-4EC7-A8BE-7022928FA943}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ID3Tag.Net.NUnit</RootNamespace>
-    <AssemblyName>ID3Tag.Net.NUnit</AssemblyName>
+    <RootNamespace>Id3Tag.Net.NUnit</RootNamespace>
+    <AssemblyName>Id3Tag.Net.NUnit</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ID3Tag.Net\Id3Tag.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -80,6 +82,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lowlevel\ReaderTestV3.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="Utils\UtilsTest.cs" />
     <Compile Include="VersionTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +93,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ID3Tag.Net\Id3Tag.snk">
+      <Link>Properties\Id3Tag.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

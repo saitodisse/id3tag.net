@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using ID3Tag;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using Microsoft.Win32;
-using Version=ID3Tag.Version;
+using Version=Id3Tag.Version;
 
-namespace ID3TagUtility
+namespace Id3TagUtility
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -52,7 +53,7 @@ namespace ID3TagUtility
                             //
                             //  OK. Update the UI.
                             //
-                            ShowID3V23Tag(filename, tagDescriptorV3);
+                            ShowId3V23Tag(filename, tagDescriptorV3);
                             ShowTagFrames(tagContainer);
 
 
@@ -60,21 +61,21 @@ namespace ID3TagUtility
                         else
                         {
                             var tagDescriptorV4 = tagContainer.GetId3V24Descriptor();
-                            ShowID3V24Tag(filename, tagDescriptorV4);
+                            ShowId3V24Tag(filename, tagDescriptorV4);
                             ShowTagFrames(tagContainer);
                        }
 
                         var apicFrame = tagContainer.SearchFrame("APIC");
                         if (apicFrame != null)
                         {
-                            var pictureFrame = FrameUtils.ConvertToPictureFrame(apicFrame);
+                            var pictureFrame = FrameUtilities.ConvertToPictureFrame(apicFrame);
                             ShowPicture(pictureFrame);
                         }
 
                         var usltFrame = tagContainer.SearchFrame("USLT");
                         if (usltFrame != null)
                         {
-                            var lyricsFrame = FrameUtils.ConvertToUnsynchronisedLycricsFrame(usltFrame);
+                            var lyricsFrame = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(usltFrame);
                             ShowLyrics(lyricsFrame);
                         }
                     }
@@ -93,7 +94,7 @@ namespace ID3TagUtility
                     labelYear.Content = tag.Year;
                     labelComment.Content = tag.Comment;
                     labelGenre.Content = tag.Genre;
-                    labelTrackNr.Content = tag.TrackNr;
+                    labelTrackNr.Content = tag.TrackNumber;
                 }
             }
         }
@@ -109,7 +110,7 @@ namespace ID3TagUtility
             Close();
         }
 
-        private static string ConvertToString(byte[] data)
+        private static string ConvertToString(IEnumerable<byte> data)
         {
             var stringBuilder = new StringBuilder();
             foreach (var b in data)
@@ -127,10 +128,12 @@ namespace ID3TagUtility
             labelDescription.Content = pictureFrame.Description;
             labelPictureType.Content = pictureFrame.PictureCoding;
 
-            var bytes = pictureFrame.PictureData;
+            var data = pictureFrame.PictureData;
             try
             {
-                Stream pictureStream = new MemoryStream(bytes);
+            	var buffer = new byte[data.Count];
+				data.CopyTo(buffer, 0);
+                Stream pictureStream = new MemoryStream(buffer);
 
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
@@ -141,11 +144,11 @@ namespace ID3TagUtility
             }
             catch (Exception ex)
             {
-                throw new ID3TagException("Cannot read the picture frame : " + ex.Message);
+                throw new Id3TagException("Cannot read the picture frame : " + ex.Message);
             }
         }
 
-        private void ShowID3V24Tag(string filename, TagDescriptorV4 tagDescriptor)
+        private void ShowId3V24Tag(string filename, TagDescriptor tagDescriptor)
         {
             //
             //  Decode the header of the tag.
@@ -154,7 +157,7 @@ namespace ID3TagUtility
             labelTagVersion.Content = String.Format("ID3v2.{0}.{1}", tagDescriptor.MajorVersion, tagDescriptor.Revision);
         }
 
-        private void ShowID3V23Tag(string filename, TagDescriptorV3 tagDescriptor)
+        private void ShowId3V23Tag(string filename, TagDescriptorV3 tagDescriptor)
         {
             //
             //  Decode the header of the tag.
@@ -194,7 +197,7 @@ namespace ID3TagUtility
             }
         }
 
-        private void ShowTagFrames(TagContainer tagContainer)
+        private void ShowTagFrames(IEnumerable<IFrame> tagContainer)
         {
             //
             //  Iterate over the frame collection and show the ToString representation.
@@ -250,9 +253,9 @@ namespace ID3TagUtility
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var version = Version.GetReadableVersion();
+            var version = Version.ReadableVersion;
 
-            versionLabel.Content = String.Format("ID3TagLib Version = {0}", version);
+            versionLabel.Content = String.Format("Id3TagLib Version = {0}", version);
         }
     }
 }

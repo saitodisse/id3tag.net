@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Text;
-using ID3Tag.HighLevel;
-using ID3Tag.HighLevel.ID3Frame;
+using Id3Tag.HighLevel;
+using Id3Tag.HighLevel.Id3Frame;
 using NUnit.Framework;
 
-namespace ID3Tag.Net.NUnit.Lowlevel
+namespace Id3Tag.Net.NUnit.Lowlevel
 {
 	[TestFixture]
 	public class ValidatorTest : Test
@@ -15,7 +15,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		public void Setup()
 		{
 			m_TagController = Id3TagFactory.CreateTagController();
-			m_Controller = Id3TagFactory.CreateIoController();
+			m_Controller = Id3TagFactory.CreateIOController();
 
 			m_AudioData = new byte[0x10];
 			FillData(m_AudioData);
@@ -63,11 +63,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Default);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Default);
 			var pictureFrame = new PictureFrame(
 				Encoding.Default,
 				"image/jpeg",
@@ -97,11 +97,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Unicode);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Unicode);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",
@@ -120,7 +120,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationPictureFrameFailed1()
 		{
 			/*
@@ -132,11 +132,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Default);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Default);
 			var pictureFrame = new PictureFrame(
 				Encoding.BigEndianUnicode,
 				"image/jpeg",
@@ -155,7 +155,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationPictureFrameFailed2()
 		{
 			/*
@@ -167,11 +167,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Default);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Default);
 			var pictureFrame = new PictureFrame(
 				Encoding.UTF8,
 				"image/jpeg",
@@ -190,7 +190,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationTextFrameFailed1()
 		{
 			/*
@@ -202,11 +202,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.BigEndianUnicode);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Unicode);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",
@@ -225,7 +225,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationTextFrameFailed2()
 		{
 			/*
@@ -237,11 +237,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.UTF8);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Unicode);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",
@@ -260,7 +260,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationUserDefinedTextFrameFailed1()
 		{
 			/*
@@ -272,11 +272,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.BigEndianUnicode);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",
@@ -295,7 +295,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationUserDefinedTextFrameFailed2()
 		{
 			/*
@@ -307,11 +307,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.UTF8);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.Unicode);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.Unicode);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",
@@ -330,7 +330,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationUserDefinedURLFrameFailed1()
 		{
 			/*
@@ -342,11 +342,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.BigEndianUnicode);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.BigEndianUnicode);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",
@@ -365,7 +365,7 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidID3StructureException))]
+		[ExpectedException(typeof(InvalidId3StructureException))]
 		public void ValidationUserDefinedURLFrameFailed2()
 		{
 			/*
@@ -377,11 +377,11 @@ namespace ID3Tag.Net.NUnit.Lowlevel
 
 			var tagContainer = new TagContainerV3();
 			tagContainer.Tag.SetExtendedHeader(0, false);
-			tagContainer.Tag.SetHeaderFlags(false, false, false);
+			tagContainer.Tag.SetHeaderOptions(false, false, false);
 
 			var textFrame = new TextFrame("TALB", "My Albun", Encoding.Default);
 			var userDefineTextFrame = new UserDefinedTextFrame("my comment", "so", Encoding.Default);
-			var linkFrame = new UserDefinedURLLinkFrame("id3tag", "id3tag.codeplex.com", Encoding.UTF8);
+			var linkFrame = new UserDefinedUrlLinkFrame("Id3Tag", "Id3Tag.codeplex.com", Encoding.UTF8);
 			var pictureFrame = new PictureFrame(
 				Encoding.Unicode,
 				"image/jpeg",

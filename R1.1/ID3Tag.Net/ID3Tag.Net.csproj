@@ -8,12 +8,12 @@
     <ProjectGuid>{8D10F733-7DB0-4CDB-8950-2F124661E4E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ID3Tag</RootNamespace>
-    <AssemblyName>ID3Tag.Net</AssemblyName>
+    <RootNamespace>Id3Tag</RootNamespace>
+    <AssemblyName>Id3Tag.Net</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>ID3Tag.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Id3Tag.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\ID3Tag.Net.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Id3Tag.Net.xml</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
@@ -54,6 +57,7 @@
     <Compile Include="FileState.cs" />
     <Compile Include="HighLevel\EncodedTextFrame.cs" />
     <Compile Include="HighLevel\FrameContainer.cs" />
+    <Compile Include="HighLevel\FrameUtils.cs" />
     <Compile Include="HighLevel\Genre.cs" />
     <Compile Include="HighLevel\ID3Frame\InvolvedPeopleListFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PlayCounterFrame.cs" />
@@ -67,10 +71,9 @@
     <Compile Include="HighLevel\Frame.cs" />
     <Compile Include="HighLevel\FrameDescriptor.cs" />
     <Compile Include="HighLevel\FrameType.cs" />
-    <Compile Include="HighLevel\FrameUtils.cs" />
     <Compile Include="HighLevel\ID3Frame\AudioEncryptionFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\CommentFrame.cs" />
-    <Compile Include="HighLevel\ID3Frame\MusicCdIdentifierFrame.cs" />
+    <Compile Include="HighLevel\ID3Frame\MusicCDIdentifierFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PictureFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PrivateFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\URLLinkFrame.cs" />
@@ -90,15 +93,16 @@
     <Compile Include="HighLevel\TagDescriptor.cs" />
     <Compile Include="HighLevel\ID3Frame\TextFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\UserDefinedTextFrame.cs" />
-    <Compile Include="ID3HeaderNotFoundException.cs" />
-    <Compile Include="ID3IOException.cs" />
+    <Compile Include="Id3HeaderNotFoundException.cs" />
+    <Compile Include="Id3IOException.cs" />
     <Compile Include="Id3TagManager.cs" />
-    <Compile Include="InvalidID3StructureException.cs" />
+    <Compile Include="IId3TagManager.cs" />
+    <Compile Include="InvalidId3StructureException.cs" />
     <Compile Include="InvalidTagFormatException.cs" />
     <Compile Include="LowLevel\ExtendedHeader.cs" />
     <Compile Include="LowLevel\ExtendedHeaderType.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV3.cs" />
-    <Compile Include="ID3TagFactory.cs" />
+    <Compile Include="Id3TagFactory.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV4.cs" />
     <Compile Include="LowLevel\FrameFlags.cs" />
     <Compile Include="LowLevel\Id3V24Validator.cs" />
@@ -113,7 +117,7 @@
     <Compile Include="Utils\Crc32.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="LowLevel\RawFrame.cs" />
-    <Compile Include="ID3TagException.cs" />
+    <Compile Include="Id3TagException.cs" />
     <Compile Include="LowLevel\ID3TagInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Version.cs" />
@@ -122,7 +126,7 @@
     <None Include="HighLevel\HighLevelClassesV1.cd" />
     <None Include="HighLevel\HighLevelClassesV2.cd" />
     <None Include="HighLevel\ID3Frame\FrameClasses.cd" />
-    <None Include="ID3Tag.snk" />
+    <None Include="Id3Tag.snk" />
     <None Include="LowLevel\LowLevelClasses.cd" />
   </ItemGroup>
   <ItemGroup>

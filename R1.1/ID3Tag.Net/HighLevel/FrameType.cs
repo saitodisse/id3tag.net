@@ -1,4 +1,4 @@
-﻿namespace ID3Tag.HighLevel
+﻿namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Defines the ID3 Frame types.
@@ -32,11 +32,11 @@
         /// <summary>
         /// URL link frame.
         /// </summary>
-        URLLink,
+        UrlLink,
         /// <summary>
         /// Userdefinded URL link frame.
         /// </summary>
-        UserDefindedURLLink,
+        UserDefinedUrlLink,
         /// <summary>
         /// AudioEncryption Frame.
         /// </summary>

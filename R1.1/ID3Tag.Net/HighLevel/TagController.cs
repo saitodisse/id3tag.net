@@ -1,7 +1,7 @@
-﻿using ID3Tag.HighLevel.ID3Frame;
-using ID3Tag.LowLevel;
+﻿using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     internal class TagController : ITagController
     {
@@ -35,7 +35,7 @@ namespace ID3Tag.HighLevel
                     container = DecodeV4Tag(info);
                     break;
                 default:
-                    throw new ID3TagException("This major revision is not supported!");
+                    throw new Id3TagException("This major revision is not supported!");
             }
 
             //
@@ -55,7 +55,7 @@ namespace ID3Tag.HighLevel
                 }
                 else
                 {
-                    throw new ID3TagException("Frame analysing failed!");
+                    throw new Id3TagException("Frame analysing failed!");
                 }
             }
 
@@ -79,7 +79,7 @@ namespace ID3Tag.HighLevel
                     EncodeV4(tagInfo, container);
                     break;
                 default:
-                    throw new ID3TagException("Unknown version!");
+                    throw new Id3TagException("Unknown version!");
             }
 
             foreach (var frame in container)
@@ -97,7 +97,7 @@ namespace ID3Tag.HighLevel
 
         private static IFrame AnalyseFrameId(RawFrame rawFrame, IFrameCreationService frameService)
         {
-            var id = rawFrame.ID;
+            var id = rawFrame.Id;
             IFrame frame = null;
 
             if (frameService.Search(id))
@@ -142,8 +142,8 @@ namespace ID3Tag.HighLevel
             var container = new TagContainerV4();
             var descriptor = container.Tag;
 
-            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental,
-                                      info.FooterFlag);
+            descriptor.SetHeaderOptions(info.Unsynchronised, info.ExtendedHeaderAvailable, info.Experimental,
+                                      info.HasFooter);
             if (info.ExtendedHeaderAvailable)
             {
                 var extendedHeader = info.ExtendedHeader.ConvertToV24();
@@ -152,7 +152,7 @@ namespace ID3Tag.HighLevel
 
                 if (extendedHeader.CrcDataPresent)
                 {
-                    descriptor.SetCrc32(extendedHeader.Crc32);
+					descriptor.SetCrc32(extendedHeader.Crc32);
                 }
             }
 
@@ -164,7 +164,7 @@ namespace ID3Tag.HighLevel
             var container = new TagContainerV3();
             var descriptor = container.Tag;
 
-            descriptor.SetHeaderFlags(info.UnsynchronisationFlag, info.ExtendedHeaderAvailable, info.Experimental);
+            descriptor.SetHeaderOptions(info.Unsynchronised, info.ExtendedHeaderAvailable, info.Experimental);
 
             if (info.ExtendedHeaderAvailable)
             {
@@ -185,8 +185,8 @@ namespace ID3Tag.HighLevel
 
             tagInfo.Experimental = descriptor.ExperimentalIndicator;
             tagInfo.ExtendedHeaderAvailable = descriptor.ExtendedHeader;
-            tagInfo.UnsynchronisationFlag = descriptor.Unsynchronisation;
-            tagInfo.FooterFlag = descriptor.Footer;
+            tagInfo.Unsynchronised = descriptor.Unsynchronisation;
+            tagInfo.HasFooter = descriptor.Footer;
 
             if (descriptor.ExtendedHeader)
             {
@@ -202,7 +202,7 @@ namespace ID3Tag.HighLevel
 
             tagInfo.Experimental = descriptor.ExperimentalIndicator;
             tagInfo.ExtendedHeaderAvailable = descriptor.ExtendedHeader;
-            tagInfo.UnsynchronisationFlag = descriptor.Unsynchronisation;
+            tagInfo.Unsynchronised = descriptor.Unsynchronisation;
 
             if (descriptor.ExtendedHeader)
             {

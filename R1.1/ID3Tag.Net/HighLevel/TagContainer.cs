@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
-    /// <summary>
-    /// Represents a high level ID3 tag.
-    /// </summary>
-    public abstract class TagContainer : ICollection<IFrame>
+	/// <summary>
+	/// Represents a high level ID3 tag.
+	/// </summary>
+	[SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "This is not exactly a collection.")]
+	public abstract class TagContainer : ICollection<IFrame>
     {
         private readonly List<IFrame> m_Frames;
 
@@ -137,7 +140,7 @@ namespace ID3Tag.HighLevel
         {
             foreach (var frame in m_Frames)
             {
-                if (id.Equals(frame.Descriptor.ID))
+                if (id.Equals(frame.Descriptor.Id))
                 {
                     return frame;
                 }
@@ -146,35 +149,53 @@ namespace ID3Tag.HighLevel
             return null;
         }
 
-        public TagDescriptorV3 GetId3V23Descriptor()
-        {
-            if (TagVersion == TagVersion.Id3V23)
-            {
-                var v3Container = this as TagContainerV3;
-                return v3Container.Tag;
-            }
+		// TODO FIX: ABSTRACTIONS SHOULD NOT DEPEND UPON DETAILS. DETAILS SHOULD DEPEND UPON ABSTRACTIONS.
+		/// <summary>
+		/// Gets the version 2.3 descriptor.
+		/// </summary>
+		/// <returns></returns>
+		[SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Must be a method because of the exception thrown.")]
+		public TagDescriptorV3 GetId3V23Descriptor()
+    	{
+    		if (TagVersion == TagVersion.Id3V23)
+    		{
+    			var v3Container = this as TagContainerV3;
+    			if (v3Container != null)
+    			{
+    				return v3Container.Tag;
+    			}
+    		}
 
-            throw new ID3TagException("Invaild tag container!");
-        }
+    		throw new Id3TagException("Invaild tag container!");
+    	}
 
-        public TagDescriptorV4 GetId3V24Descriptor()
-        {
-            if (TagVersion == TagVersion.Id3V24)
-            {
-                var v3Container = this as TagContainerV4;
-                return v3Container.Tag;
-            }
+		// TODO FIX: ABSTRACTIONS SHOULD NOT DEPEND UPON DETAILS. DETAILS SHOULD DEPEND UPON ABSTRACTIONS.
+		/// <summary>
+		/// Gets the version 2.4 descriptor.
+		/// </summary>
+		/// <returns></returns>
+		[SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Must be a method because of the exception thrown.")]
+		public TagDescriptorV4 GetId3V24Descriptor()
+    	{
+    		if (TagVersion == TagVersion.Id3V24)
+    		{
+    			var v3Container = this as TagContainerV4;
+    			if (v3Container != null)
+    			{
+    				return v3Container.Tag;
+    			}
+    		}
 
-            throw new ID3TagException("Invaild tag container!");
-        }
+    		throw new Id3TagException("Invaild tag container!");
+    	}
 
-        /// <summary>
+    	/// <summary>
         /// Overwrites the ToString.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("TagContainer : Count = {0}", Count);
+			return string.Format(CultureInfo.InvariantCulture, "TagContainer : Count = {0}", Count);
         }
     }
 }

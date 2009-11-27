@@ -1,44 +1,47 @@
-﻿namespace ID3Tag.LowLevel
+﻿namespace Id3Tag.LowLevel
 {
-    public class FrameFlags
+	/// <summary>
+	/// Identifies applicable Frame Flags (Options)
+	/// </summary>
+    public class FrameOptions
     {
         /// <summary>
-        /// The TagAlterPreservation flag.
+        /// The TagAlterPreservation option.
         /// </summary>
         public bool TagAlterPreservation { get; internal set; }
 
         /// <summary>
-        /// The FileAlterPreservation flag.
+		/// The FileAlterPreservation option.
         /// </summary>
         public bool FileAlterPreservation { get; internal set; }
 
         /// <summary>
-        /// The ReadOnly flag.
+		/// The ReadOnly option.
         /// </summary>
         public bool ReadOnly { get; internal set; }
 
         /// <summary>
-        /// The Compression flag.
+		/// The Compression option.
         /// </summary>
         public bool Compression { get; internal set; }
 
         /// <summary>
-        /// The Encryption flag.
+		/// The Encryption option.
         /// </summary>
         public bool Encryption { get; internal set; }
 
         /// <summary>
-        /// The GroupingIdentify flag.
+		/// The GroupingIdentify option.
         /// </summary>
         public bool GroupingIdentify { get; internal set; }
 
         /// <summary>
-        /// The Unsynchronisation flag ( ID3V.2.4 only! )
+		/// The Unsynchronisation option ( ID3V.2.4 only! )
         /// </summary>
         public bool Unsynchronisation { get; internal set; }
 
         /// <summary>
-        /// The DataLengthIndicator ( ID3v2.4. only! )
+		/// The DataLengthIndicator option ( ID3v2.4. only! )
         /// </summary>
         public bool DataLengthIndicator { get; internal set; }
     }

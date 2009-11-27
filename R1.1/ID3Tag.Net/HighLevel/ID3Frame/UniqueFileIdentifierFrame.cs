@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// This frame's purpose is to be able to identify the audio file in a database that may contain more information relevant to the content. 
@@ -29,11 +32,11 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// </summary>
 		/// <param name="owner">the owner</param>
 		/// <param name="identifier">the identifier</param>
-		public UniqueFileIdentifierFrame(string owner, byte[] identifier)
+		public UniqueFileIdentifierFrame(string owner, IList<byte> identifier)
 		{
-			Descriptor.ID = "UFID";
+			Descriptor.Id = "UFID";
 			Owner = owner;
-			Identifier = identifier;
+			Identifier = new ReadOnlyCollection<byte>(identifier);
 		}
 
 		/// <summary>
@@ -44,7 +47,16 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <summary>
 		/// The Identifier
 		/// </summary>
-		public byte[] Identifier { get; set; }
+		public ReadOnlyCollection<byte> Identifier { get; private set; }
+
+		/// <summary>
+		/// Sets the identifier from binary data.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public void SetIdentifier(IList<byte> value)
+		{
+			Identifier = new ReadOnlyCollection<byte>(value);
+		}
 
 		/// <summary>
 		/// Defines the frame type.
@@ -66,7 +78,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				Identifier: <up to 64 bytes binary data>
             */
 
-			FrameFlags flag = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
 			byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -76,7 +88,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				payload = writer.ToArray();
 			}
 
-			return RawFrame.CreateFrame(Descriptor.ID, flag, payload, version);
+			return RawFrame.CreateFrame(Descriptor.Id, options, payload, version);
 		}
 
 		/// <summary>
@@ -91,7 +103,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 			using (var reader = new FrameDataReader(rawFrame.Payload))
 			{
 				Owner = reader.ReadVariableString(Encoding.GetEncoding(28591));
-				Identifier = reader.ReadBytes();
+				SetIdentifier(reader.ReadBytes());
 			}
 		}
 
@@ -104,7 +116,10 @@ namespace ID3Tag.HighLevel.ID3Frame
 		public override string ToString()
 		{
 			return String.Format(
-				"Unique File Identifier : Owner = {0}, Identifier = {1}", Owner, Utils.BytesToString(Identifier));
+				CultureInfo.InvariantCulture,
+				"Unique File Identifier : Owner = {0}, Identifier = {1}",
+				Owner,
+				Utils.BytesToString(Identifier));
 		}
 	}
 }

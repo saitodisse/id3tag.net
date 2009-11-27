@@ -1,11 +1,11 @@
-﻿using ID3Tag.HighLevel.ID3Frame;
+﻿using Id3Tag.HighLevel.Id3Frame;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Provides some static helper methods.
     /// </summary>
-    public static class FrameUtils
+    public static class FrameUtilities
     {
         /// <summary>
         /// Convert a abstract frame to an UnknownFrame.
@@ -16,13 +16,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.Unknown)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var unknownFrame = frame as UnknownFrame;
             if (unknownFrame == null)
             {
-                throw new ID3TagException("Could not cast To UnknownFrame!");
+                throw new Id3TagException("Could not cast To UnknownFrame!");
             }
 
             return unknownFrame;
@@ -37,13 +37,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.Text)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var textFrame = frame as TextFrame;
             if (textFrame == null)
             {
-                throw new ID3TagException("Could not cast To TextFrame!");
+                throw new Id3TagException("Could not cast To TextFrame!");
             }
 
             return textFrame;
@@ -58,13 +58,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.UserDefinedText)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var textFrame = frame as UserDefinedTextFrame;
             if (textFrame == null)
             {
-                throw new ID3TagException("Could not cast To UserDefinedTextFrame!");
+                throw new Id3TagException("Could not cast To UserDefinedTextFrame!");
             }
 
             return textFrame;
@@ -79,34 +79,34 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.Private)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var privateFrame = frame as PrivateFrame;
             if (privateFrame == null)
             {
-                throw new ID3TagException("Could not cast To PrivateFrame!");
+                throw new Id3TagException("Could not cast To PrivateFrame!");
             }
 
             return privateFrame;
         }
 
         /// <summary>
-        /// Convert a abstract frame to an MusicCdIdentifierFrame.
+        /// Convert a abstract frame to an MusicCDIdentifierFrame.
         /// </summary>
         /// <param name="frame">the abstract frame.</param>
         /// <returns>the concrecte type.</returns>
-        public static MusicCdIdentifierFrame ConvertToMusicCDIdentifierFrame(IFrame frame)
+        public static MusicCDIdentifierFrame ConvertToMusicCDIdentifierFrame(IFrame frame)
         {
             if (frame.Type != FrameType.MusicCDIdentifier)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
-            var musicFrame = frame as MusicCdIdentifierFrame;
+            var musicFrame = frame as MusicCDIdentifierFrame;
             if (musicFrame == null)
             {
-                throw new ID3TagException("Could not cast To MusicCDIdentifierFrame!");
+                throw new Id3TagException("Could not cast To MusicCDIdentifierFrame!");
             }
 
             return musicFrame;
@@ -121,13 +121,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.Comment)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var commentFrame = frame as CommentFrame;
             if (commentFrame == null)
             {
-                throw new ID3TagException("Could not cast To CommentFrame!");
+                throw new Id3TagException("Could not cast To CommentFrame!");
             }
 
             return commentFrame;
@@ -138,38 +138,38 @@ namespace ID3Tag.HighLevel
         /// </summary>
         /// <param name="frame">the abstract frame.</param>
         /// <returns>the concrecte type.</returns>
-        public static UrlLinkFrame ConvertToURLLinkFrame(IFrame frame)
+        public static UrlLinkFrame ConvertToUrlLinkFrame(IFrame frame)
         {
-            if (frame.Type != FrameType.URLLink)
+            if (frame.Type != FrameType.UrlLink)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var urlLinkFrame = frame as UrlLinkFrame;
             if (urlLinkFrame == null)
             {
-                throw new ID3TagException("Could not cast To UrlLinkFrame!");
+                throw new Id3TagException("Could not cast To UrlLinkFrame!");
             }
 
             return urlLinkFrame;
         }
 
         /// <summary>
-        /// Convert a abstract frame to an UserDefinedURLLinkFrame.
+        /// Convert a abstract frame to an UserDefinedUrlLinkFrame.
         /// </summary>
         /// <param name="frame">the abstract frame.</param>
         /// <returns>the concrecte type.</returns>
-        public static UserDefinedURLLinkFrame ConvertToUserDefinedURLLinkFrame(IFrame frame)
+        public static UserDefinedUrlLinkFrame ConvertToUserDefinedUrlLinkFrame(IFrame frame)
         {
-            if (frame.Type != FrameType.UserDefindedURLLink)
+            if (frame.Type != FrameType.UserDefinedUrlLink)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
-            var urlLinkFrame = frame as UserDefinedURLLinkFrame;
+            var urlLinkFrame = frame as UserDefinedUrlLinkFrame;
             if (urlLinkFrame == null)
             {
-                throw new ID3TagException("Could not cast To UserDefinedURLLinkFrame!");
+                throw new Id3TagException("Could not cast To UserDefinedUrlLinkFrame!");
             }
 
             return urlLinkFrame;
@@ -184,20 +184,20 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.AudioEncryption)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var audioEncryptionFrame = frame as AudioEncryptionFrame;
             if (audioEncryptionFrame == null)
             {
-                throw new ID3TagException("Could not cast To AudioEncryptionFrame!");
+                throw new Id3TagException("Could not cast To AudioEncryptionFrame!");
             }
 
             return audioEncryptionFrame;
         }
 
         /// <summary>
-        /// Convert a abstract frame to a PictureFrame.
+        /// Casts an abstract frame to a PictureFrame.
         /// </summary>
         /// <param name="frame">the abstract frame.</param>
         /// <returns>the concrete type.</returns>
@@ -205,13 +205,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.Picture)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var pictureFrame = frame as PictureFrame;
             if (pictureFrame == null)
             {
-                throw new ID3TagException("Could not cast To PictureFrame!");
+                throw new Id3TagException("Could not cast To PictureFrame!");
             }
 
             return pictureFrame;
@@ -226,13 +226,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.PlayCounter)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var playCounterFrame = frame as PlayCounterFrame;
             if (playCounterFrame == null)
             {
-                throw new ID3TagException("Could not cast To PlayCounterFrame!");
+                throw new Id3TagException("Could not cast To PlayCounterFrame!");
             }
 
             return playCounterFrame;
@@ -247,13 +247,13 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.Popularimeter)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var popm = frame as PopularimeterFrame;
             if (popm == null)
             {
-                throw new ID3TagException("Could not cast To PopularimeterFrame!");
+                throw new Id3TagException("Could not cast To PopularimeterFrame!");
             }
 
             return popm;
@@ -268,29 +268,34 @@ namespace ID3Tag.HighLevel
         {
             if (frame.Type != FrameType.UniqueFileIdentifier)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var ufid = frame as UniqueFileIdentifierFrame;
             if (ufid == null)
             {
-                throw new ID3TagException("Could not cast To UniqueFileIdentifierFrame!");
+                throw new Id3TagException("Could not cast To UniqueFileIdentifierFrame!");
             }
 
             return ufid;
         }
 
-        public static UnsynchronisedLyricFrame ConvertToUnsynchronisedLycricsFrame(IFrame frame)
+		/// <summary>
+		/// Casts a frame to <see cref="UnsynchronisedLyricFrame"/>.
+		/// </summary>
+		/// <param name="frame">The frame.</param>
+		/// <returns></returns>
+        public static UnsynchronisedLyricFrame ConvertToUnsynchronisedLyricsFrame(IFrame frame)
         {
             if (frame.Type != FrameType.UnsynchronisedLyric)
             {
-                throw new ID3TagException("Frame Type does not mathch");
+                throw new Id3TagException("Frame Type does not mathch");
             }
 
             var uslt = frame as UnsynchronisedLyricFrame;
             if (uslt == null)
             {
-                throw new ID3TagException("Could not cast To UnsynchronisedLyricFrame!");
+                throw new Id3TagException("Could not cast To UnsynchronisedLyricFrame!");
             }
 
             return uslt;

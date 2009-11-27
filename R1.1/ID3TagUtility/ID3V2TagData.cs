@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using ID3Tag.HighLevel;
+using Id3Tag.HighLevel;
 
-namespace ID3TagUtility
+namespace Id3TagUtility
 {
     public class ID3V2TagData
     {
@@ -31,7 +31,7 @@ namespace ID3TagUtility
         // Some advertisement ;-)
         public string Encoder
         {
-            get { return "ID3TagLib.Net"; }
+            get { return "Id3TagLib.Net"; }
         }
 
         public bool WriteLyricsFlag { get; set; }

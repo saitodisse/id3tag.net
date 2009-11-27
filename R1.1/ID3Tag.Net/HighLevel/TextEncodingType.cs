@@ -1,9 +1,9 @@
-﻿namespace ID3Tag.HighLevel
+﻿namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Defines the Text Encoding.
     /// </summary>
-    public enum TextEncodingType : byte
+    public enum TextEncodingType
     {
         /// <summary>
         /// ISO-8859-1 encoding.

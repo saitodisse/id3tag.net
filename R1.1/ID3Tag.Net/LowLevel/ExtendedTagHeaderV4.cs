@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
-namespace ID3Tag.LowLevel
+namespace Id3Tag.LowLevel
 {
     /// <summary>
     /// Represents the extended tag header of the ID3V2.4 tag.
@@ -35,7 +36,7 @@ namespace ID3Tag.LowLevel
         }
 
         internal static ExtendedTagHeaderV4 Create(bool updateFlag, bool crcPresent, bool restrictionPresent,
-                                                   byte restriction, byte[] crc32)
+                                                   byte restriction, ReadOnlyCollection<byte> crc32)
         {
             var extendedHeader = new ExtendedTagHeaderV4();
 
@@ -63,7 +64,7 @@ namespace ID3Tag.LowLevel
                 // Read the update content
 
                 //TODO: The length is always 0. hm... better implementation here?
-                var length = content[startIndex];
+                //var length = content[startIndex];
                 startIndex++;
 
                 extendedHeader.UpdateTag = true;
@@ -79,7 +80,7 @@ namespace ID3Tag.LowLevel
                 startIndex += 6;
 
                 extendedHeader.CrcDataPresent = true;
-                extendedHeader.Crc32 = crcBytes;
+                extendedHeader.Crc32 = new ReadOnlyCollection<byte>(crcBytes);
             }
 
             if (restrictionFlag)

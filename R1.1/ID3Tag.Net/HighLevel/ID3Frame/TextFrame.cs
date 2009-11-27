@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
-using ID3Tag.LowLevel;
+using Id3Tag.LowLevel;
 
-namespace ID3Tag.HighLevel.ID3Frame
+namespace Id3Tag.HighLevel.Id3Frame
 {
 	/// <summary>
 	/// The text information frames are the most important frames, containing information like artist, 
@@ -28,7 +29,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <param name="encoding">the text encoding.</param>
 		public TextFrame(string id, string content, Encoding encoding)
 		{
-			Descriptor.ID = id;
+			Descriptor.Id = id;
 			Content = content;
 			TextEncoding = encoding;
 		}
@@ -52,7 +53,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns>the raw frame.</returns>
 		public override RawFrame Convert(TagVersion version)
 		{
-			FrameFlags flags = Descriptor.GetFlags();
+			FrameOptions options = Descriptor.Options;
 
         	byte[] payload;
 			using (var writer = new FrameDataWriter())
@@ -63,7 +64,7 @@ namespace ID3Tag.HighLevel.ID3Frame
 				payload = writer.ToArray();
 			}
 
-			return RawFrame.CreateFrame(Descriptor.ID, flags, payload, version);
+			return RawFrame.CreateFrame(Descriptor.Id, options, payload, version);
 		}
 
 		/// <summary>
@@ -94,8 +95,10 @@ namespace ID3Tag.HighLevel.ID3Frame
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return String.Format("Text [{0}] : Encoding = {1} , Text = {2}",
-				Descriptor.ID,
+			return String.Format(
+				CultureInfo.InvariantCulture, 
+				"Text [{0}] : Encoding = {1} , Text = {2}",
+				Descriptor.Id,
 				TextEncoding.EncodingName,
 				Content);
 		}

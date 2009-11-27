@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace ID3Tag.HighLevel
+namespace Id3Tag.HighLevel
 {
     /// <summary>
     /// Contains a dictionary of Genre IDs.
     /// </summary>
     public class Genre
     {
-        private static Genre m_Instance;
+        private static Genre _instance;
 
         private readonly Dictionary<int, string> m_GenreDict;
 
@@ -27,12 +27,12 @@ namespace ID3Tag.HighLevel
         {
             get
             {
-                if (m_Instance == null)
+                if (_instance == null)
                 {
-                    m_Instance = new Genre();
+                    _instance = new Genre();
                 }
 
-                return m_Instance;
+                return _instance;
             }
         }
 
@@ -47,7 +47,7 @@ namespace ID3Tag.HighLevel
 
             if (!found)
             {
-                throw new ID3TagException("Genre id not found.");
+                throw new Id3TagException("Genre id not found.");
             }
 
             var genreDescription = m_GenreDict[genreId];
@@ -65,19 +65,22 @@ namespace ID3Tag.HighLevel
             return found;
         }
 
-        /// <summary>
-        /// Gets the genres. The index of the list represents the id.
-        /// </summary>
-        /// <returns>A new readonly collection</returns>
-        public ReadOnlyCollection<string> GetGenres()
-        {
-            var values = m_GenreDict.Values;
-            var list = new List<string>(values);
+    	/// <summary>
+    	/// Gets the genres. The index of the list represents the id.
+    	/// </summary>
+    	/// <returns>A new readonly collection</returns>
+    	public ReadOnlyCollection<string> AllGenres
+    	{
+    		get
+    		{
+    			var values = m_GenreDict.Values;
+    			var list = new List<string>(values);
 
-            return new ReadOnlyCollection<string>(list);
-        }
+    			return new ReadOnlyCollection<string>(list);
+    		}
+    	}
 
-        private static Dictionary<int, string> GetDictionary()
+    	private static Dictionary<int, string> GetDictionary()
         {
             var genres = new Dictionary<int, string>
                              {

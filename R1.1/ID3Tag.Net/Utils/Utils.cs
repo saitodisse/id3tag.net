@@ -1,163 +1,144 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace ID3Tag
+namespace Id3Tag
 {
-    internal static class Utils
-    {
-        internal static int CalculateTagHeaderSize(byte[] size)
-        {
-            int curValue = 0;
+	internal static class Utils
+	{
+		/// <summary>
+		/// Calculates the size that is used in various parts of the Frame Header.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns></returns>
+		internal static int CalculateSize(byte[] data)
+		{
+			var size = Convert8BitEncodedToInt32(data);
 
-            curValue += CalculateByteValue(size[3], 0, 7);
-            curValue += CalculateByteValue(size[2], 7, 7);
-            curValue += CalculateByteValue(size[1], 14, 7);
-            curValue += CalculateByteValue(size[0], 21, 7);
+			// Make sure that size does not exceed max ID3 Tag value and that we could cast it to Int32
+			if (size > 268435455)
+			{
+				throw new Id3TagException(
+					String.Format(CultureInfo.InvariantCulture, "Size value of {0} exceeds max ID3 tag size value of 268435455).", size));
+			}
 
-            return curValue;
-        }
+			return (int)size;
+		}
 
-        internal static int CalculateExtendedHeaderSize(byte[] size)
-        {
-            int curValue = 0;
+		/// <summary>
+		/// Converts 8-bit encoded data to 32-bit integer value.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns></returns>
+		public static uint Convert8BitEncodedToInt32(byte[] data)
+		{
+			#region Params Check
 
-            curValue += CalculateByteValue(size[3], 0, 8);
-            curValue += CalculateByteValue(size[2], 8, 8);
-            curValue += CalculateByteValue(size[1], 16, 8);
-            curValue += CalculateByteValue(size[0], 24, 8);
+			if (data == null)
+			{
+				throw new ArgumentNullException("data");
+			}
 
-            return curValue;
-        }
+			if (data.Length != 4)
+			{
+				throw new ArgumentException("Array length must be 4", "data");
+			}
 
-        internal static int CalculateExtendedHeaderPaddingSize(byte[] size)
-        {
-            int curValue = 0;
+			#endregion
 
-            curValue += CalculateByteValue(size[3], 0, 8);
-            curValue += CalculateByteValue(size[2], 8, 8);
-            curValue += CalculateByteValue(size[1], 16, 8);
-            curValue += CalculateByteValue(size[0], 24, 8);
+			uint value = 0;
 
-            return curValue;
-        }
+			for (int i = 0; i < 4; i++)
+			{
+				value <<= 8;
+				value += data[i];
+			}
 
-        internal static long CalculateFrameHeaderSize(byte[] size)
-        {
-            uint headersize = 0;
+			return value;
+		}
 
-            for (int i = 0; i < 4; i++)
-            {
-            headersize <<= 7;
-            headersize += (uint) size[i] & 0x7F;
-            }
+		/// <summary>
+		/// Converts 7-bit encoded data to 32-bit integer value.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns></returns>
+		public static int Convert7BitEncodedToInt32(byte[] data)
+		{
+			#region Params Check
 
-            return (int)headersize;
+			if (data == null)
+			{
+				throw new ArgumentNullException("data");
+			}
 
-            // Old Code:
-            //int curValue = 0;
+			if (data.Length != 4)
+			{
+				throw new ArgumentException("Array length must be 4", "data");
+			}
 
-            //curValue += CalculateByteValue(size[3], 0, 8);
-            //curValue += CalculateByteValue(size[2], 8, 8);
-            //curValue += CalculateByteValue(size[1], 16, 8);
-            //curValue += CalculateByteValue(size[0], 24, 8);
-        }
+			#endregion
 
-        private static int CalculateByteValue(byte b, int index, int maxBit)
-        {
-            var curIndex = index;
-            int curValue = 0;
+			uint value = 0;
 
-            if ((b & 0x01) == 0x01)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
+			for (int i = 0; i < 4; i++)
+			{
+				var b = data[i];
+				if (b > 0x7F)
+				{
+					throw new Id3TagException("Byte value exceeds 127.");
+				}
 
-            if ((b & 0x02) == 0x02)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
+				value <<= 7;
+				value += b;
+			}
 
-            if ((b & 0x04) == 0x04)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
+			return (int)value;
+		}
 
-            if ((b & 0x08) == 0x08)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
-
-            if ((b & 0x10) == 0x10)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
-
-            if ((b & 0x20) == 0x20)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
-
-            if ((b & 0x40) == 0x40)
-            {
-                curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-            }
-            curIndex++;
-
-            if (maxBit > 7)
-            {
-                if ((b & 0x80) == 0x80)
-                {
-                    curValue += Convert.ToInt32(Math.Pow(2, curIndex));
-                }
-            }
-
-            return curValue;
-        }
-
-        public static string BytesToString(byte[] bytes)
-        {
-			if (bytes == null || bytes.Length == 0)
+		/// <summary>
+		/// Converts byte array to a string of printable characters.
+		/// </summary>
+		/// <param name="bytes">The bytes.</param>
+		/// <returns></returns>
+		public static string BytesToString(IList<byte> bytes)
+		{
+			if (bytes == null || bytes.Count == 0)
 			{
 				return null;
 			}
 
-            var sb = new StringBuilder();
+			var sb = new StringBuilder();
 
-            foreach (var byteValue in bytes)
-            {
-                sb.AppendFormat("{0:X2} ", byteValue);
-            }
+			foreach (byte byteValue in bytes)
+			{
+				sb.AppendFormat("{0:X2} ", byteValue);
+			}
 
-            return sb.ToString();
-        }
+			return sb.ToString();
+		}
 
-        internal static void WriteAudioStream(Stream output, Stream input, long length)
-        {
-            var buffer = new byte[64000];
-            while (input.Position < length)
-            {
-                var diff = length - input.Position;
-                if (diff < buffer.Length)
-                {
-                    // Read the rest.
-                    var count = Convert.ToInt32(diff);
-                    input.Read(buffer, 0, count);
-                    output.Write(buffer, 0, count);
-                }
-                else
-                {
-                    // Read the next 64K Byte buffer.
-                    input.Read(buffer, 0, buffer.Length);
-                    output.Write(buffer, 0, buffer.Length);
-                }
-            }
-        }
-    }
+		internal static void WriteAudioStream(Stream output, Stream input, long length)
+		{
+			var buffer = new byte[64000];
+			while (input.Position < length)
+			{
+				long diff = length - input.Position;
+				if (diff < buffer.Length)
+				{
+					// Read the rest.
+					int count = Convert.ToInt32(diff);
+					input.Read(buffer, 0, count);
+					output.Write(buffer, 0, count);
+				}
+				else
+				{
+					// Read the next 64K Byte buffer.
+					input.Read(buffer, 0, buffer.Length);
+					output.Write(buffer, 0, buffer.Length);
+				}
+			}
+		}
+	}
 }
