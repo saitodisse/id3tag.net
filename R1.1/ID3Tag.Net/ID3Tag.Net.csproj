@@ -57,7 +57,7 @@
     <Compile Include="FileState.cs" />
     <Compile Include="HighLevel\EncodedTextFrame.cs" />
     <Compile Include="HighLevel\FrameContainer.cs" />
-    <Compile Include="HighLevel\FrameUtils.cs" />
+    <Compile Include="HighLevel\FrameUtilities.cs" />
     <Compile Include="HighLevel\Genre.cs" />
     <Compile Include="HighLevel\ID3Frame\InvolvedPeopleListFrame.cs" />
     <Compile Include="HighLevel\ID3Frame\PlayCounterFrame.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="LowLevel\ExtendedTagHeaderV3.cs" />
     <Compile Include="Id3TagFactory.cs" />
     <Compile Include="LowLevel\ExtendedTagHeaderV4.cs" />
-    <Compile Include="LowLevel\FrameFlags.cs" />
+    <Compile Include="LowLevel\FrameOptions.cs" />
     <Compile Include="LowLevel\Id3V24Validator.cs" />
     <Compile Include="LowLevel\Id3V2Validator.cs" />
     <Compile Include="LowLevel\IIOController.cs" />
