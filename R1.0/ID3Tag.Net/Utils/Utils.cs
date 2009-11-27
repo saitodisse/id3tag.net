@@ -48,8 +48,8 @@ namespace ID3Tag
 
             for (int i = 0; i < 4; i++)
             {
-            headersize <<= 7;
-            headersize += (uint) size[i] & 0x7F;
+				headersize <<= 8;
+				headersize += size[i];
             }
 
             return (int)headersize;
