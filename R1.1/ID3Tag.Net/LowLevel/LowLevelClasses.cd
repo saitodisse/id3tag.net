@@ -3,12 +3,9 @@
   <Class Name="Id3Tag.LowLevel.RawFrame">
     <Position X="3.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAQAACAAAAAAAEAJAAQAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAQAAAAAAAAAAEAJAAQAABAAAA=</HashCode>
       <FileName>LowLevel\RawFrame.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Flag" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Id3Tag.LowLevel.RawFrameV3" Collapsed="true">
     <Position X="5.75" Y="5.5" Width="1.5" />
@@ -51,13 +48,6 @@
       <Property Name="HeaderType" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Id3Tag.LowLevel.FrameFlags">
-    <Position X="8" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEAIAAAACAACAAAAAAAAAIAAAAAAAAAAAAIAAAQAgA=</HashCode>
-      <FileName>LowLevel\FrameFlags.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Id3Tag.LowLevel.Id3TagInfo">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <Compartments>
@@ -65,8 +55,8 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAgAAAAAAAEAAAEAgAAgAAAAAACAAAAE=</HashCode>
-      <FileName>LowLevel\Id3TagInfo.cs</FileName>
+      <HashCode>AAAAAAAQAAAgAgAAABAAAAAAAEAgAAgAAAAAACAAAAE=</HashCode>
+      <FileName>LowLevel\ID3TagInfo.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ExtendedHeader" />
@@ -85,7 +75,7 @@
   <Class Name="Id3Tag.LowLevel.Id3V2Validator" Collapsed="true">
     <Position X="2.75" Y="9.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAQAECIA=</HashCode>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>LowLevel\Id3V2Validator.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -104,7 +94,14 @@
       <FileName>LowLevel\Validator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Id3Tag.LowLevel.IIoController">
+  <Class Name="Id3Tag.LowLevel.FrameOptions">
+    <Position X="8" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAAAACAACAAAAAAAAAIAAAAAAAAAAAAIAAAQAgA=</HashCode>
+      <FileName>LowLevel\FrameOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Id3Tag.LowLevel.IIOController">
     <Position X="0.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEEAAA=</HashCode>
