@@ -165,7 +165,7 @@ namespace Id3Tag.HighLevel
                                  {78, "Rock & Roll"},
                                  {79, "Hard Rock"},
                                  {80, "Folk"},
-                                 {81, "Fock-Rock"},
+                                 {81, "Folk-Rock"},
                                  {82, "National Folk"},
                                  {83, "Swing"},
                                  {84, "Fast Fusion"},
