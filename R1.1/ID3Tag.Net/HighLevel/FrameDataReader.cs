@@ -71,7 +71,7 @@ namespace Id3Tag.HighLevel
 				}
 			}
 
-			throw new InvalidId3StructureException("Unocode encoded text does not start with the byte order mark (BOM).");
+			throw new InvalidId3StructureException("Unicode encoded text does not start with the byte order mark (BOM).");
 		}
 
 		/// <summary>
