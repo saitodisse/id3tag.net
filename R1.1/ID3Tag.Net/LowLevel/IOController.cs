@@ -28,7 +28,10 @@ namespace Id3Tag.LowLevel
 			Id3TagInfo info;
 			try
 			{
-				fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
+			    var filename = file.FullName;
+
+			    Logger.LogInfo(String.Format("Open File {0}", filename));
+                fs = File.Open(filename, FileMode.Open, FileAccess.Read);
 
 				info = Read(fs);
 			}
@@ -78,8 +81,10 @@ namespace Id3Tag.LowLevel
 			var tagInfo = new Id3TagInfo();
 			byte[] rawTagContent;
 
+            Logger.LogInfo("Reading ID3v2 tag from Stream.");
 			using (var reader = new BinaryReader(inputStream))
 			{
+                Logger.LogInfo("Reading ID3v2 Header");
 				var headerBytes = new byte[10];
 				reader.Read(headerBytes, 0, 10);
 
@@ -95,6 +100,7 @@ namespace Id3Tag.LowLevel
 				    throw ex;
 				}
 
+			    Logger.LogInfo("Reading ID3v2 Content");
 				rawTagContent = new byte[rawTagLength];
 				reader.Read(rawTagContent, 0, rawTagLength);
 			}
@@ -106,6 +112,7 @@ namespace Id3Tag.LowLevel
 			if (tagInfo.Unsynchronised)
 			{
 				// Scan for unsynchronisation bytes!
+			    Logger.LogInfo("Remove Unsynchronisatzion bytes.");
 				tagContent = RemoveUnsyncBytes(rawTagContent);
 			}
 			else
@@ -122,8 +129,11 @@ namespace Id3Tag.LowLevel
 				//
 				if (tagInfo.ExtendedHeaderAvailable)
 				{
+				    Logger.LogInfo("Analyse Extended Header");
 					AnalyseExtendedHeader(reader, tagInfo);
 				}
+
+                Logger.LogInfo(String.Format("Start reading ID3v2.{0} frame.",tagInfo.MajorVersion));
 
 				//
 				//  Read the content
@@ -132,6 +142,7 @@ namespace Id3Tag.LowLevel
 				long pos = reader.BaseStream.Position;
 				while ((pos + 10) < length)
 				{
+                    Logger.LogInfo("Getting frame...");
 					bool continueReading = ReadContent(reader, tagInfo, frameBytes);
 					if (!continueReading)
 					{
@@ -1065,6 +1076,8 @@ namespace Id3Tag.LowLevel
 				//
 				string frameId = Encoding.ASCII.GetString(frameIdBytes);
 				int size = Utils.CalculateSize(sizeBytes);
+                Logger.LogInfo(String.Format("Frame found : ID = {0}, Size = {1}",frameId,size));
+
 				long bytesLeft = reader.BaseStream.Length - reader.BaseStream.Position;
 				if (size > bytesLeft)
 				{
