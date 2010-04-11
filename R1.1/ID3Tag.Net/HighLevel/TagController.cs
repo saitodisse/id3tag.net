@@ -35,7 +35,9 @@ namespace Id3Tag.HighLevel
                     container = DecodeV4Tag(info);
                     break;
                 default:
-                    throw new Id3TagException("This major revision is not supported!");
+                    var ex =  new Id3TagException("This major revision is not supported!");
+                    Logger.LogError(ex);
+                    throw ex;
             }
 
             //
@@ -55,7 +57,10 @@ namespace Id3Tag.HighLevel
                 }
                 else
                 {
-                    throw new Id3TagException("Frame analysing failed!");
+                    var ex =  new Id3TagException("Frame analysing failed!");
+                    Logger.LogError(ex);
+
+                    throw ex;
                 }
             }
 
@@ -79,7 +84,10 @@ namespace Id3Tag.HighLevel
                     EncodeV4(tagInfo, container);
                     break;
                 default:
-                    throw new Id3TagException("Unknown version!");
+                    var ex = new Id3TagException("Unknown version!");
+                    Logger.LogError(ex);
+
+                    throw ex;
             }
 
             foreach (var frame in container)

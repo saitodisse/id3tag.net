@@ -14,6 +14,7 @@ namespace Id3Tag
         /// <returns>a new I/O controller.</returns>
         public static IIOController CreateIOController()
         {
+            Logger.LogInfo("Create IO Controller");
             return new IoController();
         }
 
@@ -23,6 +24,7 @@ namespace Id3Tag
         /// <returns>a new ITagController.</returns>
         public static ITagController CreateTagController()
         {
+            Logger.LogInfo("Create TagController");
             return new TagController();
         }
 
@@ -32,6 +34,7 @@ namespace Id3Tag
         /// <returns>a new converter.</returns>
         public static IId3V1Controller CreateId3V1Controller()
         {
+            Logger.LogInfo("Create Id3V1 Controller");
             return new Id3V1Controller();
         }
 
@@ -42,6 +45,7 @@ namespace Id3Tag
         /// <returns>the representation instance.</returns>
         public static TagContainer CreateId3Tag(TagVersion version)
         {
+            Logger.LogInfo(string.Format("Create ID3Tag with TagVersion {0}",version));
             TagContainer container;
 
             switch (version)
@@ -65,6 +69,7 @@ namespace Id3Tag
 		/// <returns>New instance of new instance of <see cref="Id3TagManager"/>.</returns>
 		public static Id3TagManager CreateId3TagManager()
 		{
+            Logger.LogInfo("Create Id3TagManager");
 			return new Id3TagManager();
 		}
     }

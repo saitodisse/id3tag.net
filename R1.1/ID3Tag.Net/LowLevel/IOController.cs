@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -17,7 +18,10 @@ namespace Id3Tag.LowLevel
 			bool fileExists = file.Exists;
 			if (!fileExists)
 			{
-				throw new FileNotFoundException("File " + file.FullName + " not found!.");
+				var ex =  new FileNotFoundException("File " + file.FullName + " not found!.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			FileStream fs = null;
@@ -28,12 +32,14 @@ namespace Id3Tag.LowLevel
 
 				info = Read(fs);
 			}
-			catch (Id3TagException)
+			catch (Id3TagException idEx)
 			{
+                Logger.LogError(idEx);
 				throw;
 			}
 			catch (Exception ex)
 			{
+                Logger.LogError(ex);
 				throw new Id3TagException("Unknown Exception during reading.", ex);
 			}
 			finally
@@ -52,12 +58,18 @@ namespace Id3Tag.LowLevel
 		{
 			if (inputStream == null)
 			{
-				throw new ArgumentNullException("inputStream");
+				var ex =  new ArgumentNullException("inputStream");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (!inputStream.CanRead)
 			{
-				throw new Id3IOException("Cannot read data stream.");
+				var ex =  new Id3IOException("Cannot read data stream.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			//
@@ -75,9 +87,12 @@ namespace Id3Tag.LowLevel
 				long bytesLeft = reader.BaseStream.Length - reader.BaseStream.Position;
 				if (rawTagLength > bytesLeft)
 				{
-					throw new Id3TagException(
+					var ex =  new Id3TagException(
 						String.Format(
 							CultureInfo.InvariantCulture, "Specified tag size {0} exceeds actual content size {1}.", rawTagLength, bytesLeft));
+
+                    Logger.LogError(ex);
+				    throw ex;
 				}
 
 				rawTagContent = new byte[rawTagLength];
@@ -141,7 +156,10 @@ namespace Id3Tag.LowLevel
 
 						if (!crcOk)
 						{
-							throw new Id3TagException("The CRC32 validation failed!");
+                            var ex =  new Id3TagException("The CRC32 validation failed!");
+                            Logger.LogError(ex);
+
+						    throw ex;
 						}
 					}
 					else
@@ -163,7 +181,10 @@ namespace Id3Tag.LowLevel
                          */
 
 						// TODO: Implement the CRC32 check for ID3v2.4
-						throw new NotSupportedException("CRC32 check is not support for > ID3 V2.3");
+                        var ex = new NotSupportedException("CRC32 check is not support for > ID3 V2.3");
+                        Logger.LogError(ex);
+
+					    throw ex;
 					}
 				}
 			}
@@ -175,15 +196,24 @@ namespace Id3Tag.LowLevel
 		{
 			if (input == null)
 			{
-				throw new ArgumentNullException("input");
+				var ex =  new ArgumentNullException("input");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 			if (output == null)
 			{
-				throw new ArgumentNullException("output");
+				var ex =  new ArgumentNullException("output");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 			if (tagContainer == null)
 			{
-				throw new ArgumentNullException("tagContainer");
+				var ex =  new ArgumentNullException("tagContainer");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			//
@@ -193,7 +223,10 @@ namespace Id3Tag.LowLevel
 			bool isTagValid = ValidateTag(tagContainer, out message);
 			if (!isTagValid)
 			{
-				throw new InvalidId3StructureException(message);
+				var ex = new InvalidId3StructureException(message);
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			//
@@ -209,7 +242,10 @@ namespace Id3Tag.LowLevel
 					tagBytes = BuildId3V4Tag(tagContainer);
 					break;
 				default:
-					throw new Id3TagException("This TagVersion is not supported!");
+					var ex =  new Id3TagException("This TagVersion is not supported!");
+                    Logger.LogError(ex);
+
+			        throw ex;
 			}
 
 			//
@@ -244,11 +280,17 @@ namespace Id3Tag.LowLevel
 			//
 			if (!input.CanRead)
 			{
-				throw new Id3IOException("Cannot read input stream");
+				var ex = new Id3IOException("Cannot read input stream");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 			if (!output.CanWrite)
 			{
-				throw new Id3IOException("Cannot write to output stream");
+				var ex = new Id3IOException("Cannot write to output stream");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			WriteToStream(input, output, tagBytes);
@@ -258,22 +300,34 @@ namespace Id3Tag.LowLevel
 		{
 			if (audioStream == null)
 			{
-				throw new ArgumentNullException("audioStream");
+				var ex = new ArgumentNullException("audioStream");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (!audioStream.CanRead)
 			{
-				throw new Id3IOException("Cannot read data stream.");
+				var ex = new Id3IOException("Cannot read data stream.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (!audioStream.CanSeek)
 			{
-				throw new Id3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+				var ex = new Id3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (audioStream.Length < 128)
 			{
-				throw new Id3IOException("Cannot read ID3v1 tag because the stream is too short");
+				var ex =  new Id3IOException("Cannot read ID3v1 tag because the stream is too short");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			bool id3V1Found;
@@ -309,7 +363,10 @@ namespace Id3Tag.LowLevel
 			bool fileExists = file.Exists;
 			if (!fileExists)
 			{
-				throw new FileNotFoundException("File " + file.FullName + " not found!.");
+				var ex = new FileNotFoundException("File " + file.FullName + " not found!.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			FileStream fs = null;
@@ -319,12 +376,14 @@ namespace Id3Tag.LowLevel
 				fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
 				state = DetermineTagStatus(fs);
 			}
-			catch (Id3TagException)
+			catch (Id3TagException idEx)
 			{
+                Logger.LogError(idEx);
 				throw;
 			}
 			catch (Exception ex)
 			{
+                Logger.LogError(ex);
 				throw new Id3TagException("Unknown Exception during reading.", ex);
 			}
 			finally
@@ -366,7 +425,9 @@ namespace Id3Tag.LowLevel
 			}
 			catch (Exception ex)
 			{
-				throw new Id3IOException("Cannot write Tag.", ex);
+				var ioException =  new Id3IOException("Cannot write Tag.", ex);
+                Logger.LogError(ioException);
+			    throw ioException;
 			}
 		}
 
@@ -581,7 +642,10 @@ namespace Id3Tag.LowLevel
 
 					break;
 				default:
-					throw new Id3TagException("Unknown version!");
+					var ex = new Id3TagException("Unknown version!");
+                    Logger.LogError(ex);
+
+			        throw ex;
 			}
 
 			return tagHeader;
@@ -750,7 +814,10 @@ namespace Id3Tag.LowLevel
 
 			if (!id3PatternFound)
 			{
-				throw new Id3HeaderNotFoundException();
+				var ex = new Id3HeaderNotFoundException();
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			int majorVersion = Convert.ToInt32(headerBytes[3]);
@@ -798,7 +865,9 @@ namespace Id3Tag.LowLevel
 					validator = new Id3V24Validator();
 					break;
 				default:
-					throw new Id3TagException("Unknown version!");
+					var ex = new Id3TagException("Unknown version!");
+                    Logger.LogError(ex);
+			        throw ex;
 			}
 
 			bool isValid = validator.Validate(tagContainer);
@@ -936,7 +1005,9 @@ namespace Id3Tag.LowLevel
 					extendedHeader = ExtendedTagHeaderV4.Create(content);
 					break;
 				default:
-					throw new Id3TagException("Unknown extended header found! ");
+					var ex = new Id3TagException("Unknown extended header found! ");
+                    Logger.LogError(ex);
+			        throw ex;
 			}
 
 			tagInfo.ExtendedHeader = extendedHeader;
@@ -997,9 +1068,12 @@ namespace Id3Tag.LowLevel
 				long bytesLeft = reader.BaseStream.Length - reader.BaseStream.Position;
 				if (size > bytesLeft)
 				{
-					throw new Id3TagException(
+					var ex = new Id3TagException(
 						String.Format(
 							CultureInfo.InvariantCulture, "Specified frame size {0} exceeds actual frame size {1}", size, bytesLeft));
+
+                    Logger.LogError(ex);
+				    throw ex;
 				}
 
 				var payloadBytes = new byte[size];
@@ -1015,7 +1089,10 @@ namespace Id3Tag.LowLevel
 						frame = RawFrame.CreateV4Frame(frameId, flagsBytes, payloadBytes);
 						break;
 					default:
-						throw new Id3TagException("Not supported major revision found!");
+						var ex = new Id3TagException("Not supported major revision found!");
+                        Logger.LogError(ex);
+
+				        throw ex;
 				}
 
 				tagInfo.Frames.Add(frame);

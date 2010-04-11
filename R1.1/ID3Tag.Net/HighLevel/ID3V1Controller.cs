@@ -19,12 +19,18 @@ namespace Id3Tag.HighLevel
 		{
 			if (!inputStream.CanSeek)
 			{
-				throw new Id3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+				var ex = new Id3TagException("Cannot read ID3v1 tag because the stream does not support seek.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (inputStream.Length < 128)
 			{
-				throw new Id3IOException("Cannot read ID3v1 tag because the stream is too short");
+				var ex = new Id3IOException("Cannot read ID3v1 tag because the stream is too short");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			//
@@ -37,7 +43,10 @@ namespace Id3Tag.HighLevel
 			bool isValidTag = CheckID(tagBytes);
 			if (!isValidTag)
 			{
-				throw new Id3HeaderNotFoundException("TAG header not found");
+				var ex = new Id3HeaderNotFoundException("TAG header not found");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			Id3V1Tag v1Tag = ExtractTag(tagBytes, codePage);
@@ -75,7 +84,10 @@ namespace Id3Tag.HighLevel
 			bool fileExists = file.Exists;
 			if (!fileExists)
 			{
-				throw new FileNotFoundException("File " + file.FullName + " not found!.");
+				var ex = new FileNotFoundException("File " + file.FullName + " not found!.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			FileStream fs = null;
@@ -85,13 +97,17 @@ namespace Id3Tag.HighLevel
 				fs = File.Open(file.FullName, FileMode.Open, FileAccess.Read);
 				info = Read(fs, codePage);
 			}
-			catch (Id3TagException)
+			catch (Id3TagException id3TagException)
 			{
+                Logger.LogError(id3TagException);
 				throw;
 			}
 			catch (Exception ex)
 			{
-				throw new Id3TagException("Unknown Exception during reading.", ex);
+				var tagEx = new Id3TagException("Unknown Exception during reading.", ex);
+                Logger.LogError(tagEx);
+
+			    throw tagEx;
 			}
 			finally
 			{
@@ -129,27 +145,42 @@ namespace Id3Tag.HighLevel
 			//
 			if (tag == null)
 			{
-				throw new ArgumentNullException("tag");
+				var ex = new ArgumentNullException("tag");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (input == null)
 			{
-				throw new ArgumentNullException("input");
+				var ex = new ArgumentNullException("input");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (output == null)
 			{
-				throw new ArgumentNullException("output");
+				var ex = new ArgumentNullException("output");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (!input.CanSeek)
 			{
-				throw new Id3TagException("Cannot write ID3V1 tag because the source does not support seek.");
+				var ex = new Id3TagException("Cannot write ID3V1 tag because the source does not support seek.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			if (!output.CanWrite)
 			{
-				throw new Id3TagException("Cannot write ID3V1 tag because the output does not support writing.");
+				var ex = new Id3TagException("Cannot write ID3V1 tag because the output does not support writing.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			try
@@ -170,7 +201,10 @@ namespace Id3Tag.HighLevel
 			}
 			catch (Exception ex)
 			{
-				throw new Id3IOException("Cannot write ID3v1 tag", ex);
+				var ioEx = new Id3IOException("Cannot write ID3v1 tag", ex);
+                Logger.LogError(ioEx);
+
+			    throw ioEx;
 			}
 		}
 
@@ -360,7 +394,10 @@ namespace Id3Tag.HighLevel
 
 			if (!encoding.IsSingleByte)
 			{
-				throw new InvalidOperationException("Text encoding {0} is not a single-byte and it cannot be used in ID3v1 tags.");
+				var ex = new InvalidOperationException("Text encoding {0} is not a single-byte and it cannot be used in ID3v1 tags.");
+                Logger.LogError(ex);
+
+			    throw ex;
 			}
 
 			return encoding.GetString(array, 0, count).TrimEnd();

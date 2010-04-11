@@ -115,6 +115,7 @@
     <Compile Include="LowLevel\RawFrameV4.cs" />
     <Compile Include="LowLevel\Validator.cs" />
     <Compile Include="Utils\Crc32.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="LowLevel\RawFrame.cs" />
     <Compile Include="Id3TagException.cs" />

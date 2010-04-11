@@ -73,6 +73,7 @@ namespace Id3Tag.HighLevel
             }
             catch (Exception ex)
             {
+                Logger.LogError(ex);
                 throw new Id3TagException("Cannot create frame : " + ex.Message, ex);
             }
 
@@ -100,7 +101,10 @@ namespace Id3Tag.HighLevel
             var found = Search(id);
             if (!found)
             {
-                throw new ArgumentException("Frame not found", "id");
+                var ex = new ArgumentException("Frame not found", "id");
+                Logger.LogError(ex);
+
+                throw ex;
             }
 
             var frame = CreateFrame(m_Frames[id]);
