@@ -53,5 +53,12 @@ namespace Id3Tag.HighLevel
 		/// <param name="output">the target stream.</param>
 		/// <param name="codePage">The code page for text encoding.</param>
 		void Write(Id3V1Tag tag, Stream input, Stream output, int codePage);
+
+        /// <summary>
+        /// Removes ID3v1 tag.
+        /// </summary>
+        /// <param name="input">the input stream</param>
+        /// <param name="output">the output stream</param>
+        void Remove(Stream input, Stream output);
 	}
 }

@@ -128,7 +128,7 @@ namespace Id3Tag.HighLevel
 		/// <param name="output">the target stream.</param>
 		public void Write(Id3V1Tag tag, Stream input, Stream output)
 		{
-			Write(tag, input, output);
+			Write(tag, input, output, 1252);
 		}
 
 		/// <summary>
@@ -151,44 +151,14 @@ namespace Id3Tag.HighLevel
 			    throw ex;
 			}
 
-			if (input == null)
-			{
-				var ex = new ArgumentNullException("input");
-                Logger.LogError(ex);
+            CheckStreams(input, output);
 
-			    throw ex;
-			}
-
-			if (output == null)
-			{
-				var ex = new ArgumentNullException("output");
-                Logger.LogError(ex);
-
-			    throw ex;
-			}
-
-			if (!input.CanSeek)
-			{
-				var ex = new Id3TagException("Cannot write ID3V1 tag because the source does not support seek.");
-                Logger.LogError(ex);
-
-			    throw ex;
-			}
-
-			if (!output.CanWrite)
-			{
-				var ex = new Id3TagException("Cannot write ID3V1 tag because the output does not support writing.");
-                Logger.LogError(ex);
-
-			    throw ex;
-			}
-
-			try
+		    try
 			{
 				//
 				//  Read the last 128 Bytes from the stream (ID3v1 Position)
 				//
-				long audioBytesCount = GetAudioBytesCount(input);
+				var audioBytesCount = GetAudioBytesCount(input);
 
 				//
 				//  Write the audio data and tag
@@ -207,6 +177,27 @@ namespace Id3Tag.HighLevel
 			    throw ioEx;
 			}
 		}
+
+	    public void Remove(Stream input, Stream output)
+        {
+            CheckStreams(input,output);
+
+	        try
+	        {
+                var audioBytesCount = GetAudioBytesCount(input);
+                input.Seek(0, SeekOrigin.Begin);
+
+                Utils.WriteAudioStream(output, input, audioBytesCount);
+
+	        }
+	        catch (Exception ex)
+	        {
+                var ioEx = new Id3IOException("Cannot write ID3v1 tag", ex);
+                Logger.LogError(ioEx);
+
+                throw ioEx;
+	        }
+        }
 
 		#endregion
 
@@ -409,6 +400,42 @@ namespace Id3Tag.HighLevel
 			return (tag[0] == 0x54) && (tag[1] == 0x41) && (tag[2] == 0x47);
 		}
 
+        private static void CheckStreams(Stream input, Stream output)
+        {
+            if (input == null)
+            {
+                var ex = new ArgumentNullException("input");
+                Logger.LogError(ex);
+
+                throw ex;
+            }
+
+            if (output == null)
+            {
+                var ex = new ArgumentNullException("output");
+                Logger.LogError(ex);
+
+                throw ex;
+            }
+
+            if (!input.CanSeek)
+            {
+                var ex = new Id3TagException("Cannot write ID3V1 tag because the source does not support seek.");
+                Logger.LogError(ex);
+
+                throw ex;
+            }
+
+            if (!output.CanWrite)
+            {
+                var ex = new Id3TagException("Cannot write ID3V1 tag because the output does not support writing.");
+                Logger.LogError(ex);
+
+                throw ex;
+            }
+        }
+
 		#endregion
-	}
+
+    }
 }

@@ -462,5 +462,50 @@ namespace Id3Tag.Net.NUnit.Highlevel
             var Id3Tag2 = ReadFromStream(output);
             CheckId3Tag(refId3Tag, Id3Tag2);
         }
+
+        [Test]
+        public void RemoveTest1()
+        {
+            var audioData = new byte[] { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20 };
+            var tag = new byte[128];
+            tag[0] = 0x54;
+            tag[1] = 0x41;
+            tag[2] = 0x47;
+
+            int length = audioData.Length + tag.Length;
+            var content = new byte[length];
+            var result = new byte[64000];
+            Array.Copy(audioData,0,content,0,audioData.Length);
+            Array.Copy(tag,0,content,audioData.Length,tag.Length);
+
+            var input = new MemoryStream(content,false);
+            var output = new MemoryStream(result,true);
+
+            var id3Controller = Id3TagFactory.CreateId3V1Controller();
+            id3Controller.Remove(input, output);
+
+            
+         }
+
+        [Test]
+        public void RemoveTest2()
+        {
+            var content = new byte[127];
+
+            for (byte counter=0; counter < content.Length; counter++)
+            {
+                content[counter] = counter;
+            }
+
+            var result = new byte[64000];
+
+            var input = new MemoryStream(content, false);
+            var output = new MemoryStream(result, true);
+
+            var id3Controller = Id3TagFactory.CreateId3V1Controller();
+            id3Controller.Remove(input, output);
+
+
+        }
     }
 }
