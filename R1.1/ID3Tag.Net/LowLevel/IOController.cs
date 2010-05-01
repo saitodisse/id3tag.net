@@ -15,16 +15,9 @@ namespace Id3Tag.LowLevel
 
 		public Id3TagInfo Read(FileInfo file)
 		{
-			bool fileExists = file.Exists;
-			if (!fileExists)
-			{
-				var ex =  new FileNotFoundException("File " + file.FullName + " not found!.");
-                Logger.LogError(ex);
+			CheckFile(file);
 
-			    throw ex;
-			}
-
-			FileStream fs = null;
+		    FileStream fs = null;
 			Id3TagInfo info;
 			try
 			{
@@ -57,7 +50,25 @@ namespace Id3Tag.LowLevel
 			return info;
 		}
 
-		public Id3TagInfo Read(Stream inputStream)
+	    private void CheckFile(FileInfo file)
+	    {
+            if (file == null)
+            {
+                throw new ArgumentNullException("file");
+            }
+
+	        bool fileExists = file.Exists;
+	        if (!fileExists)
+	        {
+	            var ex =  new FileNotFoundException("File " + file.FullName + " not found!.");
+	            Logger.LogError(ex);
+
+	            throw ex;
+	        }
+
+	    }
+
+	    public Id3TagInfo Read(Stream inputStream)
 		{
 			if (inputStream == null)
 			{
@@ -203,6 +214,49 @@ namespace Id3Tag.LowLevel
 			return tagInfo;
 		}
 
+        public void Remove(Stream input, Stream output)
+        {
+            if (input == null)
+            {
+                var ex = new ArgumentNullException("input");
+                Logger.LogError(ex);
+
+                throw ex;
+            }
+            if (output == null)
+            {
+                var ex = new ArgumentNullException("output");
+                Logger.LogError(ex);
+
+                throw ex;
+            }
+
+            var tagId = new byte[3];
+            input.Read(tagId, 0, tagId.Length);
+            input.Position = 0;
+
+            var id3TagFound = IsId3V2TagAvailable(tagId);
+            if (!id3TagFound)
+            {
+                Logger.LogInfo("ID3 V2.3 tag not found!");
+                throw new Id3HeaderNotFoundException("ID3V2 tag not found!");
+            }
+
+            Logger.LogInfo("ID3 V2.3 tag found. Remove it.");
+
+            // Read the ID3 Tag and ignore it...
+            var headerBytes = new byte[10];
+            input.Read(headerBytes, 0, headerBytes.Length);
+            var tagInfo = new Id3TagInfo();
+            var length = AnalyseHeader(headerBytes, tagInfo);
+
+            // Ignore the header bytes and write the audio content to the output stream
+            input.Position = input.Position + length;
+
+            Logger.LogInfo("Write audio file");
+            Utils.WriteAudioStream(output,input,input.Length);
+        }
+
 		public void Write(TagContainer tagContainer, Stream input, Stream output)
 		{
 			if (input == null)
@@ -226,6 +280,8 @@ namespace Id3Tag.LowLevel
 
 			    throw ex;
 			}
+
+            Logger.LogInfo("Starting with the write operation.");
 
 			//
 			//  Validate whether the tag container is in ID3V2.3 formaz
@@ -268,10 +324,12 @@ namespace Id3Tag.LowLevel
 				TagDescriptorV4 descriptor = tagContainer.GetId3V24Descriptor();
 				if (descriptor.Footer)
 				{
+                    Logger.LogInfo("Writing ID3 V2.4 footer");
 					length = tagBytes.LongLength - 20;
 				}
 				else
 				{
+                    Logger.LogInfo("Ignore ID3 V2.4 footer");
 					length = tagBytes.LongLength - 10;
 				}
 			}
@@ -304,6 +362,7 @@ namespace Id3Tag.LowLevel
 			    throw ex;
 			}
 
+            Logger.LogInfo("Write to Stream..");
 			WriteToStream(input, output, tagBytes);
 		}
 
@@ -351,12 +410,10 @@ namespace Id3Tag.LowLevel
 				//
 				// Search for ID3v2 tags
 				//
-				var headerBytes = new byte[3];
-				reader.Read(headerBytes, 0, headerBytes.Length);
+                var tagId = reader.ReadBytes(3);
+                id3V2Found = IsId3V2TagAvailable(tagId);
 
-				id3V2Found = (headerBytes[0] == 0x49) && (headerBytes[1] == 0x44) && (headerBytes[2] == 0x33);
-
-				//
+			    //
 				// Search for ID3v1 tags
 				//
 				var tagBytes = new byte[3];
@@ -369,16 +426,17 @@ namespace Id3Tag.LowLevel
 			return new FileState(id3V1Found, id3V2Found);
 		}
 
-		public FileState DetermineTagStatus(FileInfo file)
-		{
-			bool fileExists = file.Exists;
-			if (!fileExists)
-			{
-				var ex = new FileNotFoundException("File " + file.FullName + " not found!.");
-                Logger.LogError(ex);
+	    private bool IsId3V2TagAvailable(byte[] tagId)
+	    {
+	        bool id3V2Found;
 
-			    throw ex;
-			}
+	        id3V2Found = (tagId[0] == 0x49) && (tagId[1] == 0x44) && (tagId[2] == 0x33);
+	        return id3V2Found;
+	    }
+
+	    public FileState DetermineTagStatus(FileInfo file)
+		{
+            CheckFile(file);
 
 			FileStream fs = null;
 			FileState state;
@@ -795,9 +853,11 @@ namespace Id3Tag.LowLevel
 
 		private static byte[] GetFrameBytes(TagContainer tagContainer)
 		{
+            Logger.LogInfo("Adding frames..");
 			var listBytes = new List<byte>();
 			foreach (IFrame frame in tagContainer)
 			{
+                Logger.LogInfo(String.Format("Write Frame with ID {0}.", frame.Descriptor.Id));
 				RawFrame rawFrame = frame.Convert(tagContainer.TagVersion);
 
 				var headerBytes = new byte[10];
@@ -867,6 +927,8 @@ namespace Id3Tag.LowLevel
 		private static bool ValidateTag(TagContainer tagContainer, out string message)
 		{
 			Validator validator;
+
+            Logger.LogInfo(String.Format("Writing version {0}", tagContainer.TagVersion.ToString()));
 			switch (tagContainer.TagVersion)
 			{
 				case TagVersion.Id3V23:
@@ -880,9 +942,10 @@ namespace Id3Tag.LowLevel
                     Logger.LogError(ex);
 			        throw ex;
 			}
-
+            Logger.LogInfo("Validating tag content..");
 			bool isValid = validator.Validate(tagContainer);
 
+            Logger.LogInfo(String.Format("IsValid = {0}",isValid));
 			if (isValid)
 			{
 				message = String.Empty;
@@ -1119,5 +1182,6 @@ namespace Id3Tag.LowLevel
 
 			return false;
 		}
-	}
+
+    }
 }

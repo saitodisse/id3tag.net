@@ -76,6 +76,7 @@
     <Compile Include="Lowlevel\HeaderTest.cs" />
     <Compile Include="Highlevel\FrameDataReaderTest.cs" />
     <Compile Include="Highlevel\FrameDataWriterTest.cs" />
+    <Compile Include="Lowlevel\RemoveTagTest.cs" />
     <Compile Include="Lowlevel\TagDetectionTest.cs" />
     <Compile Include="Lowlevel\ValidatorTest.cs" />
     <Compile Include="Lowlevel\WriterTest.cs" />

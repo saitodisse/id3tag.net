@@ -160,7 +160,12 @@ namespace Id3Tag.Net.NUnit
 
         protected static void FillData(byte[] array)
         {
-            byte curValue = 0;
+            FillData(array,0);
+        }
+
+        protected static void FillData(byte[] array,byte startValue)
+        {
+            byte curValue = startValue;
 
             for (var i = 0; i < array.Length; i++)
             {

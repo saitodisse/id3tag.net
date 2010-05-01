@@ -23,6 +23,13 @@ namespace Id3Tag.LowLevel
         Id3TagInfo Read(Stream inputStream);
 
         /// <summary>
+        /// Removes a tag from a stream
+        /// </summary>
+        /// <param name="input">the input stream.</param>
+        /// <param name="output">the output stream</param>
+        void Remove(Stream input, Stream output);
+
+        /// <summary>
         /// Writes a high level tag container to a output stream.
         /// </summary>
         /// <param name="tagContainer">the tag.</param>

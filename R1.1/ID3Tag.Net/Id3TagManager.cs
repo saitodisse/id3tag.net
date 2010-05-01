@@ -278,6 +278,27 @@ namespace Id3Tag
 			return ioController.DetermineTagStatus(file);
 		}
 
+        //public void RemoveV2Tag(string path)
+        //{
+        //    #region Params Check
+
+        //    if (String.IsNullOrEmpty(path))
+        //    {
+        //        throw new ArgumentNullException("path");
+        //    }
+
+        //    if (!File.Exists(path))
+        //    {
+        //        throw new FileNotFoundException("File does not exist.", path);
+        //    }
+
+        //    #endregion
+
+        //    string tempPath = Path.GetTempFileName();
+
+
+        //}
+
 		/// <summary>
 		/// Writes the tag data generically.
 		/// </summary>
@@ -342,5 +363,6 @@ namespace Id3Tag
 		private delegate void CopyDataDelegate(FileStream source, FileStream target);
 
 		#endregion
-	}
+
+    }
 }
