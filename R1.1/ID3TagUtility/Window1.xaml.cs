@@ -257,5 +257,24 @@ namespace Id3TagUtility
 
             versionLabel.Content = String.Format("Id3TagLib Version = {0}", version);
         }
+
+        private void OnDelete(object sender, RoutedEventArgs e)
+        {
+            var dialog = new DeleteTag();
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+
+                var sourceFile = dialog.SourceFile;
+                var targetFile = dialog.TargetFile;
+                if (String.IsNullOrEmpty(sourceFile) || String.IsNullOrEmpty(targetFile))
+                {
+                    MessageBox.Show("Please validate your Source and Target file.");
+                    return;
+                }
+
+                m_Controller.RemoveTag(sourceFile, targetFile);
+            }
+        }
     }
 }

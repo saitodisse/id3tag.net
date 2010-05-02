@@ -236,5 +236,46 @@ namespace Id3TagUtility
 
             container.Add(uslt);
         }
+
+        internal void RemoveTag(string sourceFile, string targetFile)
+        {
+            var ioController = Id3TagFactory.CreateIOController();
+            var file = new FileInfo(sourceFile);
+            var fileState = ioController.DetermineTagStatus(file);
+
+            if (fileState.Id3V2TagFound)
+            {
+                Stream input = null;
+                Stream output = null;
+                try
+                {
+                    input = File.Open(sourceFile, FileMode.Open, FileAccess.Read);
+                    output = File.Create(targetFile);
+                    ioController.Remove(input,output);
+
+                    MessageBox.Show("ID3v2.3 tag removed.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    if (input != null)
+                    {
+                        input.Close();
+                    }
+
+                    if (output != null)
+                    {
+                        output.Close();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("ID3v2 tag not found.");
+            }
+        }
     }
 }

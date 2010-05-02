@@ -22,6 +22,10 @@
             <Button Click="OnWrite">
                 Write ID3V2 tag
             </Button>
+            <Button Click="OnDelete">
+                Delete ID3V2 tag
+                
+            </Button>
         </ToolBar>
         <StatusBar  DockPanel.Dock="Bottom"  Height="30" Name="statusBar" VerticalAlignment="Bottom">
             <StatusBarItem>
