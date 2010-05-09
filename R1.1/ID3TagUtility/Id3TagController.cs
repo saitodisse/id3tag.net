@@ -251,7 +251,7 @@ namespace Id3TagUtility
                 {
                     input = File.Open(sourceFile, FileMode.Open, FileAccess.Read);
                     output = File.Create(targetFile);
-                    ioController.Remove(input,output);
+                    ioController.Remove(input, output);
 
                     MessageBox.Show("ID3v2.3 tag removed.");
                 }
@@ -272,6 +272,7 @@ namespace Id3TagUtility
                     }
                 }
             }
+
             else
             {
                 MessageBox.Show("ID3v2 tag not found.");

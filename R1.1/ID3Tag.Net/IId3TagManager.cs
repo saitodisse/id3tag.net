@@ -91,10 +91,16 @@ namespace Id3Tag
 		/// <returns>Status of the tags in the file</returns>
 		FileState GetTagsStatus(string path);
 
-        ///// <summary>
-        ///// Removes the tag from a file
-        ///// </summary>
-        ///// <param name="path">the path to file</param>
-        //void RemoveV2Tag(string path);
+        /// <summary>
+        /// Removes the ID3V1 tag from a file
+        /// </summary>
+        /// <param name="path">the path to file</param>
+        void RemoveV1Tag(string path);
+
+        /// <summary>
+        /// Removes the ID3V2 tag from a file
+        /// </summary>
+        /// <param name="path">the path to file</param>
+        void RemoveV2Tag(string path);
 	}
 }

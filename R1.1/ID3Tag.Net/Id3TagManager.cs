@@ -43,7 +43,7 @@ namespace Id3Tag
 			#endregion
 
 			var file = new FileInfo(path);
-			IId3V1Controller id3Converter = Id3TagFactory.CreateId3V1Controller();
+			var id3Converter = Id3TagFactory.CreateId3V1Controller();
 			return id3Converter.Read(file, codePage);
 		}
 
@@ -84,7 +84,7 @@ namespace Id3Tag
 
 			#endregion
 
-			IId3V1Controller controller = Id3TagFactory.CreateId3V1Controller();
+			var controller = Id3TagFactory.CreateId3V1Controller();
 			WriteTag(path, (input, output) => controller.Write(tag, input, output, codePage));
 		}
 
@@ -137,7 +137,7 @@ namespace Id3Tag
 
 			#endregion
 
-			IId3V1Controller controller = Id3TagFactory.CreateId3V1Controller();
+			var controller = Id3TagFactory.CreateId3V1Controller();
 			WriteTag(sourcePath, targetPath, (input, output) => controller.Write(tag, input, output, codePage));
 		}
 
@@ -174,9 +174,9 @@ namespace Id3Tag
 			#endregion
 
 			var file = new FileInfo(path);
-			IIOController ioController = Id3TagFactory.CreateIOController();
-			ITagController tagController = Id3TagFactory.CreateTagController();
-			Id3TagInfo tagData = ioController.Read(file);
+			var ioController = Id3TagFactory.CreateIOController();
+			var tagController = Id3TagFactory.CreateTagController();
+			var tagData = ioController.Read(file);
 			return tagController.Decode(tagData, codePage);
 		}
 
@@ -274,30 +274,60 @@ namespace Id3Tag
 			#endregion
 
 			var file = new FileInfo(path);
-			IIOController ioController = Id3TagFactory.CreateIOController();
+			var ioController = Id3TagFactory.CreateIOController();
 			return ioController.DetermineTagStatus(file);
 		}
 
-        //public void RemoveV2Tag(string path)
-        //{
-        //    #region Params Check
+        /// <summary>
+        /// Removes the ID3V2 tag from a file
+        /// </summary>
+        /// <param name="path">the path to file</param>
+        public void RemoveV2Tag(string path)
+        {
+            #region Params Check
 
-        //    if (String.IsNullOrEmpty(path))
-        //    {
-        //        throw new ArgumentNullException("path");
-        //    }
+            if (String.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException("path");
+            }
 
-        //    if (!File.Exists(path))
-        //    {
-        //        throw new FileNotFoundException("File does not exist.", path);
-        //    }
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("File does not exist.", path);
+            }
 
-        //    #endregion
-
-        //    string tempPath = Path.GetTempFileName();
+            #endregion
 
 
-        //}
+            var ioController = Id3TagFactory.CreateIOController();
+            WriteTag(path,ioController.Remove);
+
+        }
+
+        /// <summary>
+        /// Removes the ID3V1 tag from a file
+        /// </summary>
+        /// <param name="path">the path to file</param>
+        public void RemoveV1Tag(string path)
+        {
+            #region Params Check
+
+            if (String.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("File does not exist.", path);
+            }
+
+            #endregion
+
+            var id3V1Controller = Id3TagFactory.CreateId3V1Controller();
+            WriteTag(path,id3V1Controller.Remove);
+
+        }
 
 		/// <summary>
 		/// Writes the tag data generically.
