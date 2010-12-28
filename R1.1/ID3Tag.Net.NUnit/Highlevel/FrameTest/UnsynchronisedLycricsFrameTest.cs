@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -26,12 +24,12 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         public void CreateTest1()
         {
             var frame = new UnsynchronisedLyricFrame();
-            Assert.AreEqual(frame.Descriptor.Id,"USLT");
-            Assert.AreEqual(frame.Language,"ENG");
-            Assert.AreEqual(frame.ContentDescriptor,"");
-            Assert.AreEqual(frame.Lyrics,"");
-            Assert.AreEqual(frame.Type,FrameType.UnsynchronisedLyric);
-            Assert.AreEqual(frame.TextEncoding,Encoding.ASCII);
+            Assert.AreEqual(frame.Descriptor.Id, "USLT");
+            Assert.AreEqual(frame.Language, "ENG");
+            Assert.AreEqual(frame.ContentDescriptor, "");
+            Assert.AreEqual(frame.Lyrics, "");
+            Assert.AreEqual(frame.Type, FrameType.UnsynchronisedLyric);
+            Assert.AreEqual(frame.TextEncoding, Encoding.ASCII);
         }
 
         [Test]
@@ -51,30 +49,6 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         }
 
         [Test]
-        public void EmptyLyricsTest()
-        {
-            var frames = new byte[]
-                             {
-                                 // USLT
-                                 0x55, 0x53, 0x4C, 0x54, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00,
-                                 0x00, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00
-                             };
-
-            var completeTag = GetCompleteV3Tag(frames);
-            Read(completeTag);
-
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            Assert.AreEqual(tagContainer.Count, 1);
-
-            var uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
-
-            Assert.AreEqual(uslt.Descriptor.Id, "USLT");
-            Assert.AreEqual(uslt.Language, "ABC");
-            Assert.AreEqual(uslt.ContentDescriptor, "DEF");
-            Assert.AreEqual(uslt.Lyrics, "");
-        }
-
-        [Test]
         public void EmptyDescriptorTest()
         {
             var frames = new byte[]
@@ -84,18 +58,42 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x41, 0x42, 0x43, 0x00, 0x44, 0x45, 0x46
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
+            UnsynchronisedLyricFrame uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
 
             Assert.AreEqual(uslt.Descriptor.Id, "USLT");
             Assert.AreEqual(uslt.Language, "ABC");
             Assert.AreEqual(uslt.ContentDescriptor, "");
             Assert.AreEqual(uslt.Lyrics, "DEF");
+        }
+
+        [Test]
+        public void EmptyLyricsTest()
+        {
+            var frames = new byte[]
+                             {
+                                 // USLT
+                                 0x55, 0x53, 0x4C, 0x54, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00,
+                                 0x00, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00
+                             };
+
+            byte[] completeTag = GetCompleteV3Tag(frames);
+            Read(completeTag);
+
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            Assert.AreEqual(tagContainer.Count, 1);
+
+            UnsynchronisedLyricFrame uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
+
+            Assert.AreEqual(uslt.Descriptor.Id, "USLT");
+            Assert.AreEqual(uslt.Language, "ABC");
+            Assert.AreEqual(uslt.ContentDescriptor, "DEF");
+            Assert.AreEqual(uslt.Lyrics, "");
         }
 
         [Test]
@@ -109,25 +107,24 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x49
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
+            UnsynchronisedLyricFrame uslt = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(tagContainer[0]);
 
             Assert.AreEqual(uslt.Descriptor.Id, "USLT");
-            Assert.AreEqual(uslt.Language,"ABC");
-            Assert.AreEqual(uslt.ContentDescriptor,"DEF");
-            Assert.AreEqual(uslt.Lyrics,"GHI");
+            Assert.AreEqual(uslt.Language, "ABC");
+            Assert.AreEqual(uslt.ContentDescriptor, "DEF");
+            Assert.AreEqual(uslt.Lyrics, "GHI");
 
-            var rawFrame = uslt.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = uslt.Convert(TagVersion.Id3V23);
 
 
-            Assert.AreEqual(rawFrame.Id,"USLT");
+            Assert.AreEqual(rawFrame.Id, "USLT");
             ComparePayload(rawFrame.Payload, frames);
         }
-
     }
 }

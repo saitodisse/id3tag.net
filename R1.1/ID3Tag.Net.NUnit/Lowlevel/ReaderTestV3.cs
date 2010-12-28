@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Lowlevel
@@ -31,12 +33,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x00, 0x00, 0x00, 0x00,
                              };
 
-            var size = CalculateSize(28);
+            byte[] size = CalculateSize(28);
             Array.Copy(size, 0, frames, 6, 4);
 
             Read(frames);
 
-            var frame1 = m_TagInfo.Frames[0];
+            RawFrame frame1 = m_TagInfo.Frames[0];
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
             // frame 1
@@ -68,13 +70,13 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x53, 0x54, 0x55, 0x56,
                              };
 
-            var size = CalculateSize(28);
+            byte[] size = CalculateSize(28);
             Array.Copy(size, 0, frames, 6, 4);
 
             Read(frames);
 
-            var frame1 = m_TagInfo.Frames[0];
-            var frame2 = m_TagInfo.Frames[1];
+            RawFrame frame1 = m_TagInfo.Frames[0];
+            RawFrame frame2 = m_TagInfo.Frames[1];
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 2);
             // frame 1
@@ -110,7 +112,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x12, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF
                              };
 
-            var size = CalculateSize(frames.Length - 10);
+            byte[] size = CalculateSize(frames.Length - 10);
             Array.Copy(size, 0, frames, 6, 4);
 
             Read(frames);
@@ -118,7 +120,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
             Assert.AreEqual(m_TagInfo.Frames[0].Id, "PCNT");
 
-            var payload = m_TagInfo.Frames[0].Payload;
+            ReadOnlyCollection<byte> payload = m_TagInfo.Frames[0].Payload;
             Assert.AreEqual(payload.Count, 5);
             Assert.AreEqual(payload[0], 0x12);
             Assert.AreEqual(payload[1], 0xFF);
@@ -140,7 +142,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x02
                              };
 
-            var size = CalculateSize(frames.Length - 10);
+            byte[] size = CalculateSize(frames.Length - 10);
             Array.Copy(size, 0, frames, 6, 4);
 
             Read(frames);
@@ -148,7 +150,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
             Assert.AreEqual(m_TagInfo.Frames[0].Id, "PCNT");
 
-            var payload = m_TagInfo.Frames[0].Payload;
+            ReadOnlyCollection<byte> payload = m_TagInfo.Frames[0].Payload;
             Assert.AreEqual(payload.Count, 4);
             Assert.AreEqual(payload[0], 0xFF);
             Assert.AreEqual(payload[1], 0xFF);

@@ -37,20 +37,35 @@ namespace Id3Tag.HighLevel
         }
 
         /// <summary>
+        /// Gets the genres. The index of the list represents the id.
+        /// </summary>
+        /// <returns>A new readonly collection</returns>
+        public ReadOnlyCollection<string> AllGenres
+        {
+            get
+            {
+                Dictionary<int, string>.ValueCollection values = m_GenreDict.Values;
+                var list = new List<string>(values);
+
+                return new ReadOnlyCollection<string>(list);
+            }
+        }
+
+        /// <summary>
         /// Gets the description of the genre id.
         /// </summary>
         /// <param name="genreId">the id.</param>
         /// <returns>the description.</returns>
         public string GetGenre(int genreId)
         {
-            var found = ContainsGenre(genreId);
+            bool found = ContainsGenre(genreId);
 
             if (!found)
             {
                 throw new Id3TagException("Genre id not found.");
             }
 
-            var genreDescription = m_GenreDict[genreId];
+            string genreDescription = m_GenreDict[genreId];
             return genreDescription;
         }
 
@@ -61,26 +76,11 @@ namespace Id3Tag.HighLevel
         /// <returns>the description.</returns>
         public bool ContainsGenre(int genreId)
         {
-            var found = m_GenreDict.ContainsKey(genreId);
+            bool found = m_GenreDict.ContainsKey(genreId);
             return found;
         }
 
-    	/// <summary>
-    	/// Gets the genres. The index of the list represents the id.
-    	/// </summary>
-    	/// <returns>A new readonly collection</returns>
-    	public ReadOnlyCollection<string> AllGenres
-    	{
-    		get
-    		{
-    			var values = m_GenreDict.Values;
-    			var list = new List<string>(values);
-
-    			return new ReadOnlyCollection<string>(list);
-    		}
-    	}
-
-    	private static Dictionary<int, string> GetDictionary()
+        private static Dictionary<int, string> GetDictionary()
         {
             var genres = new Dictionary<int, string>
                              {

@@ -45,7 +45,7 @@ namespace Id3Tag
         /// <returns>the representation instance.</returns>
         public static TagContainer CreateId3Tag(TagVersion version)
         {
-            Logger.LogInfo(string.Format("Create ID3Tag with TagVersion {0}",version));
+            Logger.LogInfo(string.Format("Create ID3Tag with TagVersion {0}", version));
             TagContainer container;
 
             switch (version)
@@ -63,14 +63,14 @@ namespace Id3Tag
             return container;
         }
 
-		/// <summary>
-		/// Creates new instance of <see cref="Id3TagManager"/>.
-		/// </summary>
-		/// <returns>New instance of new instance of <see cref="Id3TagManager"/>.</returns>
-		public static Id3TagManager CreateId3TagManager()
-		{
+        /// <summary>
+        /// Creates new instance of <see cref="Id3TagManager"/>.
+        /// </summary>
+        /// <returns>New instance of new instance of <see cref="Id3TagManager"/>.</returns>
+        public static Id3TagManager CreateId3TagManager()
+        {
             Logger.LogInfo("Create Id3TagManager");
-			return new Id3TagManager();
-		}
+            return new Id3TagManager();
+        }
     }
 }

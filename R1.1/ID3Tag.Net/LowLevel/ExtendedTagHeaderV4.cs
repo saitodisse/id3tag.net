@@ -53,12 +53,12 @@ namespace Id3Tag.LowLevel
         {
             var extendedHeader = new ExtendedTagHeaderV4();
             // ignore content[0] ( always 01 )
-            var flagByte = content[1];
-            var updateFlag = (flagByte & 0x40) == 0x40;
-            var crc32Flag = (flagByte & 0x20) == 0x020;
-            var restrictionFlag = (flagByte & 0x10) == 0x10;
+            byte flagByte = content[1];
+            bool updateFlag = (flagByte & 0x40) == 0x40;
+            bool crc32Flag = (flagByte & 0x20) == 0x020;
+            bool restrictionFlag = (flagByte & 0x10) == 0x10;
 
-            var startIndex = 2;
+            int startIndex = 2;
             if (updateFlag)
             {
                 // Read the update content
@@ -87,7 +87,7 @@ namespace Id3Tag.LowLevel
             {
                 // Read the restriction byte
 
-                var restrictionByte = content[startIndex + 1];
+                byte restrictionByte = content[startIndex + 1];
 
                 extendedHeader.RestrictionPresent = true;
                 extendedHeader.Restriction = restrictionByte;

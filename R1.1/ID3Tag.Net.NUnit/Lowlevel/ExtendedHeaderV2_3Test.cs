@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Id3Tag.LowLevel;
+using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Lowlevel
 {
@@ -31,7 +32,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(m_TagInfo.Unsynchronised);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV23();
+            ExtendedTagHeaderV3 extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV23();
             Assert.IsFalse(extendedHeader.CrcDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
             Assert.IsNull(extendedHeader.Crc32);
@@ -79,7 +80,8 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             var headerBytes = new byte[]
                                   {
                                       0x49, 0x44, 0x33, 0x03, 0x00, 0xE0, 0x00, 0x00, 0x00, 0x1D,
-                                      0x00, 0x00, 0x00, 0x0A, 0x80, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x71, 0xB4, 0x00, 0x0F,
+                                      0x00, 0x00, 0x00, 0x0A, 0x80, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x71, 0xB4, 0x00, 0x0F
+                                      ,
                                       // TALB 
                                       0x54, 0x41, 0x4C, 0x42, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00,
                                       0x00, 0x30, 0x31, 0x32, 0x33
@@ -92,7 +94,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.IsTrue(m_TagInfo.Unsynchronised);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV23();
+            ExtendedTagHeaderV3 extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV23();
             Assert.IsTrue(extendedHeader.CrcDataPresent);
             Assert.AreEqual(extendedHeader.PaddingSize, 10);
             Assert.IsNotNull(extendedHeader.Crc32);

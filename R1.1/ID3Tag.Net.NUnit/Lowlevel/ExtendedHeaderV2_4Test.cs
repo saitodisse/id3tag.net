@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Id3Tag.LowLevel;
+using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Lowlevel
 {
@@ -91,7 +92,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Revision, 0);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV24();
+            ExtendedTagHeaderV4 extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV24();
             Assert.IsNotNull(extendedHeader);
             Assert.IsFalse(extendedHeader.UpdateTag);
             Assert.IsFalse(extendedHeader.CrcDataPresent);
@@ -114,7 +115,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Revision, 0);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV24();
+            ExtendedTagHeaderV4 extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV24();
             Assert.IsNotNull(extendedHeader);
             Assert.IsFalse(extendedHeader.UpdateTag);
             Assert.IsFalse(extendedHeader.CrcDataPresent);
@@ -137,7 +138,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             Assert.AreEqual(m_TagInfo.Revision, 0);
             Assert.IsTrue(m_TagInfo.ExtendedHeaderAvailable);
 
-            var extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV24();
+            ExtendedTagHeaderV4 extendedHeader = m_TagInfo.ExtendedHeader.ConvertToV24();
             Assert.IsNotNull(extendedHeader);
             Assert.IsTrue(extendedHeader.UpdateTag);
             Assert.IsFalse(extendedHeader.CrcDataPresent);

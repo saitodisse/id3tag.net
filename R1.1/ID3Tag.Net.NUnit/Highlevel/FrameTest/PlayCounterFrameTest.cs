@@ -1,5 +1,7 @@
-﻿using Id3Tag.HighLevel;
+﻿using System.Collections.ObjectModel;
+using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -25,10 +27,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, 0);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x00, 0x00, 0x00};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -43,10 +45,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x00, 0x00, 0x01};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -61,10 +63,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x00, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -79,10 +81,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x01, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -97,10 +99,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0xFF, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -115,10 +117,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x01, 0xFF, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -133,10 +135,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x01, 0x00, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -153,10 +155,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(playCounterFrame.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounterFrame.Counter, counterValue);
 
-            var rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = playCounterFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "PCNT");
 
-            var payloadBytes = rawFrame.Payload;
+            ReadOnlyCollection<byte> payloadBytes = rawFrame.Payload;
             var refBytes = new byte[] {0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payloadBytes));
@@ -171,13 +173,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x00, 0x00, 0x00
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
+            PlayCounterFrame playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
 
             Assert.AreEqual(playCounter.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounter.Counter, 0);
@@ -192,13 +194,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x00, 0x00, 0x01
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
+            PlayCounterFrame playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
 
             Assert.AreEqual(playCounter.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounter.Counter, 1);
@@ -213,13 +215,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x00, 0x00, 0x00, 0x01
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
+            PlayCounterFrame playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
 
             Assert.AreEqual(playCounter.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounter.Counter, 1);
@@ -234,13 +236,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x01
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
+            PlayCounterFrame playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
 
             Assert.AreEqual(playCounter.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounter.Counter, 1);
@@ -255,13 +257,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
+            PlayCounterFrame playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
 
             Assert.AreEqual(playCounter.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounter.Counter, 1);
@@ -276,13 +278,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
+            PlayCounterFrame playCounter = FrameUtilities.ConvertToPlayCounterFrame(tagContainer[0]);
 
             Assert.AreEqual(playCounter.Descriptor.Id, "PCNT");
             Assert.AreEqual(playCounter.Counter, 1);

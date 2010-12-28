@@ -280,11 +280,11 @@ namespace Id3Tag.HighLevel
             return ufid;
         }
 
-		/// <summary>
-		/// Casts a frame to <see cref="UnsynchronisedLyricFrame"/>.
-		/// </summary>
-		/// <param name="frame">The frame.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Casts a frame to <see cref="UnsynchronisedLyricFrame"/>.
+        /// </summary>
+        /// <param name="frame">The frame.</param>
+        /// <returns></returns>
         public static UnsynchronisedLyricFrame ConvertToUnsynchronisedLyricsFrame(IFrame frame)
         {
             if (frame.Type != FrameType.UnsynchronisedLyric)

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Id3Tag
 {
@@ -24,7 +21,7 @@ namespace Id3Tag
 
         internal static void LogWarning(string message)
         {
-            Log("Warning",message);
+            Log("Warning", message);
         }
 
         internal static void LogError(string message)
@@ -41,7 +38,7 @@ namespace Id3Tag
         {
             if (EnableLogging)
             {
-                var log = String.Format("{0} - {1} : {2}", DateTime.Now.ToLongTimeString(), level, message);
+                string log = String.Format("{0} - {1} : {2}", DateTime.Now.ToLongTimeString(), level, message);
                 Trace.WriteLine(log);
             }
         }

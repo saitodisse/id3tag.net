@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel
@@ -36,7 +37,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
 
             tagContainer.Add(titleFrame);
 
-            var Id3Tag = m_TagController.Encode(tagContainer);
+            Id3TagInfo Id3Tag = m_TagController.Encode(tagContainer);
 
             Assert.AreEqual(Id3Tag.MajorVersion, 3);
             Assert.AreEqual(Id3Tag.Revision, 0);
@@ -44,7 +45,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
             Assert.IsTrue(Id3Tag.Unsynchronised);
             Assert.IsTrue(Id3Tag.ExtendedHeaderAvailable);
 
-            var extendedHeader = Id3Tag.ExtendedHeader.ConvertToV23();
+            ExtendedTagHeaderV3 extendedHeader = Id3Tag.ExtendedHeader.ConvertToV23();
             Assert.IsNotNull(extendedHeader);
             Assert.IsTrue(ComparePayload(extendedHeader.Crc32, crc));
             Assert.AreEqual(Id3Tag.Frames.Count, 1);
@@ -63,7 +64,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
 
             tagContainer.Add(titleFrame);
 
-            var Id3Tag = m_TagController.Encode(tagContainer);
+            Id3TagInfo Id3Tag = m_TagController.Encode(tagContainer);
 
             Assert.AreEqual(Id3Tag.MajorVersion, 3);
             Assert.AreEqual(Id3Tag.Revision, 0);

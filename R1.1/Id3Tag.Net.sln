@@ -1,17 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Id3Tag.Net", "ID3Tag.Net\Id3Tag.Net.csproj", "{8D10F733-7DB0-4CDB-8950-2F124661E4E8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Id3Tag.Net.NUnit", "ID3Tag.Net.NUnit\Id3Tag.Net.NUnit.csproj", "{874EBA6A-CECD-4EC7-A8BE-7022928FA943}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Id3TagUtility", "ID3TagUtility\Id3TagUtility.csproj", "{B1EC1569-3446-4F79-8F03-D4ED7B79B273}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{E63DFF70-445F-4380-9FFF-DC4F7A3F7A73}"
 	ProjectSection(SolutionItems) = preProject
 		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll
 		..\lib\nunit.framework.xml = ..\lib\nunit.framework.xml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Id3Tag.Net", "ID3Tag.Net\Id3Tag.Net.csproj", "{8D10F733-7DB0-4CDB-8950-2F124661E4E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Id3Tag.Net.NUnit", "ID3Tag.Net.NUnit\Id3Tag.Net.NUnit.csproj", "{874EBA6A-CECD-4EC7-A8BE-7022928FA943}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Id3TagUtility", "ID3TagUtility\Id3TagUtility.csproj", "{B1EC1569-3446-4F79-8F03-D4ED7B79B273}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

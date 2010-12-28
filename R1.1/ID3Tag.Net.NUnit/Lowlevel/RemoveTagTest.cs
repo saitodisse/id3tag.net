@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
@@ -21,7 +19,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             m_Controller = Id3TagFactory.CreateIOController();
 
             m_AudioData = new byte[0x10];
-            FillData(m_AudioData,0xA0);
+            FillData(m_AudioData, 0xA0);
         }
 
         #endregion
@@ -29,7 +27,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
         private byte[] GetContent()
         {
             // Creating valid tag frame first.
-            var tagContainer = Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
+            TagContainer tagContainer = Id3TagFactory.CreateId3Tag(TagVersion.Id3V23);
             var textFrame = new TextFrame("TIT2", "My Title", Encoding.ASCII);
             tagContainer.Add(textFrame);
 
@@ -39,7 +37,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             byte[] content = null;
             try
             {
-                output = new MemoryStream(new byte[64000],true);
+                output = new MemoryStream(new byte[64000], true);
                 audio = new MemoryStream(m_AudioData);
 
                 m_Controller.Write(tagContainer, audio, output);
@@ -47,14 +45,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                 output.Position = 0;
                 using (var reader = new BinaryReader(output))
                 {
-                    var size = output.Length;
+                    long size = output.Length;
                     content = reader.ReadBytes(Convert.ToInt32(size));
                 }
-
             }
             finally
             {
-
                 if (audio != null)
                 {
                     audio.Close();
@@ -70,9 +66,10 @@ namespace Id3Tag.Net.NUnit.Lowlevel
         }
 
         [Test]
-        public void RemoteId3V2Test()
+        [ExpectedException(typeof (Id3HeaderNotFoundException))]
+        public void DetectInvalidTagTest()
         {
-            var content = GetContent();
+            var content = new byte[] {0x34, 0x23, 0xff, 0x12, 0x12, 0x12};
             var result = new byte[64000];
 
             Stream inputStream = null;
@@ -84,7 +81,6 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                 outputStream = new MemoryStream(result);
 
                 m_Controller.Remove(inputStream, outputStream);
-
             }
             finally
             {
@@ -101,10 +97,9 @@ namespace Id3Tag.Net.NUnit.Lowlevel
         }
 
         [Test]
-        [ExpectedException(typeof(Id3HeaderNotFoundException))]
-        public void DetectInvalidTagTest()
+        public void RemoteId3V2Test()
         {
-            var content = new byte[] {0x34, 0x23, 0xff, 0x12, 0x12, 0x12};
+            byte[] content = GetContent();
             var result = new byte[64000];
 
             Stream inputStream = null;
@@ -116,7 +111,6 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                 outputStream = new MemoryStream(result);
 
                 m_Controller.Remove(inputStream, outputStream);
-
             }
             finally
             {

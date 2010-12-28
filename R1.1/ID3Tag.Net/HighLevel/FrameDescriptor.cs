@@ -70,37 +70,37 @@ namespace Id3Tag.HighLevel
         /// </summary>
         public bool GroupingIdentify { get; set; }
 
-    	/// <summary>
-    	/// Gets the Flags
-    	/// </summary>
-    	/// <returns>The flags</returns>
-    	public FrameOptions Options
-    	{
-    		get
-    		{
-    			var flags = new FrameOptions
-    			            	{
-    			            		Compression = Compression,
-    			            		DataLengthIndicator = DataLengthIndicator,
-    			            		Encryption = Encryption,
-    			            		FileAlterPreservation = FileAlterPreservation,
-    			            		GroupingIdentify = GroupingIdentify,
-    			            		ReadOnly = ReadOnly,
-    			            		TagAlterPreservation = TagAlterPreservation,
-    			            		Unsynchronisation = Unsynchronisation
-    			            	};
+        /// <summary>
+        /// Gets the Flags
+        /// </summary>
+        /// <returns>The flags</returns>
+        public FrameOptions Options
+        {
+            get
+            {
+                var flags = new FrameOptions
+                                {
+                                    Compression = Compression,
+                                    DataLengthIndicator = DataLengthIndicator,
+                                    Encryption = Encryption,
+                                    FileAlterPreservation = FileAlterPreservation,
+                                    GroupingIdentify = GroupingIdentify,
+                                    ReadOnly = ReadOnly,
+                                    TagAlterPreservation = TagAlterPreservation,
+                                    Unsynchronisation = Unsynchronisation
+                                };
 
-    			return flags;
-    		}
-    	}
+                return flags;
+            }
+        }
 
-    	/// <summary>
+        /// <summary>
         /// Overwrites ToString.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-			return String.Format(CultureInfo.InvariantCulture, "FrameDescriptor : ID = {0}", Id);
+            return String.Format(CultureInfo.InvariantCulture, "FrameDescriptor : ID = {0}", Id);
         }
     }
 }

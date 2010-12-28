@@ -2,6 +2,7 @@
 using System.Text;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Lowlevel
@@ -38,7 +39,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
 
                 // Read the bytes again
                 tagStream.Position = 0;
-                var Id3TagInfo = m_Controller.Read(tagStream);
+                Id3TagInfo Id3TagInfo = m_Controller.Read(tagStream);
 
                 tagContainer2 = m_TagController.Decode(Id3TagInfo);
             }
@@ -62,8 +63,8 @@ namespace Id3Tag.Net.NUnit.Lowlevel
         private static void CompareContainer(TagContainer c1, TagContainer c2)
         {
             Assert.AreEqual(c1.Count, c2.Count);
-            var c1Tag = c1.GetId3V23Descriptor();
-            var c2Tag = c2.GetId3V23Descriptor();
+            TagDescriptorV3 c1Tag = c1.GetId3V23Descriptor();
+            TagDescriptorV3 c2Tag = c2.GetId3V23Descriptor();
 
             Assert.AreEqual(c1Tag.MajorVersion, c2Tag.MajorVersion);
             Assert.AreEqual(c1Tag.Revision, c2Tag.Revision);
@@ -99,7 +100,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             //
             // Write and read the tag again. 
             //
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
 
             //
             // Compare both container!
@@ -128,7 +129,7 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             //
             // Write and read the tag again. 
             //
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
 
             //
             // Compare both container!
@@ -146,10 +147,10 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             var playCounter = new PlayCounterFrame(counter);
             tagContainer1.Add(playCounter);
 
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
+            PlayCounterFrame playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -163,10 +164,10 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             var playCounter = new PlayCounterFrame(counter);
             tagContainer1.Add(playCounter);
 
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
+            PlayCounterFrame playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -180,10 +181,10 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             var playCounter = new PlayCounterFrame(counter);
             tagContainer1.Add(playCounter);
 
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
+            PlayCounterFrame playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -197,10 +198,10 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             var playCounter = new PlayCounterFrame(counter);
             tagContainer1.Add(playCounter);
 
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
+            PlayCounterFrame playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
 
@@ -214,10 +215,10 @@ namespace Id3Tag.Net.NUnit.Lowlevel
             var playCounter = new PlayCounterFrame(counter);
             tagContainer1.Add(playCounter);
 
-            var tagContainer2 = WriteAndRead(tagContainer1);
+            TagContainer tagContainer2 = WriteAndRead(tagContainer1);
             CompareContainer(tagContainer1, tagContainer2);
 
-            var playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
+            PlayCounterFrame playCounter2 = FrameUtilities.ConvertToPlayCounterFrame(tagContainer2[0]);
             Assert.AreEqual(playCounter2.Counter, counter);
         }
     }

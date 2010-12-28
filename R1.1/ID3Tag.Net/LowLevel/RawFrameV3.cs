@@ -2,30 +2,30 @@
 
 namespace Id3Tag.LowLevel
 {
-	/// <summary>
-	/// Contains version 2.3 specifics of <see cref="RawFrame"/>
-	/// </summary>
+    /// <summary>
+    /// Contains version 2.3 specifics of <see cref="RawFrame"/>
+    /// </summary>
     public sealed class RawFrameV3 : RawFrame
     {
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RawFrameV3"/> class.
-		/// </summary>
-		/// <param name="id">The id.</param>
-		/// <param name="options">The options.</param>
-		/// <param name="payload">The payload.</param>
-		public RawFrameV3(string id, byte[] options, IList<byte> payload)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RawFrameV3"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="payload">The payload.</param>
+        public RawFrameV3(string id, byte[] options, IList<byte> payload)
             : base(id, payload)
         {
             DecodeFlags(options);
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RawFrameV3"/> class.
-		/// </summary>
-		/// <param name="id">The id.</param>
-		/// <param name="options">The options.</param>
-		/// <param name="payload">The payload.</param>
-		public RawFrameV3(string id, FrameOptions options, IList<byte> payload)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RawFrameV3"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="payload">The payload.</param>
+        public RawFrameV3(string id, FrameOptions options, IList<byte> payload)
             : base(id, payload)
         {
             Options = options;

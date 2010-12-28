@@ -52,8 +52,8 @@
         {
             get
             {
-                var genreID = GenreIdentifier;
-                var value = "Unknown";
+                int genreID = GenreIdentifier;
+                string value = "Unknown";
                 if (HighLevel.Genre.Instance.ContainsGenre(genreID))
                 {
                     value = HighLevel.Genre.Instance.GetGenre(genreID);

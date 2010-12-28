@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Id3Tag.LowLevel;
+using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Lowlevel
 {
@@ -27,12 +28,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.Compression);
@@ -50,12 +51,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.Encryption);
@@ -73,12 +74,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.FileAlterPreservation);
@@ -96,12 +97,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
         }
@@ -120,11 +121,11 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x53, 0x54, 0x55, 0x56
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var frame1 = m_TagInfo.Frames[0];
-            var frame2 = m_TagInfo.Frames[1];
+            RawFrame frame1 = m_TagInfo.Frames[0];
+            RawFrame frame2 = m_TagInfo.Frames[1];
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 2);
             // frame 1
@@ -159,12 +160,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.GroupingIdentify);
@@ -189,12 +190,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
              *  Der Algorithmus ignoriert ihn, weil er am Ende des Streams ist.
              */
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.GroupingIdentify);
@@ -213,12 +214,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59,
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.GroupingIdentify);
@@ -236,12 +237,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.ReadOnly);
@@ -259,12 +260,12 @@ namespace Id3Tag.Net.NUnit.Lowlevel
                                  0x49, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
             Assert.AreEqual(m_TagInfo.Frames.Count, 1);
 
-            var frame = m_TagInfo.Frames[0];
+            RawFrame frame = m_TagInfo.Frames[0];
             Assert.AreEqual(frame.Id, "1234");
             Assert.AreEqual(frame.Payload.Count, 11);
             Assert.IsTrue(frame.Options.TagAlterPreservation);

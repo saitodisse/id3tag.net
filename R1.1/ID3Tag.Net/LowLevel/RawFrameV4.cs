@@ -2,30 +2,30 @@
 
 namespace Id3Tag.LowLevel
 {
-	/// <summary>
-	/// Contains Version 2.4 specifics of <see cref="RawFrame"/>
-	/// </summary>
+    /// <summary>
+    /// Contains Version 2.4 specifics of <see cref="RawFrame"/>
+    /// </summary>
     public sealed class RawFrameV4 : RawFrame
     {
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RawFrameV4"/> class.
-		/// </summary>
-		/// <param name="id">The id.</param>
-		/// <param name="options">The options.</param>
-		/// <param name="payload">The payload.</param>
-		public RawFrameV4(string id, byte[] options, IList<byte> payload)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RawFrameV4"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="payload">The payload.</param>
+        public RawFrameV4(string id, byte[] options, IList<byte> payload)
             : base(id, payload)
         {
             DecodeFlags(options);
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RawFrameV4"/> class.
-		/// </summary>
-		/// <param name="id">The id.</param>
-		/// <param name="options">The options.</param>
-		/// <param name="payload">The payload.</param>
-		public RawFrameV4(string id, FrameOptions options, IList<byte> payload)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RawFrameV4"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="payload">The payload.</param>
+        public RawFrameV4(string id, FrameOptions options, IList<byte> payload)
             : base(id, payload)
         {
             Options = options;
@@ -49,14 +49,14 @@ namespace Id3Tag.LowLevel
         {
             Options = new FrameOptions();
 
-            var isTagAlterPreservation = (options[0] & 0x40) == 0x40;
-            var isFileAlterPreservation = (options[0] & 0x20) == 0x20;
-            var isReadOnly = (options[0] & 0x10) == 0x10;
-            var isGroupingIdentity = (options[1] & 0x40) == 0x40;
-            var isCompression = (options[1] & 0x08) == 0x08;
-            var isEncryption = (options[1] & 0x04) == 0x04;
-            var isUnsync = (options[1] & 0x02) == 0x02;
-            var isDataLengthIndicator = (options[1] & 0x01) == 0x01;
+            bool isTagAlterPreservation = (options[0] & 0x40) == 0x40;
+            bool isFileAlterPreservation = (options[0] & 0x20) == 0x20;
+            bool isReadOnly = (options[0] & 0x10) == 0x10;
+            bool isGroupingIdentity = (options[1] & 0x40) == 0x40;
+            bool isCompression = (options[1] & 0x08) == 0x08;
+            bool isEncryption = (options[1] & 0x04) == 0x04;
+            bool isUnsync = (options[1] & 0x02) == 0x02;
+            bool isDataLengthIndicator = (options[1] & 0x01) == 0x01;
 
             Options.TagAlterPreservation = isTagAlterPreservation;
             Options.FileAlterPreservation = isFileAlterPreservation;

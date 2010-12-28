@@ -7,11 +7,11 @@ namespace Id3Tag.LowLevel
     /// </summary>
     public class Id3TagInfo
     {
-		private readonly Collection<RawFrame> m_FrameList;
+        private readonly Collection<RawFrame> m_FrameList;
 
         internal Id3TagInfo()
         {
-			m_FrameList = new Collection<RawFrame>();
+            m_FrameList = new Collection<RawFrame>();
             SetDefault();
         }
 
@@ -40,12 +40,12 @@ namespace Id3Tag.LowLevel
         /// </summary>
         public bool Experimental { get; internal set; }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this instance has footer (ID3v2.4 only).
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance has footer; otherwise, <c>false</c>.
-		/// </value>
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has footer (ID3v2.4 only).
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance has footer; otherwise, <c>false</c>.
+        /// </value>
         public bool HasFooter { get; internal set; }
 
         /// <summary>

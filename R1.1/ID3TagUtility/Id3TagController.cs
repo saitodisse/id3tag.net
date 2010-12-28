@@ -6,6 +6,7 @@ using System.Windows;
 using Id3Tag;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 
 namespace Id3TagUtility
 {
@@ -20,9 +21,9 @@ namespace Id3TagUtility
         {
             TagContainer tag = null;
 
-			try
+            try
             {
-				tag = Id3TagFactory.CreateId3TagManager().ReadV2Tag(filename);
+                tag = Id3TagFactory.CreateId3TagManager().ReadV2Tag(filename);
             }
             catch (Id3IOException ioException)
             {
@@ -55,7 +56,7 @@ namespace Id3TagUtility
         {
             try
             {
-				Id3TagFactory.CreateId3TagManager().WriteV2Tag(sourceFile, targetFile, tagContainer);
+                Id3TagFactory.CreateId3TagManager().WriteV2Tag(sourceFile, targetFile, tagContainer);
             }
             catch (Id3IOException ioException)
             {
@@ -75,9 +76,9 @@ namespace Id3TagUtility
         {
             FileState state = null;
 
-			try
+            try
             {
-				state = Id3TagFactory.CreateId3TagManager().GetTagsStatus(filename);
+                state = Id3TagFactory.CreateId3TagManager().GetTagsStatus(filename);
             }
             catch (Id3IOException ioException)
             {
@@ -97,15 +98,16 @@ namespace Id3TagUtility
 
         public TagContainer BuildTag(ID3V2TagData data)
         {
-            var container = Id3TagFactory.CreateId3Tag(data.Version);
+            TagContainer container = Id3TagFactory.CreateId3Tag(data.Version);
             if (data.Version == TagVersion.Id3V23)
             {
                 //
                 //  Configure the ID3v2.3 header
                 //
-                var extendedHeaderV23 = container.GetId3V23Descriptor();
+                TagDescriptorV3 extendedHeaderV23 = container.GetId3V23Descriptor();
                 // Configure the tag header.
-                extendedHeaderV23.SetHeaderOptions(data.Unsynchronisation, data.ExtendedHeader, data.ExperimentalIndicator);
+                extendedHeaderV23.SetHeaderOptions(data.Unsynchronisation, data.ExtendedHeader,
+                                                   data.ExperimentalIndicator);
 
                 if (data.ExtendedHeader)
                 {
@@ -118,7 +120,7 @@ namespace Id3TagUtility
                 //
                 //  Configure the ID3v2.4 header
                 //
-                var extendedHeaderV24 = container.GetId3V24Descriptor();
+                TagDescriptorV4 extendedHeaderV24 = container.GetId3V24Descriptor();
                 extendedHeaderV24.SetHeaderOptions(false, false, false, true);
             }
 
@@ -153,12 +155,11 @@ namespace Id3TagUtility
 
             if (data.WriteLyricsFlag)
             {
-                WriteUnsychronisedLyrics(data.LyricsDescriptor, data.Lyrics,container);
+                WriteUnsychronisedLyrics(data.LyricsDescriptor, data.Lyrics, container);
             }
 
             return container;
         }
-
 
 
         public Id3V1Tag ReadId3V1Tag(string filename, int codePage)
@@ -167,7 +168,7 @@ namespace Id3TagUtility
 
             try
             {
-				container = Id3TagFactory.CreateId3TagManager().ReadV1Tag(filename, codePage);
+                container = Id3TagFactory.CreateId3TagManager().ReadV1Tag(filename, codePage);
             }
             catch (Id3IOException ioException)
             {
@@ -189,7 +190,7 @@ namespace Id3TagUtility
         {
             try
             {
-				Id3TagFactory.CreateId3TagManager().WriteV1Tag(sourceFile, targetFile, tag);
+                Id3TagFactory.CreateId3TagManager().WriteV1Tag(sourceFile, targetFile, tag);
             }
             catch (Id3IOException ioException)
             {
@@ -232,16 +233,16 @@ namespace Id3TagUtility
 
         private static void WriteUnsychronisedLyrics(string descriptor, string lyrics, ICollection<IFrame> container)
         {
-            var uslt = new UnsynchronisedLyricFrame("ENG",descriptor,lyrics,Encoding.ASCII);
+            var uslt = new UnsynchronisedLyricFrame("ENG", descriptor, lyrics, Encoding.ASCII);
 
             container.Add(uslt);
         }
 
         internal void RemoveTag(string sourceFile, string targetFile)
         {
-            var ioController = Id3TagFactory.CreateIOController();
+            IIOController ioController = Id3TagFactory.CreateIOController();
             var file = new FileInfo(sourceFile);
-            var fileState = ioController.DetermineTagStatus(file);
+            FileState fileState = ioController.DetermineTagStatus(file);
 
             if (fileState.Id3V2TagFound)
             {

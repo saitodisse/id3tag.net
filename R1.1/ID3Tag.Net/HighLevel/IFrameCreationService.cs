@@ -11,16 +11,19 @@
         /// <param name="id">the frame ID</param>
         /// <returns>true if found otherwise false</returns>
         bool Search(string id);
+
         /// <summary>
         /// Get the text frame instance
         /// </summary>
         /// <returns>the IFrame instance</returns>
         IFrame GetTextFrame();
+
         /// <summary>
         /// Get the URL link frame instance
         /// </summary>
         /// <returns>the IFrame instance</returns>
         IFrame GetUrlLinkFrame();
+
         /// <summary>
         /// Get the text frame instance
         /// </summary>

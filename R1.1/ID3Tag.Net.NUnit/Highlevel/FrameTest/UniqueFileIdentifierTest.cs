@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -47,10 +49,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             var identifier = new byte[] {0x10, 0x11, 0x12};
             var frame = new UniqueFileIdentifierFrame(owner, identifier);
 
-            var rawFrame = frame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = frame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "UFID");
 
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x31, 0x32, 0x33, 0x34, 0x00, 0x10, 0x11, 0x12};
 
             Assert.IsTrue(ComparePayload(payload, refBytes));
@@ -59,14 +61,14 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertTest2()
         {
-            var owner = String.Empty;
+            string owner = String.Empty;
             var identifier = new byte[] {0x10, 0x11, 0x12};
             var frame = new UniqueFileIdentifierFrame(owner, identifier);
 
-            var rawFrame = frame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = frame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "UFID");
 
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x10, 0x11, 0x12};
 
             Assert.IsTrue(ComparePayload(payload, refBytes));
@@ -81,14 +83,14 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x31, 0x32, 0x33, 0x34, 0x00, 0x10, 0x11, 0x12, 0x13, 0x14
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = tagContainer[0];
-            var ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
+            IFrame frame = tagContainer[0];
+            UniqueFileIdentifierFrame ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
 
             Assert.AreEqual(ufid.Descriptor.Id, "UFID");
             Assert.AreEqual(ufid.Owner, "1234");
@@ -106,14 +108,14 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x10, 0x11, 0x12, 0x13, 0x14
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = tagContainer[0];
-            var ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
+            IFrame frame = tagContainer[0];
+            UniqueFileIdentifierFrame ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
 
             Assert.AreEqual(ufid.Descriptor.Id, "UFID");
             Assert.AreEqual(ufid.Owner, "");
@@ -131,14 +133,14 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x31, 0x32, 0x33, 0x34, 0x00
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = tagContainer[0];
-            var ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
+            IFrame frame = tagContainer[0];
+            UniqueFileIdentifierFrame ufid = FrameUtilities.ConvertToUniqueIdentifierFrame(frame);
 
             Assert.AreEqual(ufid.Descriptor.Id, "UFID");
             Assert.AreEqual(ufid.Owner, "1234");

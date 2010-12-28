@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -30,13 +31,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x46, 0x47, 0x48
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
+            CommentFrame commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
 
             Assert.AreEqual(commentFrame.Descriptor.Id, "COMM");
             Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
@@ -57,13 +58,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x47, 0x00, 0x48
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
+            CommentFrame commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
 
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.Id, "COMM");
@@ -85,13 +86,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x47, 0x00, 0x48
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
+            CommentFrame commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
 
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.Id, "COMM");
@@ -113,19 +114,19 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x47, 0x00, 0x48, 0x00
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
+            CommentFrame commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
 
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.Id, "COMM");
             Assert.AreEqual(commentFrame.TextEncoding.CodePage, Encoding.Unicode.CodePage);
-			Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
-			Assert.AreEqual(commentFrame.Text, "EFGH");
+            Assert.AreEqual(commentFrame.ContentDescriptor, "ABCD");
+            Assert.AreEqual(commentFrame.Text, "EFGH");
             Assert.AreEqual(commentFrame.Text.Length, 4);
         }
 
@@ -140,13 +141,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x45, 0x46, 0x47, 0x48
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
+            CommentFrame commentFrame = FrameUtilities.ConvertToCommentFrame(tagContainer[0]);
 
             Assert.AreEqual(commentFrame.Language, "eng");
             Assert.AreEqual(commentFrame.Descriptor.Id, "COMM");
@@ -166,7 +167,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "COMM");
 
             var refBytes = new byte[]
@@ -183,12 +184,12 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var commentFrame = new CommentFrame();
             commentFrame.Descriptor.Id = "COMM";
-            commentFrame.TextEncoding = new UnicodeEncoding(true, false) ;
+            commentFrame.TextEncoding = new UnicodeEncoding(true, false);
             commentFrame.ContentDescriptor = "ABCD";
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "COMM");
 
             var refBytes = new byte[]
@@ -211,7 +212,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "COMM");
 
             var refBytes = new byte[]
@@ -234,7 +235,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             commentFrame.Text = "EFGH";
             commentFrame.Language = "eng";
 
-            var rawFrame = commentFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = commentFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "COMM");
 
             var refBytes = new byte[]

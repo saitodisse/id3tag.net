@@ -20,9 +20,9 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                            },
                                    };
 
-			unknownFrame.SetContent(new byte[] { 0x30, 0x31, 0x32, 0x33 });
+            unknownFrame.SetContent(new byte[] {0x30, 0x31, 0x32, 0x33});
 
-            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -50,9 +50,9 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                            },
                                    };
 
-			unknownFrame.SetContent(new byte[] { 0x30, 0x31, 0x32, 0x33 });
+            unknownFrame.SetContent(new byte[] {0x30, 0x31, 0x32, 0x33});
 
-            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -71,18 +71,18 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertTest3()
         {
-        	var unknownFrame = new UnknownFrame
-        	                   	{
-        	                   		Descriptor =
-        	                   			{
-        	                   				Id = "ABCD",
-        	                   				ReadOnly = true
-        	                   			},
+            var unknownFrame = new UnknownFrame
+                                   {
+                                       Descriptor =
+                                           {
+                                               Id = "ABCD",
+                                               ReadOnly = true
+                                           },
                                    };
 
-			unknownFrame.SetContent(new byte[] { 0x30, 0x31, 0x32, 0x33 });
-			
-			var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
+            unknownFrame.SetContent(new byte[] {0x30, 0x31, 0x32, 0x33});
+
+            RawFrame rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -101,18 +101,18 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertTest4()
         {
-        	var unknownFrame = new UnknownFrame
-        	                   	{
-        	                   		Descriptor =
-        	                   			{
-        	                   				Id = "ABCD",
-        	                   				Compression = true
-        	                   			},
+            var unknownFrame = new UnknownFrame
+                                   {
+                                       Descriptor =
+                                           {
+                                               Id = "ABCD",
+                                               Compression = true
+                                           },
                                    };
 
-			unknownFrame.SetContent(new byte[] { 0x30, 0x31, 0x32, 0x33 }); 
-			
-			var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
+            unknownFrame.SetContent(new byte[] {0x30, 0x31, 0x32, 0x33});
+
+            RawFrame rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -140,9 +140,9 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                            },
                                    };
 
-			unknownFrame.SetContent(new byte[] { 0x30, 0x31, 0x32, 0x33 });
+            unknownFrame.SetContent(new byte[] {0x30, 0x31, 0x32, 0x33});
 
-            var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -169,9 +169,9 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                                GroupingIdentify = true
                                            },
                                    };
-        	unknownFrame.SetContent(new byte[] { 0x30, 0x31, 0x32, 0x33 });
+            unknownFrame.SetContent(new byte[] {0x30, 0x31, 0x32, 0x33});
 
-			var rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = unknownFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "ABCD");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
             Assert.AreEqual(rawFrame.Payload[0], 0x30);
@@ -187,18 +187,18 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             Assert.AreEqual(rawFrame.Options.GroupingIdentify, true, "Grouping Identify failed.");
         }
 
-		[Test]
-		public void ImportTest()
-		{
-			var payload = new byte[] { 0x30, 0x31, 0x32, 0x33 };
-			var flags = new FrameOptions();
-			var rawFrame = new RawFrameV3("ABCD", flags, payload);
+        [Test]
+        public void ImportTest()
+        {
+            var payload = new byte[] {0x30, 0x31, 0x32, 0x33};
+            var flags = new FrameOptions();
+            var rawFrame = new RawFrameV3("ABCD", flags, payload);
 
-			var frame = new UnknownFrame();
-			frame.Import(rawFrame, 0);
+            var frame = new UnknownFrame();
+            frame.Import(rawFrame, 0);
 
-			Assert.AreEqual("ABCD", frame.Descriptor.Id);
-			Assert.That(frame.Content, Is.EquivalentTo(payload));
-		}
+            Assert.AreEqual("ABCD", frame.Descriptor.Id);
+            Assert.That(frame.Content, Is.EquivalentTo(payload));
+        }
     }
 }

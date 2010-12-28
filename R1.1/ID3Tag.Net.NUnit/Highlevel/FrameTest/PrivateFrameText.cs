@@ -1,5 +1,6 @@
 ﻿using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -27,9 +28,9 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                        Owner = "ABCD",
                                    };
 
-        	privateFrame.SetData(new byte[] { 0x45, 0x46, 0x47, 0x48 });
+            privateFrame.SetData(new byte[] {0x45, 0x46, 0x47, 0x48});
 
-			var rawFrame = privateFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = privateFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "PRIV");
             Assert.AreEqual(rawFrame.Payload.Count, 9);
@@ -60,13 +61,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x41, 0x42, 0x43, 0x44, 0x00, 0x45, 0x46, 0x47, 0x48
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var privFrame = FrameUtilities.ConvertToPrivateFrame(tagContainer[0]);
+            PrivateFrame privFrame = FrameUtilities.ConvertToPrivateFrame(tagContainer[0]);
             Assert.AreEqual(privFrame.Descriptor.Id, "PRIV");
             Assert.AreEqual(privFrame.Owner, "ABCD");
             Assert.AreEqual(privFrame.Data.Count, 4);

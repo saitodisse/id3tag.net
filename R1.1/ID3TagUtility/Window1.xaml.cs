@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -8,7 +9,7 @@ using Id3Tag;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
 using Microsoft.Win32;
-using Version=Id3Tag.Version;
+using Version = Id3Tag.Version;
 
 namespace Id3TagUtility
 {
@@ -29,11 +30,11 @@ namespace Id3TagUtility
         private void OnImportFile(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var ok = dialog.ShowDialog(this);
+            bool? ok = dialog.ShowDialog(this);
             if (ok == true)
             {
-                var filename = dialog.FileName;
-                var state = m_Controller.ReadTagStatus(filename);
+                string filename = dialog.FileName;
+                FileState state = m_Controller.ReadTagStatus(filename);
 
                 checkBoxID3V1.IsChecked = state.Id3V1TagFound;
                 checkBoxID3V2.IsChecked = state.Id3V2TagFound;
@@ -43,39 +44,38 @@ namespace Id3TagUtility
                     //
                     //  Read the tag here!
                     //
-                    var tagContainer = m_Controller.ReadTag(dialog.FileName);
+                    TagContainer tagContainer = m_Controller.ReadTag(dialog.FileName);
                     if (tagContainer != null)
                     {
                         if (tagContainer.TagVersion == TagVersion.Id3V23)
                         {
-                            var tagDescriptorV3 = tagContainer.GetId3V23Descriptor();
+                            TagDescriptorV3 tagDescriptorV3 = tagContainer.GetId3V23Descriptor();
 
                             //
                             //  OK. Update the UI.
                             //
                             ShowId3V23Tag(filename, tagDescriptorV3);
                             ShowTagFrames(tagContainer);
-
-
                         }
                         else
                         {
-                            var tagDescriptorV4 = tagContainer.GetId3V24Descriptor();
+                            TagDescriptorV4 tagDescriptorV4 = tagContainer.GetId3V24Descriptor();
                             ShowId3V24Tag(filename, tagDescriptorV4);
                             ShowTagFrames(tagContainer);
-                       }
+                        }
 
-                        var apicFrame = tagContainer.SearchFrame("APIC");
+                        IFrame apicFrame = tagContainer.SearchFrame("APIC");
                         if (apicFrame != null)
                         {
-                            var pictureFrame = FrameUtilities.ConvertToPictureFrame(apicFrame);
+                            PictureFrame pictureFrame = FrameUtilities.ConvertToPictureFrame(apicFrame);
                             ShowPicture(pictureFrame);
                         }
 
-                        var usltFrame = tagContainer.SearchFrame("USLT");
+                        IFrame usltFrame = tagContainer.SearchFrame("USLT");
                         if (usltFrame != null)
                         {
-                            var lyricsFrame = FrameUtilities.ConvertToUnsynchronisedLyricsFrame(usltFrame);
+                            UnsynchronisedLyricFrame lyricsFrame =
+                                FrameUtilities.ConvertToUnsynchronisedLyricsFrame(usltFrame);
                             ShowLyrics(lyricsFrame);
                         }
                     }
@@ -86,7 +86,7 @@ namespace Id3TagUtility
                     //
                     //  Read the ID3V1 Tag.
                     //
-                    var tag = m_Controller.ReadId3V1Tag(dialog.FileName, 0);
+                    Id3V1Tag tag = m_Controller.ReadId3V1Tag(dialog.FileName, 0);
 
                     labelTitle.Content = tag.Title;
                     labelArtist.Content = tag.Artist;
@@ -113,7 +113,7 @@ namespace Id3TagUtility
         private static string ConvertToString(IEnumerable<byte> data)
         {
             var stringBuilder = new StringBuilder();
-            foreach (var b in data)
+            foreach (byte b in data)
             {
                 stringBuilder.AppendFormat("{0:X2} ", b);
             }
@@ -128,11 +128,11 @@ namespace Id3TagUtility
             labelDescription.Content = pictureFrame.Description;
             labelPictureType.Content = pictureFrame.PictureCoding;
 
-            var data = pictureFrame.PictureData;
+            ReadOnlyCollection<byte> data = pictureFrame.PictureData;
             try
             {
-            	var buffer = new byte[data.Count];
-				data.CopyTo(buffer, 0);
+                var buffer = new byte[data.Count];
+                data.CopyTo(buffer, 0);
                 Stream pictureStream = new MemoryStream(buffer);
 
                 var bitmap = new BitmapImage();
@@ -178,7 +178,7 @@ namespace Id3TagUtility
                 labelCRCBytesDescriptor.IsEnabled = tagDescriptor.CrcDataPresent;
                 if (tagDescriptor.CrcDataPresent)
                 {
-                    var crc = ConvertToString(tagDescriptor.Crc);
+                    string crc = ConvertToString(tagDescriptor.Crc);
                     labelCRCBytes.Content = crc;
                 }
                 else
@@ -203,7 +203,7 @@ namespace Id3TagUtility
             //  Iterate over the frame collection and show the ToString representation.
             //
             listView1Tags.Items.Clear();
-            foreach (var frame in tagContainer)
+            foreach (IFrame frame in tagContainer)
             {
                 listView1Tags.Items.Add(frame.ToString());
             }
@@ -212,13 +212,13 @@ namespace Id3TagUtility
         private void OnWrite(object sender, RoutedEventArgs e)
         {
             var dialog = new TagDataDialog();
-            var result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
 
             if (result == true)
             {
                 // Create and configure a new tag.
-                var data = dialog.Data;
-                var tagController = m_Controller.BuildTag(data);
+                ID3V2TagData data = dialog.Data;
+                TagContainer tagController = m_Controller.BuildTag(data);
 
                 if (String.IsNullOrEmpty(data.SourceFile) || String.IsNullOrEmpty(data.TargetFile))
                 {
@@ -233,13 +233,13 @@ namespace Id3TagUtility
         private void OnWriteID3V1(object sender, RoutedEventArgs e)
         {
             var dialog = new ID3V1Dialog();
-            var result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
 
             if (result == true)
             {
-                var data = dialog.TagData;
-                var sourceFile = dialog.SourceFile;
-                var targetFile = dialog.TargetFile;
+                Id3V1Tag data = dialog.TagData;
+                string sourceFile = dialog.SourceFile;
+                string targetFile = dialog.TargetFile;
 
                 if (String.IsNullOrEmpty(sourceFile) || String.IsNullOrEmpty(targetFile))
                 {
@@ -253,7 +253,7 @@ namespace Id3TagUtility
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var version = Version.ReadableVersion;
+            string version = Version.ReadableVersion;
 
             versionLabel.Content = String.Format("Id3TagLib Version = {0}", version);
         }
@@ -261,12 +261,11 @@ namespace Id3TagUtility
         private void OnDelete(object sender, RoutedEventArgs e)
         {
             var dialog = new DeleteTag();
-            var result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
             if (result == true)
             {
-
-                var sourceFile = dialog.SourceFile;
-                var targetFile = dialog.TargetFile;
+                string sourceFile = dialog.SourceFile;
+                string targetFile = dialog.TargetFile;
                 if (String.IsNullOrEmpty(sourceFile) || String.IsNullOrEmpty(targetFile))
                 {
                     MessageBox.Show("Please validate your Source and Target file.");

@@ -1,15 +1,12 @@
-﻿<Window x:Class="Id3TagUtility.DeleteTag"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Delete ID3 Tags" Height="207" Width="601">
-    <Grid>
-        <Button HorizontalAlignment="Right" Margin="0,0,14,12" Name="buttonCancel" Width="77" Height="33" VerticalAlignment="Bottom" Click="buttonCancel_Click">Cancel</Button>
-        <Button HorizontalAlignment="Left" Margin="405,0,0,12" Name="buttonApply" Width="77" Height="33" VerticalAlignment="Bottom" Click="buttonApply_Click">Apply</Button>
-        <Label Height="31" HorizontalAlignment="Left" Margin="12,12,0,0" Name="labelSourceFile" VerticalAlignment="Top" Width="105">Source File :</Label>
-        <Label HorizontalAlignment="Left" Margin="12,49,0,0" Name="label7" Width="85" Height="33" VerticalAlignment="Top">Target File :</Label>
-        <TextBox Height="23" Margin="104,14,77,0" Name="textBoxSourceFile" VerticalAlignment="Top" />
-        <TextBox Height="24" Margin="103,49,77,0" Name="textBoxTargetFile" VerticalAlignment="Top" />
-        <Button Height="23.02" HorizontalAlignment="Right" Margin="0,14,28,0" Name="buttonSourceFileSelect" VerticalAlignment="Top" Width="43" Click="buttonSourceFileSelect_Click">...</Button>
-        <Button HorizontalAlignment="Right" Margin="0,49,28,0" Name="buttonTargetFileSelect" Width="43" Height="24" VerticalAlignment="Top" Click="buttonTargetFileSelect_Click">...</Button>
-    </Grid>
+﻿<Window x:Class="Id3TagUtility.DeleteTag" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Delete ID3 Tags" Height="207" Width="601">
+	<Grid>
+		<Button HorizontalAlignment="Right" Margin="0,0,14,12" Name="buttonCancel" Width="77" Height="33" VerticalAlignment="Bottom" Click="buttonCancel_Click">Cancel</Button>
+		<Button HorizontalAlignment="Left" Margin="405,0,0,12" Name="buttonApply" Width="77" Height="33" VerticalAlignment="Bottom" Click="buttonApply_Click">Apply</Button>
+		<Label Height="31" HorizontalAlignment="Left" Margin="12,12,0,0" Name="labelSourceFile" VerticalAlignment="Top" Width="105">Source File :</Label>
+		<Label HorizontalAlignment="Left" Margin="12,49,0,0" Name="label7" Width="85" Height="33" VerticalAlignment="Top">Target File :</Label>
+		<TextBox Height="23" Margin="104,14,77,0" Name="textBoxSourceFile" VerticalAlignment="Top" />
+		<TextBox Height="24" Margin="103,49,77,0" Name="textBoxTargetFile" VerticalAlignment="Top" />
+		<Button Height="23.02" HorizontalAlignment="Right" Margin="0,14,28,0" Name="buttonSourceFileSelect" VerticalAlignment="Top" Width="43" Click="buttonSourceFileSelect_Click">...</Button>
+		<Button HorizontalAlignment="Right" Margin="0,49,28,0" Name="buttonTargetFileSelect" Width="43" Height="24" VerticalAlignment="Top" Click="buttonTargetFileSelect_Click">...</Button>
+	</Grid>
 </Window>

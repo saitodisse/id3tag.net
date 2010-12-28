@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using Id3Tag.HighLevel;
 using Microsoft.Win32;
 
@@ -22,7 +23,7 @@ namespace Id3TagUtility
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            var genres = Genre.Instance.AllGenres;
+            ReadOnlyCollection<string> genres = Genre.Instance.AllGenres;
             comboBoxGenre.ItemsSource = genres;
             comboBoxGenre.SelectedIndex = 0;
         }
@@ -54,11 +55,11 @@ namespace Id3TagUtility
         private void buttonSourceFileSelect_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxSourceFile.Text = filename;
             }
         }
@@ -66,11 +67,11 @@ namespace Id3TagUtility
         private void buttonTargetFileSelect_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxTargetFile.Text = filename;
             }
         }

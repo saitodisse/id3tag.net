@@ -40,7 +40,8 @@
         /// <param name="extendedHeader">the extended header flag.</param>
         /// <param name="experimentalIndicator">the experimental indicator flag.</param>
         /// <param name="footer">the footer flag</param>
-        public void SetHeaderOptions(bool unsynchronisation, bool extendedHeader, bool experimentalIndicator, bool footer)
+        public void SetHeaderOptions(bool unsynchronisation, bool extendedHeader, bool experimentalIndicator,
+                                     bool footer)
         {
             Unsynchronisation = unsynchronisation;
             ExtendedHeader = extendedHeader;

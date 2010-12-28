@@ -1,30 +1,26 @@
-﻿<Window x:Class="Id3TagUtility.ID3V1Dialog"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="ID3V1Dialog" Height="469" Width="582">
-    <Grid Loaded="Grid_Loaded" >
-        <Label Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="87">Song Title :</Label>
-        <Label Height="28" HorizontalAlignment="Left" Margin="12,46,0,0" Name="label2" VerticalAlignment="Top" Width="87">Artist :</Label>
-        <Label Height="28" HorizontalAlignment="Left" Margin="12,80,0,0" Name="label3" VerticalAlignment="Top" Width="87">Album :</Label>
-        <Label Height="28" HorizontalAlignment="Left" Margin="12,148,0,0" Name="label4" VerticalAlignment="Top" Width="87">Year :</Label>
-        <Label Height="28" HorizontalAlignment="Left" Margin="12,114,0,0" Name="label5" VerticalAlignment="Top" Width="87">Comment :</Label>
-        <TextBox Height="24" Margin="105,16,12,0" Name="textBoxTitle" VerticalAlignment="Top" />
-        <TextBox Height="24" Margin="105,50,12,0" Name="textBoxArtist" VerticalAlignment="Top" />
-        <TextBox Height="24" Margin="105,84,12,0" Name="textBoxAlbum" VerticalAlignment="Top" />
-        <TextBox Height="24" Margin="105,152,0,0" Name="textBoxYear" VerticalAlignment="Top" HorizontalAlignment="Left" Width="57" />
-        <TextBox Height="24" Margin="105,118,12,0" Name="textBoxComment" VerticalAlignment="Top" />
-        <Button Height="33" HorizontalAlignment="Right" Margin="0,0,12,12" Name="buttonCancel" VerticalAlignment="Bottom" Width="77" Click="buttonCancel_Click">Cancel</Button>
-        <Button Height="33" HorizontalAlignment="Right" Margin="0,0,95,12" Name="buttonApply" VerticalAlignment="Bottom" Width="77" Click="buttonApply_Click">Apply</Button>
-        <Label HorizontalAlignment="Left" Margin="12,182,0,175" Name="label6" Width="87">Track Nr :</Label>
-        <TextBox HorizontalAlignment="Left" Margin="105,186,0,0" Name="textBoxTrackNr" Width="57" Height="24" VerticalAlignment="Top" />
-        <ComboBox Margin="105,216,12,0" Name="comboBoxGenre" Height="23" VerticalAlignment="Top" />
-        <Label HorizontalAlignment="Left" Margin="12,0,0,184" Name="label7" Width="87" Height="30" VerticalAlignment="Bottom">Genre :
-        </Label>
-        <Label Height="31" HorizontalAlignment="Left" Margin="12,0,0,104" Name="labelSourceFile" VerticalAlignment="Bottom" Width="105">Source File :</Label>
-        <Label Height="33" HorizontalAlignment="Left" Margin="12,0,0,65" Name="label8" VerticalAlignment="Bottom" Width="85">Target File :</Label>
-        <TextBox Height="23" Margin="129,0,78,111" Name="textBoxSourceFile" VerticalAlignment="Bottom" />
-        <TextBox Height="24" Margin="129,0,78,73" Name="textBoxTargetFile" VerticalAlignment="Bottom" />
-        <Button Height="26.98" HorizontalAlignment="Right" Margin="0,0,14,111" Name="buttonSourceFileSelect" VerticalAlignment="Bottom" Width="43" Click="buttonSourceFileSelect_Click">...</Button>
-        <Button Height="27" HorizontalAlignment="Right" Margin="0,0,14,70" Name="buttonTargetFileSelect" VerticalAlignment="Bottom" Width="43" Click="buttonTargetFileSelect_Click">...</Button>
-    </Grid>
+﻿<Window x:Class="Id3TagUtility.ID3V1Dialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ID3V1Dialog" Height="469" Width="582">
+	<Grid Loaded="Grid_Loaded">
+		<Label Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="87">Song Title :</Label>
+		<Label Height="28" HorizontalAlignment="Left" Margin="12,46,0,0" Name="label2" VerticalAlignment="Top" Width="87">Artist :</Label>
+		<Label Height="28" HorizontalAlignment="Left" Margin="12,80,0,0" Name="label3" VerticalAlignment="Top" Width="87">Album :</Label>
+		<Label Height="28" HorizontalAlignment="Left" Margin="12,148,0,0" Name="label4" VerticalAlignment="Top" Width="87">Year :</Label>
+		<Label Height="28" HorizontalAlignment="Left" Margin="12,114,0,0" Name="label5" VerticalAlignment="Top" Width="87">Comment :</Label>
+		<TextBox Height="24" Margin="105,16,12,0" Name="textBoxTitle" VerticalAlignment="Top" />
+		<TextBox Height="24" Margin="105,50,12,0" Name="textBoxArtist" VerticalAlignment="Top" />
+		<TextBox Height="24" Margin="105,84,12,0" Name="textBoxAlbum" VerticalAlignment="Top" />
+		<TextBox Height="24" Margin="105,152,0,0" Name="textBoxYear" VerticalAlignment="Top" HorizontalAlignment="Left" Width="57" />
+		<TextBox Height="24" Margin="105,118,12,0" Name="textBoxComment" VerticalAlignment="Top" />
+		<Button Height="33" HorizontalAlignment="Right" Margin="0,0,12,12" Name="buttonCancel" VerticalAlignment="Bottom" Width="77" Click="buttonCancel_Click">Cancel</Button>
+		<Button Height="33" HorizontalAlignment="Right" Margin="0,0,95,12" Name="buttonApply" VerticalAlignment="Bottom" Width="77" Click="buttonApply_Click">Apply</Button>
+		<Label HorizontalAlignment="Left" Margin="12,182,0,175" Name="label6" Width="87">Track Nr :</Label>
+		<TextBox HorizontalAlignment="Left" Margin="105,186,0,0" Name="textBoxTrackNr" Width="57" Height="24" VerticalAlignment="Top" />
+		<ComboBox Margin="105,216,12,0" Name="comboBoxGenre" Height="23" VerticalAlignment="Top" />
+		<Label HorizontalAlignment="Left" Margin="12,0,0,184" Name="label7" Width="87" Height="30" VerticalAlignment="Bottom">Genre :</Label>
+		<Label Height="31" HorizontalAlignment="Left" Margin="12,0,0,104" Name="labelSourceFile" VerticalAlignment="Bottom" Width="105">Source File :</Label>
+		<Label Height="33" HorizontalAlignment="Left" Margin="12,0,0,65" Name="label8" VerticalAlignment="Bottom" Width="85">Target File :</Label>
+		<TextBox Height="23" Margin="129,0,78,111" Name="textBoxSourceFile" VerticalAlignment="Bottom" />
+		<TextBox Height="24" Margin="129,0,78,73" Name="textBoxTargetFile" VerticalAlignment="Bottom" />
+		<Button Height="26.98" HorizontalAlignment="Right" Margin="0,0,14,111" Name="buttonSourceFileSelect" VerticalAlignment="Bottom" Width="43" Click="buttonSourceFileSelect_Click">...</Button>
+		<Button Height="27" HorizontalAlignment="Right" Margin="0,0,14,70" Name="buttonTargetFileSelect" VerticalAlignment="Bottom" Width="43" Click="buttonTargetFileSelect_Click">...</Button>
+	</Grid>
 </Window>

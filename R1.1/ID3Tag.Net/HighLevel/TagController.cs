@@ -35,7 +35,7 @@ namespace Id3Tag.HighLevel
                     container = DecodeV4Tag(info);
                     break;
                 default:
-                    var ex =  new Id3TagException("This major revision is not supported!");
+                    var ex = new Id3TagException("This major revision is not supported!");
                     Logger.LogError(ex);
                     throw ex;
             }
@@ -44,12 +44,12 @@ namespace Id3Tag.HighLevel
             //  Import the frames
             //
             IFrameCreationService creationService = new FrameContainer();
-            foreach (var rawFrame in info.Frames)
+            foreach (RawFrame rawFrame in info.Frames)
             {
                 //
                 //  Analyse the frame ID
                 //
-                var frame = AnalyseFrameId(rawFrame, creationService);
+                IFrame frame = AnalyseFrameId(rawFrame, creationService);
                 if (frame != null)
                 {
                     frame.Import(rawFrame, codePage);
@@ -57,7 +57,7 @@ namespace Id3Tag.HighLevel
                 }
                 else
                 {
-                    var ex =  new Id3TagException("Frame analysing failed!");
+                    var ex = new Id3TagException("Frame analysing failed!");
                     Logger.LogError(ex);
 
                     throw ex;
@@ -90,9 +90,9 @@ namespace Id3Tag.HighLevel
                     throw ex;
             }
 
-            foreach (var frame in container)
+            foreach (IFrame frame in container)
             {
-                var rawFrame = frame.Convert(container.TagVersion);
+                RawFrame rawFrame = frame.Convert(container.TagVersion);
                 tagInfo.Frames.Add(rawFrame);
             }
 
@@ -105,7 +105,7 @@ namespace Id3Tag.HighLevel
 
         private static IFrame AnalyseFrameId(RawFrame rawFrame, IFrameCreationService frameService)
         {
-            var id = rawFrame.Id;
+            string id = rawFrame.Id;
             IFrame frame = null;
 
             if (frameService.Search(id))
@@ -148,19 +148,19 @@ namespace Id3Tag.HighLevel
         private static TagContainer DecodeV4Tag(Id3TagInfo info)
         {
             var container = new TagContainerV4();
-            var descriptor = container.Tag;
+            TagDescriptorV4 descriptor = container.Tag;
 
             descriptor.SetHeaderOptions(info.Unsynchronised, info.ExtendedHeaderAvailable, info.Experimental,
-                                      info.HasFooter);
+                                        info.HasFooter);
             if (info.ExtendedHeaderAvailable)
             {
-                var extendedHeader = info.ExtendedHeader.ConvertToV24();
+                ExtendedTagHeaderV4 extendedHeader = info.ExtendedHeader.ConvertToV24();
                 descriptor.SetExtendedHeader(extendedHeader.CrcDataPresent, extendedHeader.UpdateTag,
                                              extendedHeader.RestrictionPresent, extendedHeader.Restriction);
 
                 if (extendedHeader.CrcDataPresent)
                 {
-					descriptor.SetCrc32(extendedHeader.Crc32);
+                    descriptor.SetCrc32(extendedHeader.Crc32);
                 }
             }
 
@@ -170,13 +170,13 @@ namespace Id3Tag.HighLevel
         private static TagContainer DecodeV3Tag(Id3TagInfo info)
         {
             var container = new TagContainerV3();
-            var descriptor = container.Tag;
+            TagDescriptorV3 descriptor = container.Tag;
 
             descriptor.SetHeaderOptions(info.Unsynchronised, info.ExtendedHeaderAvailable, info.Experimental);
 
             if (info.ExtendedHeaderAvailable)
             {
-                var extendedHeader = info.ExtendedHeader.ConvertToV23();
+                ExtendedTagHeaderV3 extendedHeader = info.ExtendedHeader.ConvertToV23();
                 descriptor.SetExtendedHeader(extendedHeader.PaddingSize, extendedHeader.CrcDataPresent);
                 if (extendedHeader.CrcDataPresent)
                 {
@@ -189,7 +189,7 @@ namespace Id3Tag.HighLevel
 
         private static void EncodeV4(Id3TagInfo tagInfo, TagContainer container)
         {
-            var descriptor = container.GetId3V24Descriptor();
+            TagDescriptorV4 descriptor = container.GetId3V24Descriptor();
 
             tagInfo.Experimental = descriptor.ExperimentalIndicator;
             tagInfo.ExtendedHeaderAvailable = descriptor.ExtendedHeader;
@@ -206,7 +206,7 @@ namespace Id3Tag.HighLevel
 
         private static void EncodeV3(Id3TagInfo tagInfo, TagContainer container)
         {
-            var descriptor = container.GetId3V23Descriptor();
+            TagDescriptorV3 descriptor = container.GetId3V23Descriptor();
 
             tagInfo.Experimental = descriptor.ExperimentalIndicator;
             tagInfo.ExtendedHeaderAvailable = descriptor.ExtendedHeader;

@@ -46,7 +46,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
         private static byte[] CreateField(int count, byte value)
         {
             var bytes = new byte[count];
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 bytes[i] = value;
             }
@@ -58,7 +58,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
         {
             var sb = new StringBuilder();
 
-            for (var counter = 0; counter < count; counter++)
+            for (int counter = 0; counter < count; counter++)
             {
                 sb.Append(c);
             }
@@ -75,7 +75,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
                 inputSteam = new MemoryStream(audioData, false);
                 outputStream = new MemoryStream(output, true);
 
-                var id3Controller = Id3TagFactory.CreateId3V1Controller();
+                IId3V1Controller id3Controller = Id3TagFactory.CreateId3V1Controller();
                 id3Controller.Write(Id3Tag, inputSteam, outputStream, 0);
             }
             catch (Exception)
@@ -101,7 +101,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
             Id3V1Tag tag;
             using (var stream = new MemoryStream(bytes))
             {
-                var id3Controller = Id3TagFactory.CreateId3V1Controller();
+                IId3V1Controller id3Controller = Id3TagFactory.CreateId3V1Controller();
                 tag = id3Controller.Read(stream, 0);
             }
             return tag;
@@ -125,7 +125,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
             audioStream.Add(0x00);
             audioStream.Add(0x36); // Track
             audioStream.Add(0x05); // Genre
-            var bytes = audioStream.ToArray();
+            byte[] bytes = audioStream.ToArray();
             ReadFromStream(bytes);
         }
 
@@ -148,7 +148,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
             audioStream.Add(0x36); // Track
             audioStream.Add(0x05); // Genre
 
-            var bytes = audioStream.ToArray();
+            byte[] bytes = audioStream.ToArray();
             ReadFromStream(bytes);
         }
 
@@ -170,7 +170,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
             audioStream.Add(0x00);
             audioStream.Add(0x36); // Track
             audioStream.Add(0x05); // Genre
-            var bytes = audioStream.ToArray();
+            byte[] bytes = audioStream.ToArray();
             ReadFromStream(bytes);
         }
 
@@ -185,8 +185,37 @@ namespace Id3Tag.Net.NUnit.Highlevel
             audioStream.AddRange(new byte[] {0x54, 0x41, 0x47});
             audioStream.AddRange(CreateField(124, 0x35));
 
-            var bytes = audioStream.ToArray();
+            byte[] bytes = audioStream.ToArray();
             ReadFromStream(bytes);
+        }
+
+        [Test]
+        public void ReadId3V1Test()
+        {
+            var audioStream = new List<byte>();
+
+            // add dummy audio files
+            audioStream.AddRange(new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20});
+            audioStream.AddRange(new byte[] {0x54, 0x41, 0x47});
+            audioStream.AddRange(CreateField(30, 0x31)); // Song title
+            audioStream.AddRange(CreateField(30, 0x32)); // Artist
+            audioStream.AddRange(CreateField(30, 0x33)); // Album
+            audioStream.AddRange(CreateField(4, 0x34)); // Year
+            audioStream.AddRange(CreateField(30, 0x35)); // Comment
+            audioStream.Add(0x05); // Genre
+            byte[] bytes = audioStream.ToArray();
+
+            Id3V1Tag tag = ReadFromStream(bytes);
+
+            CheckId3Tag(tag.Title, '1', 30);
+            CheckId3Tag(tag.Artist, '2', 30);
+            CheckId3Tag(tag.Album, '3', 30);
+            CheckId3Tag(tag.Year, '4', 4);
+            CheckId3Tag(tag.Comment, '5', 30);
+
+            Assert.IsFalse(tag.IsId3V1Dot1Compliant);
+            Assert.IsEmpty(tag.TrackNumber);
+            Assert.IsNotEmpty(tag.Genre);
         }
 
         [Test]
@@ -205,9 +234,9 @@ namespace Id3Tag.Net.NUnit.Highlevel
             audioStream.Add(0x00);
             audioStream.Add(0x06); // Track
             audioStream.Add(0x05); // Genre
-            var bytes = audioStream.ToArray();
+            byte[] bytes = audioStream.ToArray();
 
-            var tag = ReadFromStream(bytes);
+            Id3V1Tag tag = ReadFromStream(bytes);
             CheckId3Tag(tag.Title, '1', 30);
             CheckId3Tag(tag.Artist, '2', 30);
             CheckId3Tag(tag.Album, '3', 30);
@@ -220,32 +249,44 @@ namespace Id3Tag.Net.NUnit.Highlevel
         }
 
         [Test]
-        public void ReadId3V1Test()
+        public void RemoveTest1()
         {
-            var audioStream = new List<byte>();
+            var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20};
+            var tag = new byte[128];
+            tag[0] = 0x54;
+            tag[1] = 0x41;
+            tag[2] = 0x47;
 
-            // add dummy audio files
-            audioStream.AddRange(new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20});
-            audioStream.AddRange(new byte[] {0x54, 0x41, 0x47});
-            audioStream.AddRange(CreateField(30, 0x31)); // Song title
-            audioStream.AddRange(CreateField(30, 0x32)); // Artist
-            audioStream.AddRange(CreateField(30, 0x33)); // Album
-            audioStream.AddRange(CreateField(4, 0x34)); // Year
-            audioStream.AddRange(CreateField(30, 0x35)); // Comment
-            audioStream.Add(0x05); // Genre
-            var bytes = audioStream.ToArray();
+            int length = audioData.Length + tag.Length;
+            var content = new byte[length];
+            var result = new byte[64000];
+            Array.Copy(audioData, 0, content, 0, audioData.Length);
+            Array.Copy(tag, 0, content, audioData.Length, tag.Length);
 
-            var tag = ReadFromStream(bytes);
+            var input = new MemoryStream(content, false);
+            var output = new MemoryStream(result, true);
 
-            CheckId3Tag(tag.Title, '1', 30);
-            CheckId3Tag(tag.Artist, '2', 30);
-            CheckId3Tag(tag.Album, '3', 30);
-            CheckId3Tag(tag.Year, '4', 4);
-            CheckId3Tag(tag.Comment, '5', 30);
+            IId3V1Controller id3Controller = Id3TagFactory.CreateId3V1Controller();
+            id3Controller.Remove(input, output);
+        }
 
-            Assert.IsFalse(tag.IsId3V1Dot1Compliant);
-            Assert.IsEmpty(tag.TrackNumber);
-            Assert.IsNotEmpty(tag.Genre);
+        [Test]
+        public void RemoveTest2()
+        {
+            var content = new byte[127];
+
+            for (byte counter = 0; counter < content.Length; counter++)
+            {
+                content[counter] = counter;
+            }
+
+            var result = new byte[64000];
+
+            var input = new MemoryStream(content, false);
+            var output = new MemoryStream(result, true);
+
+            IId3V1Controller id3Controller = Id3TagFactory.CreateId3V1Controller();
+            id3Controller.Remove(input, output);
         }
 
         [Test]
@@ -317,6 +358,29 @@ namespace Id3Tag.Net.NUnit.Highlevel
         }
 
         [Test]
+        public void WriteID3V1Tag()
+        {
+            var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
+            var output = new byte[138];
+
+            // Create a byte array...
+            var Id3Tag1 = new Id3V1Tag
+                              {
+                                  Title = "1",
+                                  Artist = "2",
+                                  Album = "3",
+                                  Year = "4",
+                                  Comment = "5",
+                                  IsId3V1Dot1Compliant = false,
+                                  GenreIdentifier = 12
+                              };
+
+            WriteToStream(audioData, output, Id3Tag1);
+            Id3V1Tag Id3Tag2 = ReadFromStream(output);
+            CheckId3Tag(Id3Tag1, Id3Tag2);
+        }
+
+        [Test]
         public void WriteID3V1_1Tag()
         {
             var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
@@ -336,30 +400,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
 
             WriteToStream(audioData, output, Id3Tag1);
 
-            var Id3Tag2 = ReadFromStream(output);
-            CheckId3Tag(Id3Tag1, Id3Tag2);
-        }
-
-        [Test]
-        public void WriteID3V1Tag()
-        {
-            var audioData = new byte[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
-            var output = new byte[138];
-
-            // Create a byte array...
-            var Id3Tag1 = new Id3V1Tag
-                              {
-                                  Title = "1",
-                                  Artist = "2",
-                                  Album = "3",
-                                  Year = "4",
-                                  Comment = "5",
-                                  IsId3V1Dot1Compliant = false,
-                                  GenreIdentifier = 12
-                              };
-
-            WriteToStream(audioData, output, Id3Tag1);
-            var Id3Tag2 = ReadFromStream(output);
+            Id3V1Tag Id3Tag2 = ReadFromStream(output);
             CheckId3Tag(Id3Tag1, Id3Tag2);
         }
 
@@ -383,7 +424,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
 
             WriteToStream(audioData, output, Id3Tag1);
 
-            var Id3Tag2 = ReadFromStream(output);
+            Id3V1Tag Id3Tag2 = ReadFromStream(output);
             CheckId3Tag(Id3Tag1, Id3Tag2);
         }
 
@@ -420,7 +461,7 @@ namespace Id3Tag.Net.NUnit.Highlevel
                                     GenreIdentifier = 12
                                 };
 
-            var Id3Tag2 = ReadFromStream(output);
+            Id3V1Tag Id3Tag2 = ReadFromStream(output);
             CheckId3Tag(refId3Tag, Id3Tag2);
         }
 
@@ -459,53 +500,8 @@ namespace Id3Tag.Net.NUnit.Highlevel
                                     GenreIdentifier = 12
                                 };
 
-            var Id3Tag2 = ReadFromStream(output);
+            Id3V1Tag Id3Tag2 = ReadFromStream(output);
             CheckId3Tag(refId3Tag, Id3Tag2);
-        }
-
-        [Test]
-        public void RemoveTest1()
-        {
-            var audioData = new byte[] { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20 };
-            var tag = new byte[128];
-            tag[0] = 0x54;
-            tag[1] = 0x41;
-            tag[2] = 0x47;
-
-            int length = audioData.Length + tag.Length;
-            var content = new byte[length];
-            var result = new byte[64000];
-            Array.Copy(audioData,0,content,0,audioData.Length);
-            Array.Copy(tag,0,content,audioData.Length,tag.Length);
-
-            var input = new MemoryStream(content,false);
-            var output = new MemoryStream(result,true);
-
-            var id3Controller = Id3TagFactory.CreateId3V1Controller();
-            id3Controller.Remove(input, output);
-
-            
-         }
-
-        [Test]
-        public void RemoveTest2()
-        {
-            var content = new byte[127];
-
-            for (byte counter=0; counter < content.Length; counter++)
-            {
-                content[counter] = counter;
-            }
-
-            var result = new byte[64000];
-
-            var input = new MemoryStream(content, false);
-            var output = new MemoryStream(result, true);
-
-            var id3Controller = Id3TagFactory.CreateId3V1Controller();
-            id3Controller.Remove(input, output);
-
-
         }
     }
 }

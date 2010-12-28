@@ -126,11 +126,11 @@ namespace Id3TagUtility
         private void buttonSourceFileSelect_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxSourceFile.Text = filename;
             }
         }
@@ -138,11 +138,11 @@ namespace Id3TagUtility
         private void buttonTargetFileSelect_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxTargetFile.Text = filename;
             }
         }
@@ -150,11 +150,11 @@ namespace Id3TagUtility
         private void buttonPicture_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxPicture.Text = filename;
             }
         }

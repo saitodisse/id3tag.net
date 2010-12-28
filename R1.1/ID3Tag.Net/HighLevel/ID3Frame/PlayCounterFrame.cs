@@ -50,39 +50,39 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag = Descriptor.Options;
+            FrameOptions flag = Descriptor.Options;
 
-        	byte[] payload;
+            byte[] payload;
 
-			using (var writer = new FrameDataWriter(8))
-			{
-				writer.WriteUInt64(Counter);
-				payload = writer.ToArray();
-			}
+            using (var writer = new FrameDataWriter(8))
+            {
+                writer.WriteUInt64(Counter);
+                payload = writer.ToArray();
+            }
 
-            var rawFrame = RawFrame.CreateFrame(Descriptor.Id, flag, payload, version);
+            RawFrame rawFrame = RawFrame.CreateFrame(Descriptor.Id, flag, payload, version);
             return rawFrame;
         }
 
-		/// <summary>
-		/// Converts a raw frame to PlayCounter frame.
-		/// </summary>
-		/// <param name="rawFrame">the raw frame.</param>
-		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
-		/// s
+        /// <summary>
+        /// Converts a raw frame to PlayCounter frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
+        /// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        /// s
         public override void Import(RawFrame rawFrame, int codePage)
         {
-			/*
+            /*
 				ID = "PCNT"
 				Counter         $xx xx xx xx (xx ...)
 			*/
 
             ImportRawFrameHeader(rawFrame);
 
-			using (var reader = new FrameDataReader(rawFrame.Payload))
-			{
-				Counter = reader.ReadUInt64();
-			}
+            using (var reader = new FrameDataReader(rawFrame.Payload))
+            {
+                Counter = reader.ReadUInt64();
+            }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <returns>the ToString representation</returns>
         public override string ToString()
         {
-			return String.Format(CultureInfo.InvariantCulture, "Play Counter : Value = {0}", Counter);
+            return String.Format(CultureInfo.InvariantCulture, "Play Counter : Value = {0}", Counter);
         }
     }
 }

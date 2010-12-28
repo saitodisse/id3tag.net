@@ -14,7 +14,7 @@ namespace Id3Tag.HighLevel
             ScanForFrames();
         }
 
-        #region IFrameContainer Members
+        #region IFrameCreationService Members
 
         public bool Search(string id)
         {
@@ -40,19 +40,19 @@ namespace Id3Tag.HighLevel
 
         private void ScanForFrames()
         {
-            var assembly = Assembly.GetAssembly(typeof (FrameContainer));
+            Assembly assembly = Assembly.GetAssembly(typeof (FrameContainer));
 
-            var types = assembly.GetTypes();
-            foreach (var type in types)
+            Type[] types = assembly.GetTypes();
+            foreach (Type type in types)
             {
-                var isFrame = IsFrame(type) && !type.IsAbstract;
+                bool isFrame = IsFrame(type) && !type.IsAbstract;
                 if (isFrame)
                 {
                     //
                     //  Frame implementation found!
                     //
-                    var frame = CreateFrame(type);
-                    var id = frame.Descriptor.Id;
+                    IFrame frame = CreateFrame(type);
+                    string id = frame.Descriptor.Id;
 
                     if (!m_Frames.ContainsKey(id))
                     {
@@ -82,9 +82,9 @@ namespace Id3Tag.HighLevel
 
         private static bool IsFrame(Type type)
         {
-            var ok = false;
-            var interfaces = type.GetInterfaces();
-            foreach (var curInterface in interfaces)
+            bool ok = false;
+            Type[] interfaces = type.GetInterfaces();
+            foreach (Type curInterface in interfaces)
             {
                 if (curInterface == typeof (IFrame))
                 {
@@ -98,7 +98,7 @@ namespace Id3Tag.HighLevel
 
         private IFrame GetInstance(string id)
         {
-            var found = Search(id);
+            bool found = Search(id);
             if (!found)
             {
                 var ex = new ArgumentException("Frame not found", "id");
@@ -107,7 +107,7 @@ namespace Id3Tag.HighLevel
                 throw ex;
             }
 
-            var frame = CreateFrame(m_Frames[id]);
+            IFrame frame = CreateFrame(m_Frames[id]);
             return frame;
         }
     }

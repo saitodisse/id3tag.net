@@ -1,5 +1,7 @@
-﻿using Id3Tag.HighLevel;
+﻿using System.Collections.ObjectModel;
+using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -23,10 +25,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0xFF);
 
-            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "POPM");
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0x00, 0x00, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payload));
@@ -37,10 +39,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0xFFFF);
 
-            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "POPM");
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0x00, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payload));
@@ -51,10 +53,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0xFFFFFF);
 
-            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "POPM");
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payload));
@@ -65,10 +67,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("ABC", 0xF, 0x7FFFFFFF);
 
-            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "POPM");
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x00, 0x0F, 0x7F, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payload));
@@ -105,10 +107,10 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         {
             var popFrame = new PopularimeterFrame("", 0xF, 0x7FFFFFFF);
 
-            var rawFrame = popFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = popFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "POPM");
-            var payload = rawFrame.Payload;
+            ReadOnlyCollection<byte> payload = rawFrame.Payload;
             var refBytes = new byte[] {0x00, 0x0F, 0x7F, 0xFF, 0xFF, 0xFF};
 
             Assert.IsTrue(ComparePayload(refBytes, payload));
@@ -123,13 +125,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x41, 0x42, 0x43, 0x00, 0x0F, 0x00, 0x00, 0x00, 0xFF
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var pop = FrameUtilities.ConvertToPopularimeterFrame(tagContainer[0]);
+            PopularimeterFrame pop = FrameUtilities.ConvertToPopularimeterFrame(tagContainer[0]);
 
             Assert.AreEqual(pop.Descriptor.Id, "POPM");
             Assert.AreEqual(pop.Email, "ABC");
@@ -146,13 +148,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x0F, 0x00, 0x00, 0x00, 0xFF
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var pop = FrameUtilities.ConvertToPopularimeterFrame(tagContainer[0]);
+            PopularimeterFrame pop = FrameUtilities.ConvertToPopularimeterFrame(tagContainer[0]);
 
             Assert.AreEqual(pop.Descriptor.Id, "POPM");
             Assert.AreEqual(pop.Email, "");

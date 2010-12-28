@@ -26,7 +26,7 @@ namespace Id3Tag.Net.NUnit
         {
             long curValue = 0;
 
-            for (var curPos = 0; curPos < bits; curPos++)
+            for (int curPos = 0; curPos < bits; curPos++)
             {
                 curValue += Convert.ToInt64(Math.Pow(2, curPos));
             }
@@ -40,12 +40,12 @@ namespace Id3Tag.Net.NUnit
             // Transform to binary.
             //
             var binCoding = new BitArray(28);
-            var bitPos = 0;
-            var curValue = payload;
+            int bitPos = 0;
+            long curValue = payload;
 
             while (curValue != 0)
             {
-                var remainder = curValue%2;
+                long remainder = curValue%2;
                 curValue = curValue/2;
 
                 if (remainder == 1)
@@ -65,10 +65,10 @@ namespace Id3Tag.Net.NUnit
             //
             var sizeBytes = new byte[4];
 
-            var b4 = CalculateFromBitSet(binCoding, 0, 6);
-            var b3 = CalculateFromBitSet(binCoding, 7, 13);
-            var b2 = CalculateFromBitSet(binCoding, 14, 20);
-            var b1 = CalculateFromBitSet(binCoding, 21, 27);
+            byte b4 = CalculateFromBitSet(binCoding, 0, 6);
+            byte b3 = CalculateFromBitSet(binCoding, 7, 13);
+            byte b2 = CalculateFromBitSet(binCoding, 14, 20);
+            byte b1 = CalculateFromBitSet(binCoding, 21, 27);
 
             sizeBytes[3] = b4;
             sizeBytes[2] = b3;
@@ -80,11 +80,11 @@ namespace Id3Tag.Net.NUnit
 
         private static byte CalculateFromBitSet(BitArray binCoding, int startIndex, int stopIndex)
         {
-            var bitPos = 0;
+            int bitPos = 0;
             byte curValue = 0;
-            for (var curIndex = startIndex; curIndex <= stopIndex; curIndex++)
+            for (int curIndex = startIndex; curIndex <= stopIndex; curIndex++)
             {
-                var level = binCoding.Get(curIndex);
+                bool level = binCoding.Get(curIndex);
                 if (level)
                 {
                     curValue += Convert.ToByte(Math.Pow(2, bitPos));
@@ -101,10 +101,10 @@ namespace Id3Tag.Net.NUnit
             var headerBytes = new byte[] {0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
             // Update the size of the tag.
-            var size = CalculateSize(frameBytes.Length);
+            byte[] size = CalculateSize(frameBytes.Length);
             Array.Copy(size, 0, headerBytes, 6, 4);
 
-            var completeLength = headerBytes.Length + frameBytes.Length;
+            int completeLength = headerBytes.Length + frameBytes.Length;
             var completeBytes = new byte[completeLength];
 
             Array.Copy(headerBytes, 0, completeBytes, 0, headerBytes.Length);
@@ -118,10 +118,10 @@ namespace Id3Tag.Net.NUnit
             var headerBytes = new byte[] {0x49, 0x44, 0x33, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
             // Update the size of the tag.
-            var size = CalculateSize(frameBytes.Length);
+            byte[] size = CalculateSize(frameBytes.Length);
             Array.Copy(size, 0, headerBytes, 6, 4);
 
-            var completeLength = headerBytes.Length + frameBytes.Length;
+            int completeLength = headerBytes.Length + frameBytes.Length;
             var completeBytes = new byte[completeLength];
 
             Array.Copy(headerBytes, 0, completeBytes, 0, headerBytes.Length);
@@ -130,9 +130,9 @@ namespace Id3Tag.Net.NUnit
             return completeBytes;
         }
 
-		protected static bool ComparePayload(IList<byte> bytes, IList<byte> refBytes)
+        protected static bool ComparePayload(IList<byte> bytes, IList<byte> refBytes)
         {
-            var ok = true;
+            bool ok = true;
 
             if (bytes == null && refBytes == null)
             {
@@ -145,7 +145,7 @@ namespace Id3Tag.Net.NUnit
             }
             else
             {
-                for (var i = 0; i < bytes.Count; i++)
+                for (int i = 0; i < bytes.Count; i++)
                 {
                     if (bytes[i] != refBytes[i])
                     {
@@ -160,14 +160,14 @@ namespace Id3Tag.Net.NUnit
 
         protected static void FillData(byte[] array)
         {
-            FillData(array,0);
+            FillData(array, 0);
         }
 
-        protected static void FillData(byte[] array,byte startValue)
+        protected static void FillData(byte[] array, byte startValue)
         {
             byte curValue = startValue;
 
-            for (var i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 array[i] = curValue;
 

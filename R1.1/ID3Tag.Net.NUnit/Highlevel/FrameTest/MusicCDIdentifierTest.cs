@@ -1,5 +1,6 @@
 ﻿using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -27,7 +28,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             idFrame.SetToc(refBytes);
             idFrame.Descriptor.Id = "MCDI";
 
-            var rawFrame = idFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = idFrame.Convert(TagVersion.Id3V23);
             Assert.AreEqual(rawFrame.Id, "MCDI");
             Assert.IsTrue(ComparePayload(rawFrame.Payload, refBytes));
         }
@@ -53,13 +54,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x41, 0x42, 0x43, 0x44
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var musicIdFrame = FrameUtilities.ConvertToMusicCDIdentifierFrame(tagContainer[0]);
+            MusicCDIdentifierFrame musicIdFrame = FrameUtilities.ConvertToMusicCDIdentifierFrame(tagContainer[0]);
             Assert.AreEqual(musicIdFrame.Descriptor.Id, "MCDI");
 
             var refBytes = new byte[] {0x41, 0x42, 0x43, 0x44};

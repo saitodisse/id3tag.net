@@ -55,25 +55,25 @@ namespace Id3Tag
                 }
             }
 
-            var crcBytes = BitConverter.GetBytes(crc32);
+            byte[] crcBytes = BitConverter.GetBytes(crc32);
             Array.Reverse(crcBytes);
             return crcBytes;
         }
 
-		public bool Validate(IEnumerable<byte> data, IEnumerable<byte> crcBytes)
+        public bool Validate(IEnumerable<byte> data, IEnumerable<byte> crcBytes)
         {
             var bytes = new List<byte>();
 
             bytes.AddRange(data);
             bytes.AddRange(crcBytes);
 
-            var crc = Calculate(bytes.ToArray());
+            byte[] crc = Calculate(bytes.ToArray());
 
             //
             //  Convert to LSB and compare.
             //
             Array.Reverse(crc);
-            var result = BitConverter.ToUInt32(crc, 0);
+            uint result = BitConverter.ToUInt32(crc, 0);
             return result == 0;
         }
 
@@ -98,9 +98,9 @@ namespace Id3Tag
                                    0x01
                                };
 
-            foreach (var curByte in data)
+            foreach (byte curByte in data)
             {
-                foreach (var curPattern in patterns)
+                foreach (byte curPattern in patterns)
                 {
                     if ((curByte & curPattern) == curPattern)
                     {

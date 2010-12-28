@@ -1,5 +1,6 @@
 ﻿using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -35,7 +36,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                    0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
                                };
 
-            var rawFrame = frame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = frame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "AENC");
             Assert.IsTrue(ComparePayload(rawFrame.Payload, refBytes));
@@ -72,13 +73,13 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                    0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x20, 0x21, 0x22
                                };
 
-            var completeTag = GetCompleteV3Tag(refBytes);
+            byte[] completeTag = GetCompleteV3Tag(refBytes);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtilities.ConvertToAudioEncryptionFrame(tagContainer[0]);
+            AudioEncryptionFrame frame = FrameUtilities.ConvertToAudioEncryptionFrame(tagContainer[0]);
             Assert.AreEqual(frame.Descriptor.Id, "AENC");
             Assert.AreEqual(frame.Owner, "ABCD");
             Assert.AreEqual(frame.PreviewStart, 0xFF);

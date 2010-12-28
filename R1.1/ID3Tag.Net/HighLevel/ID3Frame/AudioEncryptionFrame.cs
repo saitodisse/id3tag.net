@@ -65,16 +65,7 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <summary>
         /// The encryption data.
         /// </summary>
-		public ReadOnlyCollection<byte> Encryption { get; private set; }
-
-		/// <summary>
-		/// Sets the encryption from bytes data.
-		/// </summary>
-		/// <param name="value">The value.</param>
-		public void SetEncryption(IList<byte> value)
-		{
-			Encryption = new ReadOnlyCollection<byte>(value);
-		}
+        public ReadOnlyCollection<byte> Encryption { get; private set; }
 
         /// <summary>
         /// The frame type.
@@ -82,6 +73,15 @@ namespace Id3Tag.HighLevel.Id3Frame
         public override FrameType Type
         {
             get { return FrameType.AudioEncryption; }
+        }
+
+        /// <summary>
+        /// Sets the encryption from bytes data.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void SetEncryption(IList<byte> value)
+        {
+            Encryption = new ReadOnlyCollection<byte>(value);
         }
 
         /*
@@ -98,37 +98,37 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <returns>the raw frame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag = Descriptor.Options;
+            FrameOptions flag = Descriptor.Options;
 
-			byte[] payload;
-			using (var writer = new FrameDataWriter())
-			{
-				writer.WriteString(Owner, Encoding.GetEncoding(28591), true);
-				writer.WriteUInt16(PreviewStart);
-				writer.WriteUInt16(PreviewLength);
-				writer.WriteBytes(Encryption);
-				payload = writer.ToArray();
-			}
+            byte[] payload;
+            using (var writer = new FrameDataWriter())
+            {
+                writer.WriteString(Owner, Encoding.GetEncoding(28591), true);
+                writer.WriteUInt16(PreviewStart);
+                writer.WriteUInt16(PreviewLength);
+                writer.WriteBytes(Encryption);
+                payload = writer.ToArray();
+            }
 
             return RawFrame.CreateFrame("AENC", flag, payload, version);
         }
 
-		/// <summary>
-		/// Import the raw frame.
-		/// </summary>
-		/// <param name="rawFrame">the raw frame.</param>
-		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
+        /// <summary>
+        /// Import the raw frame.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
+        /// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding code page.</param>
         public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
-			using (var reader = new FrameDataReader(rawFrame.Payload))
-			{
-				Owner = reader.ReadVariableString(Encoding.GetEncoding(28591));
-				PreviewStart = reader.ReadUInt16();
-				PreviewLength = reader.ReadUInt16();
-				SetEncryption(reader.ReadBytes());
-			}
+            using (var reader = new FrameDataReader(rawFrame.Payload))
+            {
+                Owner = reader.ReadVariableString(Encoding.GetEncoding(28591));
+                PreviewStart = reader.ReadUInt16();
+                PreviewLength = reader.ReadUInt16();
+                SetEncryption(reader.ReadBytes());
+            }
         }
 
         /// <summary>
@@ -137,14 +137,14 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <returns></returns>
         public override string ToString()
         {
-        	return
-        		String.Format(
-					CultureInfo.InvariantCulture, 
-        			"Audio Encryption : Owner = {0}, Preview Start = {1}, Preview Length = {2}, EncryptionInfo = {3}",
-        			Owner,
-        			PreviewStart,
-        			PreviewLength,
-        			Utils.BytesToString(Encryption));
+            return
+                String.Format(
+                    CultureInfo.InvariantCulture,
+                    "Audio Encryption : Owner = {0}, Preview Start = {1}, Preview Length = {2}, EncryptionInfo = {3}",
+                    Owner,
+                    PreviewStart,
+                    PreviewLength,
+                    Utils.BytesToString(Encryption));
         }
     }
 }

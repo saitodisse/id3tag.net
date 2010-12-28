@@ -28,7 +28,7 @@ namespace Id3Tag.LowLevel
 
         #region Create Extended Header
 
-		internal static ExtendedTagHeaderV3 Create(int paddingSize, bool crcDataPresent, ReadOnlyCollection<byte> crc)
+        internal static ExtendedTagHeaderV3 Create(int paddingSize, bool crcDataPresent, ReadOnlyCollection<byte> crc)
         {
             var extendedHeader = new ExtendedTagHeaderV3
                                      {
@@ -50,7 +50,7 @@ namespace Id3Tag.LowLevel
 
             var extendedHeader = new ExtendedTagHeaderV3();
             extendedHeader.CrcDataPresent = (flags[0] & 0x80) == 0x80;
-			extendedHeader.PaddingSize = Utils.CalculateSize(paddingBytes);
+            extendedHeader.PaddingSize = Utils.CalculateSize(paddingBytes);
 
             if (extendedHeader.CrcDataPresent)
             {

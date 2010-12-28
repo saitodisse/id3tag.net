@@ -14,15 +14,15 @@ namespace Id3Tag.HighLevel
         /// <returns>the high level tag representation.</returns>
         TagContainer Decode(Id3TagInfo info);
 
-		/// <summary>
-		/// Decodes a low level tag into a high level.
-		/// </summary>
-		/// <param name="info">the low level tag.</param>
-		/// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding.</param>
-		/// <returns>the high level tag representation.</returns>
-		TagContainer Decode(Id3TagInfo info, int codePage);
-		
-		/// <summary>
+        /// <summary>
+        /// Decodes a low level tag into a high level.
+        /// </summary>
+        /// <param name="info">the low level tag.</param>
+        /// <param name="codePage">Default code page for Ansi encoding. Pass 0 to use default system encoding.</param>
+        /// <returns>the high level tag representation.</returns>
+        TagContainer Decode(Id3TagInfo info, int codePage);
+
+        /// <summary>
         /// Encodes a high level tag to a low level.
         /// </summary>
         /// <param name="container">the high level tag.</param>

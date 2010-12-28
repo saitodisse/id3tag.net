@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Microsoft.Win32;
 
 namespace Id3TagUtility
@@ -30,11 +19,11 @@ namespace Id3TagUtility
         private void buttonSourceFileSelect_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxSourceFile.Text = filename;
             }
         }
@@ -42,11 +31,11 @@ namespace Id3TagUtility
         private void buttonTargetFileSelect_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            var result = dialog.ShowDialog(this);
+            bool? result = dialog.ShowDialog(this);
 
             if (result == true)
             {
-                var filename = dialog.FileName;
+                string filename = dialog.FileName;
                 textBoxSourceFile.Text = filename;
             }
         }

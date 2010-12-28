@@ -1,5 +1,6 @@
 ﻿using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -27,7 +28,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                        Descriptor = {Id = "W123"}
                                    };
 
-            var rawFrame = urlLinkFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = urlLinkFrame.Convert(TagVersion.Id3V23);
 
             Assert.AreEqual(rawFrame.Id, "W123");
             Assert.AreEqual(rawFrame.Payload.Count, 4);
@@ -54,18 +55,18 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                  0x00, 0x41, 0x42, 0x43, 0x44,
                              };
 
-            var completeTag = GetCompleteV3Tag(frames);
+            byte[] completeTag = GetCompleteV3Tag(frames);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            var tag = tagContainer.GetId3V23Descriptor();
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            TagDescriptorV3 tag = tagContainer.GetId3V23Descriptor();
 
             Assert.AreEqual(tag.MajorVersion, 3);
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var f1 = tagContainer[0];
-            var text1 = FrameUtilities.ConvertToUrlLinkFrame(f1);
+            IFrame f1 = tagContainer[0];
+            UrlLinkFrame text1 = FrameUtilities.ConvertToUrlLinkFrame(f1);
 
             Assert.AreEqual(text1.Descriptor.Id, "W123");
             Assert.AreEqual(text1.Type, FrameType.UrlLink);

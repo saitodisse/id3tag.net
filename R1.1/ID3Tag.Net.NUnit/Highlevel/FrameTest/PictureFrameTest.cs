@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Id3Tag.HighLevel;
 using Id3Tag.HighLevel.Id3Frame;
+using Id3Tag.LowLevel;
 using NUnit.Framework;
 
 namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
@@ -22,7 +23,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConstructorTest()
         {
-            var encoding = Encoding.Default;
+            Encoding encoding = Encoding.Default;
             const string mime = "ABCD";
             const string description = "EFGH";
             const PictureType pictureType = PictureType.Other;
@@ -40,14 +41,14 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertISO8859()
         {
-            var encoding = Encoding.Default;
+            Encoding encoding = Encoding.Default;
             const string mimeType = "ABCD";
             const PictureType pictureType = PictureType.CoverFront;
             const string description = "EFGH";
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -61,14 +62,14 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
         [Test]
         public void ConvertUTF16()
         {
-            var encoding = Encoding.Unicode;
+            Encoding encoding = Encoding.Unicode;
             const string mimeType = "ABCD";
             const PictureType pictureType = PictureType.CoverFront;
             const string description = "EFGH";
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -90,7 +91,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -112,7 +113,7 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
             var data = new byte[] {0x20, 0x21, 0x22, 0x23};
 
             var pictureFrame = new PictureFrame(encoding, mimeType, description, pictureType, data);
-            var rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
+            RawFrame rawFrame = pictureFrame.Convert(TagVersion.Id3V23);
 
             var refBytes = new byte[]
                                {
@@ -134,17 +135,17 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                 0x20, 0x21, 0x22, 0x23
                             };
 
-            var completeTag = GetCompleteV3Tag(bytes);
+            byte[] completeTag = GetCompleteV3Tag(bytes);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            var tag = tagContainer.GetId3V23Descriptor();
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            TagDescriptorV3 tag = tagContainer.GetId3V23Descriptor();
 
             Assert.AreEqual(tag.MajorVersion, 3);
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
+            PictureFrame frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, 1201);
@@ -165,17 +166,17 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                 0x20, 0x21, 0x22, 0x23
                             };
 
-            var completeTag = GetCompleteV3Tag(bytes);
+            byte[] completeTag = GetCompleteV3Tag(bytes);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            var tag = tagContainer.GetId3V23Descriptor();
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            TagDescriptorV3 tag = tagContainer.GetId3V23Descriptor();
 
             Assert.AreEqual(tag.MajorVersion, 3);
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
+            PictureFrame frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding, Encoding.Unicode);
@@ -195,17 +196,17 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                 0x20, 0x21, 0x22, 0x23
                             };
 
-            var completeTag = GetCompleteV3Tag(bytes);
+            byte[] completeTag = GetCompleteV3Tag(bytes);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            var tag = tagContainer.GetId3V23Descriptor();
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            TagDescriptorV3 tag = tagContainer.GetId3V23Descriptor();
 
             Assert.AreEqual(tag.MajorVersion, 3);
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
+            PictureFrame frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.Default.CodePage);
@@ -226,17 +227,17 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                 0x20, 0x21, 0x22, 0x23
                             };
 
-            var completeTag = GetCompleteV3Tag(bytes);
+            byte[] completeTag = GetCompleteV3Tag(bytes);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            var tag = tagContainer.GetId3V23Descriptor();
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            TagDescriptorV3 tag = tagContainer.GetId3V23Descriptor();
 
             Assert.AreEqual(tag.MajorVersion, 3);
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
+            PictureFrame frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.BigEndianUnicode.CodePage);
@@ -256,17 +257,17 @@ namespace Id3Tag.Net.NUnit.Highlevel.FrameTest
                                 0x20, 0x21, 0x22, 0x23
                             };
 
-            var completeTag = GetCompleteV3Tag(bytes);
+            byte[] completeTag = GetCompleteV3Tag(bytes);
             Read(completeTag);
 
-            var tagContainer = m_TagController.Decode(m_TagInfo);
-            var tag = tagContainer.GetId3V23Descriptor();
+            TagContainer tagContainer = m_TagController.Decode(m_TagInfo);
+            TagDescriptorV3 tag = tagContainer.GetId3V23Descriptor();
 
             Assert.AreEqual(tag.MajorVersion, 3);
             Assert.AreEqual(tag.Revision, 0);
             Assert.AreEqual(tagContainer.Count, 1);
 
-            var frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
+            PictureFrame frame = FrameUtilities.ConvertToPictureFrame(tagContainer[0]);
 
             Assert.AreEqual(frame.Type, FrameType.Picture);
             Assert.AreEqual(frame.TextEncoding.CodePage, Encoding.UTF8.CodePage);

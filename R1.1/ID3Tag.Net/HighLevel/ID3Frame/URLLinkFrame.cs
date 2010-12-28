@@ -19,7 +19,7 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// Creates a new instance of UrlLinkFrame.
         /// </summary>
         public UrlLinkFrame()
-            : this("W???",String.Empty)
+            : this("W???", String.Empty)
         {
         }
 
@@ -28,8 +28,9 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// </summary>
         /// <param name="id">the frame ID.</param>
         /// <param name="url">the url.</param>
-		[SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "1#", Justification = "URL validation rules do not apply.")]
-		public UrlLinkFrame(string id, string url)
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "1#",
+            Justification = "URL validation rules do not apply.")]
+        public UrlLinkFrame(string id, string url)
         {
             Descriptor.Id = id;
             Url = url;
@@ -38,8 +39,9 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <summary>
         /// The URL.
         /// </summary>
-		[SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "URL validation rules do not apply.")]
-		public string Url { get; set; }
+        [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings",
+            Justification = "URL validation rules do not apply.")]
+        public string Url { get; set; }
 
         /// <summary>
         /// The frame Type.
@@ -49,38 +51,38 @@ namespace Id3Tag.HighLevel.Id3Frame
             get { return FrameType.UrlLink; }
         }
 
-		/// <summary>
-		/// Convert the URLLinkFrame.
-		/// </summary>
-		/// <param name="version">The version.</param>
-		/// <returns>the RawFrame.</returns>
+        /// <summary>
+        /// Convert the URLLinkFrame.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        /// <returns>the RawFrame.</returns>
         public override RawFrame Convert(TagVersion version)
         {
-            var flag = Descriptor.Options;
+            FrameOptions flag = Descriptor.Options;
 
-			byte[] payload;
-			using (var writer = new FrameDataWriter())
-			{
-				writer.WriteString(Url, Encoding.ASCII);
-				payload = writer.ToArray();
-			}
+            byte[] payload;
+            using (var writer = new FrameDataWriter())
+            {
+                writer.WriteString(Url, Encoding.ASCII);
+                payload = writer.ToArray();
+            }
 
             return RawFrame.CreateFrame(Descriptor.Id, flag, payload, version);
         }
 
-		/// <summary>
-		/// Import the raw frame data.
-		/// </summary>
-		/// <param name="rawFrame">the raw frame.</param>
-		/// <param name="codePage">Not used</param>
+        /// <summary>
+        /// Import the raw frame data.
+        /// </summary>
+        /// <param name="rawFrame">the raw frame.</param>
+        /// <param name="codePage">Not used</param>
         public override void Import(RawFrame rawFrame, int codePage)
         {
             ImportRawFrameHeader(rawFrame);
 
-			using (var reader = new FrameDataReader(rawFrame.Payload))
-			{
-				Url = reader.ReadVariableString(Encoding.ASCII);
-			}
+            using (var reader = new FrameDataReader(rawFrame.Payload))
+            {
+                Url = reader.ReadVariableString(Encoding.ASCII);
+            }
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Id3Tag.HighLevel.Id3Frame
         /// <returns></returns>
         public override string ToString()
         {
-			return String.Format(CultureInfo.InvariantCulture, "URL : URL = {0}", Url);
+            return String.Format(CultureInfo.InvariantCulture, "URL : URL = {0}", Url);
         }
     }
 }

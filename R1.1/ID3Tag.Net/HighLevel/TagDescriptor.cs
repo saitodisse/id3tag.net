@@ -53,7 +53,7 @@ namespace Id3Tag.HighLevel
         /// <summary>
         /// The CRC data.
         /// </summary>
-		public ReadOnlyCollection<Byte> Crc { get; private set; }
+        public ReadOnlyCollection<Byte> Crc { get; private set; }
 
         /// <summary>
         /// Sets the calculated CRC32 values.
@@ -64,13 +64,14 @@ namespace Id3Tag.HighLevel
             Crc = new ReadOnlyCollection<byte>(crc);
         }
 
-		/// <summary>
+        /// <summary>
         /// Overwrites ToString
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-			return String.Format(CultureInfo.InvariantCulture, "TagDescriptor : Major = {0}, Revision = {1}", MajorVersion, Revision);
+            return String.Format(CultureInfo.InvariantCulture, "TagDescriptor : Major = {0}, Revision = {1}",
+                                 MajorVersion, Revision);
         }
     }
 }

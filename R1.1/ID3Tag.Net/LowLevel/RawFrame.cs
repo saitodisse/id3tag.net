@@ -10,12 +10,12 @@ namespace Id3Tag.LowLevel
     /// </summary>
     public abstract class RawFrame
     {
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RawFrame"/> class.
-		/// </summary>
-		/// <param name="id">The id.</param>
-		/// <param name="payload">The payload.</param>
-		protected RawFrame(string id, IList<byte> payload)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RawFrame"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="payload">The payload.</param>
+        protected RawFrame(string id, IList<byte> payload)
         {
             Id = id;
             Payload = new ReadOnlyCollection<byte>(payload);
@@ -31,10 +31,10 @@ namespace Id3Tag.LowLevel
         /// </summary>
         public string Id { get; private set; }
 
-		/// <summary>
-		/// Gets or sets the options.
-		/// </summary>
-		/// <value>The options.</value>
+        /// <summary>
+        /// Gets or sets the options.
+        /// </summary>
+        /// <value>The options.</value>
         public FrameOptions Options { get; protected set; }
 
         internal abstract byte[] EncodeFlags();
@@ -45,7 +45,7 @@ namespace Id3Tag.LowLevel
         {
             // Write the Frame ID
             var asciiEncoding = new ASCIIEncoding();
-            var idBytes = asciiEncoding.GetBytes(Id);
+            byte[] idBytes = asciiEncoding.GetBytes(Id);
 
             return idBytes;
         }
@@ -78,7 +78,8 @@ namespace Id3Tag.LowLevel
         }
 */
 
-        internal static RawFrame CreateFrame(string frameId, FrameOptions options, IList<byte> payload, TagVersion version)
+        internal static RawFrame CreateFrame(string frameId, FrameOptions options, IList<byte> payload,
+                                             TagVersion version)
         {
             RawFrame frame;
             switch (version)
